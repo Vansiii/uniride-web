@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { ProveedorSesion, useSesion } from './app/sesion'
+import { ProveedorSesion } from './app/sesion'
+import { useSesion } from './app/useSesion'
 import { t } from './i18n'
 import Inicio from './paginas/Inicio'
 import IniciarSesion from './paginas/IniciarSesion'

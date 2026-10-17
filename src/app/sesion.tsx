@@ -1,17 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import * as api from '../api/cliente'
 import type { Usuario } from '../api/cliente'
-
-interface Sesion {
-  /** `true` mientras se intenta recuperar la sesión con la cookie de refresco. */
-  cargando: boolean
-  usuario: Usuario | null
-  iniciar: (correo: string, contrasena: string) => Promise<void>
-  cerrar: () => Promise<void>
-}
-
-const Contexto = createContext<Sesion | null>(null)
+import { Contexto } from './useSesion'
 
 export function ProveedorSesion({ children }: { children: ReactNode }) {
   const [cargando, setCargando] = useState(true)
@@ -47,10 +38,4 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       {children}
     </Contexto>
   )
-}
-
-export function useSesion(): Sesion {
-  const valor = useContext(Contexto)
-  if (!valor) throw new Error('useSesion requiere <ProveedorSesion>')
-  return valor
 }
