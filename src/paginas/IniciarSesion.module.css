@@ -1,0 +1,29 @@
+.pagina {
+  display: flex;
+  justify-content: center;
+  padding: var(--espacio-8) var(--espacio-4);
+}
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  width: 100%;
+  max-width: var(--ancho-formulario);
+  box-sizing: border-box;
+  padding: var(--espacio-6);
+  background: var(--color-superficie);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+}
+.titulo {
+  margin: 0;
+  font: var(--texto-titulo);
+}
+.falla {
+  margin: 0;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro-texto);
+  font: var(--texto-secundario);
+}

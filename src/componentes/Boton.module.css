@@ -1,0 +1,32 @@
+.boton {
+  min-height: var(--alto-control);
+  padding: 0 var(--espacio-4);
+  border-radius: var(--radio-m);
+  border: var(--grosor-borde) solid transparent;
+  font: var(--texto-cuerpo-enfasis);
+  cursor: pointer;
+}
+.completo {
+  width: 100%;
+}
+.primario {
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+}
+.primario:hover:not(:disabled) {
+  background: var(--color-primario-presionado);
+}
+.secundario {
+  background: transparent;
+  color: var(--color-primario);
+  border-color: var(--color-borde-campo);
+}
+.texto {
+  background: transparent;
+  color: var(--color-primario);
+}
+.boton:disabled {
+  background: var(--color-fondo-deshabilitado);
+  color: var(--color-texto-deshabilitado);
+  cursor: not-allowed;
+}

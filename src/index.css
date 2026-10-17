@@ -1,9 +1,16 @@
+@import './estilos/tokens.css';
+
 :root {
-  font-family: system-ui, sans-serif;
-  color-scheme: light dark;
+  font: var(--texto-cuerpo);
+  color: var(--color-texto);
+  background: var(--color-fondo-sutil);
 }
 
 body {
   margin: 0;
-  padding: 1rem;
+}
+
+:focus-visible {
+  outline: var(--grosor-borde-activo) solid var(--color-foco);
+  outline-offset: 2px;
 }

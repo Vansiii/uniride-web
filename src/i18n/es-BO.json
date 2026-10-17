@@ -2,5 +2,32 @@
   "aplicacion": {
     "nombre": "UniRide",
     "subtitulo": "Panel de administración"
+  },
+  "comun": {
+    "estados": {
+      "cargando": "Cargando…"
+    },
+    "errores": {
+      "sin_conexion": "No hay conexión. Revisa tu internet e inténtalo de nuevo.",
+      "desconocido": "Algo salió mal. Inténtalo de nuevo en unos minutos."
+    }
+  },
+  "autenticacion": {
+    "sesion": {
+      "titulo": "Iniciar sesión",
+      "correo": "Correo",
+      "correo_ejemplo": "nombre@uagrm.edu.bo",
+      "contrasena": "Contraseña",
+      "mostrar_contrasena": "Mostrar contraseña",
+      "ocultar_contrasena": "Ocultar contraseña",
+      "entrar": "Entrar",
+      "entrando": "Entrando…",
+      "salir": "Cerrar sesión",
+      "bienvenida": "Hola, {nombre}.",
+      "correo_invalido": "Escribe un correo válido, por ejemplo nombre@uagrm.edu.bo.",
+      "contrasena_requerida": "Escribe tu contraseña.",
+      "credenciales_invalidas": "Correo o contraseña incorrectos. Revísalos e inténtalo de nuevo.",
+      "bloqueada": "Demasiados intentos. Podrás intentarlo de nuevo a las {hora}."
+    }
   }
 }
