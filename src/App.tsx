@@ -1,10 +1,24 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { ProveedorSesion } from './app/sesion'
+import { useSesion } from './app/useSesion'
 import { t } from './i18n'
+import Inicio from './paginas/Inicio'
+import IniciarSesion from './paginas/IniciarSesion'
+
+function Protegida() {
+  const { cargando, usuario } = useSesion()
+  if (cargando) return <p role="status">{t('comun.estados.cargando')}</p>
+  return usuario ? <Inicio /> : <Navigate to="/iniciar-sesion" replace />
+}
 
 export default function App() {
   return (
-    <main>
-      <h1>{t('aplicacion.nombre')}</h1>
-      <p>{t('aplicacion.subtitulo')}</p>
-    </main>
+    <ProveedorSesion>
+      <Routes>
+        <Route path="/iniciar-sesion" element={<IniciarSesion />} />
+        <Route path="/" element={<Protegida />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </ProveedorSesion>
   )
 }

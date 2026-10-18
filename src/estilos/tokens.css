@@ -1,0 +1,47 @@
+/* Tokens de DESIGN_SYSTEM.md §4 (fuente de verdad). Solo claro hasta HU-31. */
+:root {
+  --color-fondo: #ffffff;
+  --color-fondo-sutil: #f6f7f9;
+  --color-superficie: #ffffff;
+  --color-borde: #dde1e8;
+  --color-borde-campo: #7a8396;
+  --color-texto: #1a1f27;
+  --color-texto-secundario: #535b6c;
+  --color-texto-placeholder: #6b7385;
+  --color-texto-deshabilitado: #8f98a8;
+  --color-fondo-deshabilitado: #eef0f4;
+  --color-primario: #3447cc;
+  --color-primario-presionado: #2a39a6;
+  --color-sobre-primario: #ffffff;
+  --color-primario-suave: #eef1ff;
+  --color-primario-texto: #2a39a6;
+  --color-peligro: #b42318;
+  --color-peligro-suave: #fdecea;
+  --color-peligro-texto: #912018;
+  --color-foco: #3447cc;
+
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-6: 1.5rem;
+  --espacio-8: 2rem;
+
+  --radio-m: 12px;
+  --radio-l: 16px;
+  --alto-control: 40px;
+  --ancho-formulario: 560px;
+  --grosor-borde: 1px;
+  --grosor-borde-activo: 2px;
+
+  --fuente:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --texto-pantalla: 700 1.75rem/2.25rem var(--fuente);
+  --texto-subtitulo: 600 1.125rem/1.5rem var(--fuente);
+  --texto-titulo: 600 1.375rem/1.75rem var(--fuente);
+  --texto-cuerpo: 400 1rem/1.5rem var(--fuente);
+  --texto-cuerpo-enfasis: 600 1rem/1.5rem var(--fuente);
+  --texto-secundario: 400 0.875rem/1.25rem var(--fuente);
+  --texto-etiqueta: 500 0.875rem/1.25rem var(--fuente);
+}
