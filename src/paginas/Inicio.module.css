@@ -1,0 +1,33 @@
+.tarjeta {
+  max-width: var(--ancho-formulario);
+  padding: var(--espacio-6);
+  background: var(--color-superficie);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+}
+.subtitulo {
+  margin: 0 0 var(--espacio-4);
+  font: var(--texto-subtitulo);
+}
+.datos {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--espacio-3) var(--espacio-6);
+  margin: 0;
+}
+.datos dt {
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
+}
+.datos dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.etiqueta {
+  display: inline-block;
+  padding: 2px var(--espacio-2);
+  border-radius: 999px;
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+  font: 500 0.75rem/1rem var(--fuente);
+}

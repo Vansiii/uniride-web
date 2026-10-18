@@ -37,6 +37,8 @@
   --fuente:
     system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
+  --texto-pantalla: 700 1.75rem/2.25rem var(--fuente);
+  --texto-subtitulo: 600 1.125rem/1.5rem var(--fuente);
   --texto-titulo: 600 1.375rem/1.75rem var(--fuente);
   --texto-cuerpo: 400 1rem/1.5rem var(--fuente);
   --texto-cuerpo-enfasis: 600 1rem/1.5rem var(--fuente);

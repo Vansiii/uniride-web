@@ -1,0 +1,127 @@
+.raiz {
+  min-height: 100vh;
+  background: var(--color-fondo-sutil);
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 var(--espacio-4);
+  background: var(--color-superficie);
+  border-bottom: var(--grosor-borde) solid var(--color-borde);
+}
+.logoBarra {
+  height: 24px;
+}
+.menu {
+  min-height: 40px;
+  padding: 0 var(--espacio-3);
+  border: var(--grosor-borde) solid var(--color-borde-campo);
+  border-radius: var(--radio-m);
+  background: transparent;
+  color: var(--color-primario);
+  font: var(--texto-cuerpo-enfasis);
+  cursor: pointer;
+}
+
+.lateral {
+  display: none;
+  flex-direction: column;
+  gap: var(--espacio-6);
+  padding: var(--espacio-4);
+  background: var(--color-superficie);
+  border-bottom: var(--grosor-borde) solid var(--color-borde);
+}
+.abierto {
+  display: flex;
+}
+.logoLateral {
+  display: none;
+  height: 28px;
+  align-self: flex-start;
+}
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+}
+.enlace {
+  display: block;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  color: var(--color-texto);
+  font: var(--texto-cuerpo-enfasis);
+  text-decoration: none;
+}
+.enlace[aria-current='page'] {
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+}
+.persona {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  padding-top: var(--espacio-4);
+  border-top: var(--grosor-borde) solid var(--color-borde);
+}
+.nombre {
+  font: var(--texto-cuerpo-enfasis);
+}
+.correo {
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+  overflow-wrap: anywhere;
+}
+
+.contenido {
+  padding: var(--espacio-4);
+}
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  max-width: 1200px;
+}
+.titulo {
+  margin: 0;
+  font: var(--texto-pantalla);
+}
+.descripcion {
+  margin: 0;
+  max-width: 70ch;
+  color: var(--color-texto-secundario);
+}
+
+@media (min-width: 640px) {
+  .contenido {
+    padding: var(--espacio-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .raiz {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+  }
+  .barra {
+    display: none;
+  }
+  .lateral {
+    display: flex;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    box-sizing: border-box;
+    border-bottom: 0;
+    border-right: var(--grosor-borde) solid var(--color-borde);
+  }
+  .logoLateral {
+    display: block;
+  }
+  .contenido {
+    padding: var(--espacio-8);
+  }
+}

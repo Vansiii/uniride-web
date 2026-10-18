@@ -63,7 +63,9 @@ describe('Pantalla Iniciar sesión', () => {
     vi.mocked(api.consultarYo).mockResolvedValue(usuario)
     await abrir()
     escribir('ana@uagrm.edu.bo', 'Clave1234')
-    expect(await screen.findByText('Hola, Ana Pérez.')).toBeTruthy()
+    expect(
+      await screen.findByRole('heading', { name: 'Hola, Ana Pérez' }),
+    ).toBeTruthy()
     expect(api.iniciarSesion).toHaveBeenCalledWith(
       'ana@uagrm.edu.bo',
       'Clave1234',

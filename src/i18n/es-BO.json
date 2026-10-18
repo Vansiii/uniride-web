@@ -1,7 +1,8 @@
 {
   "aplicacion": {
     "nombre": "UniRide",
-    "subtitulo": "Panel de administración"
+    "subtitulo": "Panel de administración",
+    "eslogan": "Viajes compartidos verificados para tu comunidad"
   },
   "comun": {
     "estados": {
@@ -27,7 +28,29 @@
       "correo_invalido": "Escribe un correo válido, por ejemplo nombre@uagrm.edu.bo.",
       "contrasena_requerida": "Escribe tu contraseña.",
       "credenciales_invalidas": "Correo o contraseña incorrectos. Revísalos e inténtalo de nuevo.",
-      "bloqueada": "Demasiados intentos. Podrás intentarlo de nuevo a las {hora}."
+      "bloqueada": "Demasiados intentos. Podrás intentarlo de nuevo a las {hora}.",
+      "subtitulo": "Usa el correo y la contraseña de tu cuenta.",
+      "beneficio_1": "Conductores y pasajeros verificados de tu organización",
+      "beneficio_2": "Cada viaje se comprueba al subir y al bajar",
+      "beneficio_3": "Pagos en garantía: el conductor cobra solo si el viaje ocurre"
+    }
+  },
+  "navegacion": {
+    "principal": "Navegación principal",
+    "inicio": "Inicio",
+    "abrir_menu": "Menú",
+    "cerrar_menu": "Cerrar menú"
+  },
+  "panel": {
+    "inicio": {
+      "titulo": "Hola, {nombre}",
+      "descripcion": "Este es el panel de administración de UniRide. Desde aquí gestionarás organizaciones y miembros.",
+      "cuenta": "Tu cuenta",
+      "nombre": "Nombre",
+      "correo": "Correo",
+      "rol": "Rol",
+      "rol_super_admin": "Super administrador",
+      "rol_miembro": "Administrador de organización"
     }
   }
 }

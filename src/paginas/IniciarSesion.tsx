@@ -68,51 +68,67 @@ export default function IniciarSesion() {
   }
 
   return (
-    <main className={estilos.pagina}>
-      <form className={estilos.formulario} onSubmit={enviar} noValidate>
-        <h1 className={estilos.titulo}>{t('autenticacion.sesion.titulo')}</h1>
-        {falla && (
-          <p role="alert" className={estilos.falla}>
-            {falla}
-          </p>
-        )}
-        <Campo
-          etiqueta={t('autenticacion.sesion.correo')}
-          type="email"
-          autoComplete="email"
-          placeholder={t('autenticacion.sesion.correo_ejemplo')}
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-          error={errores.correo}
+    <div className={estilos.pagina}>
+      <aside className={estilos.marca}>
+        <img
+          src="/firma-blanco.svg"
+          alt={t('aplicacion.nombre')}
+          className={estilos.logo}
         />
-        <Campo
-          etiqueta={t('autenticacion.sesion.contrasena')}
-          type={verContrasena ? 'text' : 'password'}
-          autoComplete="current-password"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-          error={errores.contrasena}
-        />
-        <Boton
-          variante="texto"
-          etiqueta={t(
-            verContrasena
-              ? 'autenticacion.sesion.ocultar_contrasena'
-              : 'autenticacion.sesion.mostrar_contrasena',
+        <p className={estilos.eslogan}>{t('aplicacion.eslogan')}</p>
+        <ul className={estilos.beneficios}>
+          <li>{t('autenticacion.sesion.beneficio_1')}</li>
+          <li>{t('autenticacion.sesion.beneficio_2')}</li>
+          <li>{t('autenticacion.sesion.beneficio_3')}</li>
+        </ul>
+      </aside>
+      <main className={estilos.contenido}>
+        <form className={estilos.formulario} onSubmit={enviar} noValidate>
+          <h1 className={estilos.titulo}>{t('autenticacion.sesion.titulo')}</h1>
+          <p className={estilos.ayuda}>{t('autenticacion.sesion.subtitulo')}</p>
+          {falla && (
+            <p role="alert" className={estilos.falla}>
+              {falla}
+            </p>
           )}
-          onClick={() => setVerContrasena(!verContrasena)}
-        />
-        <Boton
-          type="submit"
-          anchoCompleto
-          cargando={enviando}
-          etiqueta={t(
-            enviando
-              ? 'autenticacion.sesion.entrando'
-              : 'autenticacion.sesion.entrar',
-          )}
-        />
-      </form>
-    </main>
+          <Campo
+            etiqueta={t('autenticacion.sesion.correo')}
+            type="email"
+            autoComplete="email"
+            placeholder={t('autenticacion.sesion.correo_ejemplo')}
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+            error={errores.correo}
+          />
+          <Campo
+            etiqueta={t('autenticacion.sesion.contrasena')}
+            type={verContrasena ? 'text' : 'password'}
+            autoComplete="current-password"
+            value={contrasena}
+            onChange={(e) => setContrasena(e.target.value)}
+            error={errores.contrasena}
+          />
+          <Boton
+            variante="texto"
+            etiqueta={t(
+              verContrasena
+                ? 'autenticacion.sesion.ocultar_contrasena'
+                : 'autenticacion.sesion.mostrar_contrasena',
+            )}
+            onClick={() => setVerContrasena(!verContrasena)}
+          />
+          <Boton
+            type="submit"
+            anchoCompleto
+            cargando={enviando}
+            etiqueta={t(
+              enviando
+                ? 'autenticacion.sesion.entrando'
+                : 'autenticacion.sesion.entrar',
+            )}
+          />
+        </form>
+      </main>
+    </div>
   )
 }
