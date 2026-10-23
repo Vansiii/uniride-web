@@ -10,7 +10,12 @@
     },
     "errores": {
       "sin_conexion": "No hay conexión. Revisa tu internet e inténtalo de nuevo.",
-      "desconocido": "Algo salió mal. Inténtalo de nuevo en unos minutos."
+      "desconocido": "Algo salió mal. Inténtalo de nuevo en unos minutos.",
+      "no_autorizado": "No tienes permiso para hacer esto."
+    },
+    "acciones": {
+      "cancelar": "Cancelar",
+      "volver": "Volver"
     }
   },
   "autenticacion": {
@@ -39,7 +44,8 @@
     "principal": "Navegación principal",
     "inicio": "Inicio",
     "abrir_menu": "Menú",
-    "cerrar_menu": "Cerrar menú"
+    "cerrar_menu": "Cerrar menú",
+    "organizaciones": "Organizaciones"
   },
   "panel": {
     "inicio": {
@@ -51,6 +57,66 @@
       "rol": "Rol",
       "rol_super_admin": "Super administrador",
       "rol_miembro": "Administrador de organización"
+    }
+  },
+  "organizaciones": {
+    "lista": {
+      "titulo": "Organizaciones",
+      "descripcion": "Universidades y empresas que usan UniRide.",
+      "nueva": "Nueva organización",
+      "vacia": "Todavía no hay organizaciones. Crea la primera.",
+      "cargando_error": "No pudimos cargar las organizaciones.",
+      "columna_nombre": "Nombre",
+      "columna_tipo": "Tipo",
+      "columna_estado": "Estado",
+      "columna_precio": "Precio máximo (Bs)",
+      "columna_admin": "Administrador",
+      "columna_invitacion": "Invitación",
+      "columna_alta": "Alta",
+      "columna_acciones": "Acciones",
+      "reenviar": "Reenviar invitación",
+      "reenviando": "Reenviando…",
+      "reenviada": "Invitación reenviada a {correo}.",
+      "tipo_universidad": "Universidad",
+      "tipo_empresa": "Empresa",
+      "estado_activa": "Activa",
+      "invitacion_pendiente": "Por enviar",
+      "invitacion_enviada": "Enviada",
+      "invitacion_no_enviada": "No enviada",
+      "invitacion_vencida": "Vencida",
+      "invitacion_aceptada": "Aceptada"
+    },
+    "alta": {
+      "titulo": "Nueva organización",
+      "descripcion": "El administrador inicial recibirá un correo para activar su cuenta.",
+      "nombre": "Nombre de la organización",
+      "tipo": "Tipo",
+      "precio_maximo": "Precio máximo por viaje (Bs)",
+      "precio_ayuda": "1 URC = 1 Bs. Ningún viaje de la organización podrá cobrar más.",
+      "admin_nombre": "Nombre del administrador",
+      "admin_correo": "Correo del administrador",
+      "guardar": "Guardar organización",
+      "guardando": "Guardando…",
+      "nombre_requerido": "Escribe el nombre de la organización.",
+      "nombre_duplicado": "Ya existe una organización con ese nombre.",
+      "precio_maximo_invalido": "El precio máximo debe ser un número mayor que cero.",
+      "admin_nombre_requerido": "Escribe el nombre del administrador.",
+      "correo_invalido": "Escribe un correo válido, por ejemplo nombre@organizacion.bo."
+    },
+    "invitacion": {
+      "titulo": "Activa tu cuenta de administrador",
+      "descripcion": "Te invitaron a administrar {organizacion} en UniRide.",
+      "nombre": "Tu nombre completo",
+      "contrasena": "Contraseña",
+      "contrasena_ayuda": "Al menos 8 caracteres, con letras y números.",
+      "contrasena_existente": "Ya tienes una cuenta con este correo. Escribe tu contraseña para sumar esta organización.",
+      "aceptar": "Aceptar invitación",
+      "aceptando": "Aceptando…",
+      "nombre_requerido": "Escribe tu nombre completo.",
+      "contrasena_requerida": "Escribe tu contraseña.",
+      "contrasena_debil": "La contraseña debe tener al menos 8 caracteres, con letras y números.",
+      "vencida": "La invitación venció o ya fue usada. Pide a UniRide que te envíe una nueva.",
+      "credenciales_invalidas": "La contraseña no es correcta."
     }
   }
 }

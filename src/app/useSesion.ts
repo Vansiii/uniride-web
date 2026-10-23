@@ -6,6 +6,12 @@ export interface Sesion {
   cargando: boolean
   usuario: Usuario | null
   iniciar: (correo: string, contrasena: string) => Promise<void>
+  /** Acepta una invitación de administrador y deja la sesión iniciada. */
+  aceptar: (
+    token: string,
+    contrasena: string,
+    nombreCompleto?: string,
+  ) => Promise<void>
   cerrar: () => Promise<void>
 }
 

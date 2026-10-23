@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useSesion } from '../app/useSesion'
 import { t } from '../i18n'
 import { Boton } from './Boton'
@@ -41,10 +42,17 @@ export function Estructura({ titulo, descripcion, children }: Props) {
         <img src="/firma.svg" alt="" className={estilos.logoLateral} />
         <ul className={estilos.lista}>
           <li>
-            <a href="/" aria-current="page" className={estilos.enlace}>
+            <NavLink to="/" end className={estilos.enlace}>
               {t('navegacion.inicio')}
-            </a>
+            </NavLink>
           </li>
+          {usuario?.rolPlataforma === 'super_admin' && (
+            <li>
+              <NavLink to="/organizaciones" className={estilos.enlace}>
+                {t('navegacion.organizaciones')}
+              </NavLink>
+            </li>
+          )}
         </ul>
         <div className={estilos.persona}>
           <span className={estilos.nombre}>{usuario?.nombreCompleto}</span>
