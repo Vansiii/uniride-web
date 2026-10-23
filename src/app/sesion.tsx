@@ -28,13 +28,21 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     await api.iniciarSesion(correo, contrasena)
     setUsuario(await api.consultarYo())
   }
+  const aceptar = async (
+    token: string,
+    contrasena: string,
+    nombreCompleto?: string,
+  ) => {
+    await api.aceptarInvitacion(token, contrasena, nombreCompleto)
+    setUsuario(await api.consultarYo())
+  }
   const cerrar = async () => {
     await api.cerrarSesion().catch(() => undefined)
     setUsuario(null)
   }
 
   return (
-    <Contexto value={{ cargando, usuario, iniciar, cerrar }}>
+    <Contexto value={{ cargando, usuario, iniciar, aceptar, cerrar }}>
       {children}
     </Contexto>
   )

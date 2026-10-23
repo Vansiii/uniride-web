@@ -112,3 +112,62 @@ export async function cerrarSesion(): Promise<void> {
 }
 
 export const consultarYo = () => solicitar<Usuario>('/yo', 'GET')
+
+// --- HU-01: organizaciones e invitaciones ---
+
+export interface Organizacion {
+  id: string
+  nombre: string
+  tipo: 'universidad' | 'empresa'
+  estado: string
+  precioMaximoUrc: number
+  admin: { nombre: string; correo: string } | null
+  estadoInvitacion:
+    'pendiente' | 'enviada' | 'no_enviada' | 'vencida' | 'aceptada'
+  creadoEn: string
+}
+
+export interface NuevaOrganizacion {
+  nombre: string
+  tipo: 'universidad' | 'empresa'
+  precioMaximoUrc: number
+  adminNombre: string
+  adminCorreo: string
+}
+
+export interface InvitacionPublica {
+  organizacion: string
+  correo: string
+  nombre: string
+  cuentaExistente: boolean
+}
+
+export const listarOrganizaciones = () =>
+  solicitar<Organizacion[]>('/admin/organizaciones', 'GET')
+
+export const crearOrganizacion = (datos: NuevaOrganizacion) =>
+  solicitar<Organizacion>('/admin/organizaciones', 'POST', datos)
+
+export const reenviarInvitacion = (id: string) =>
+  solicitar<void>(`/admin/organizaciones/${id}/invitacion`, 'POST', {})
+
+export const consultarInvitacion = (token: string) =>
+  enviar(`/invitaciones/${encodeURIComponent(token)}`, 'GET').then((r) =>
+    leer<InvitacionPublica>(r),
+  )
+
+/** Acepta la invitación y deja la sesión iniciada (el servidor responde con los tokens). */
+export async function aceptarInvitacion(
+  token: string,
+  contrasena: string,
+  nombreCompleto?: string,
+): Promise<void> {
+  const r = await leer<{ tokenAcceso: string }>(
+    await enviar(`/invitaciones/${encodeURIComponent(token)}/aceptar`, 'POST', {
+      contrasena,
+      nombreCompleto,
+      tipoCliente: 'web',
+    }),
+  )
+  tokenAcceso = r.tokenAcceso
+}
