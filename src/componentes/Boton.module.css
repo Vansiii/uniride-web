@@ -1,14 +1,36 @@
 .boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
   min-height: var(--alto-control);
-  padding: 0 var(--espacio-4);
+  padding: 0 var(--espacio-5);
   border-radius: var(--radio-m);
   border: var(--grosor-borde) solid transparent;
   font: var(--texto-cuerpo-enfasis);
+  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
+  transition:
+    background-color var(--duracion-corta) var(--curva-estandar),
+    border-color var(--duracion-corta) var(--curva-estandar),
+    color var(--duracion-corta) var(--curva-estandar),
+    transform var(--duracion-corta) var(--curva-estandar);
+}
+.boton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.compacto {
+  min-height: var(--alto-control-compacto);
+  padding: 0 var(--espacio-3);
+  border-radius: var(--radio-s);
+  font: var(--texto-etiqueta);
+  font-weight: 600;
 }
 .completo {
   width: 100%;
 }
+
 .primario {
   background: var(--color-primario);
   color: var(--color-sobre-primario);
@@ -17,16 +39,72 @@
   background: var(--color-primario-presionado);
 }
 .secundario {
-  background: transparent;
+  background: var(--color-superficie);
   color: var(--color-primario);
   border-color: var(--color-borde-campo);
+}
+.secundario:hover:not(:disabled) {
+  background: var(--color-primario-suave);
+  border-color: var(--color-primario);
 }
 .texto {
   background: transparent;
   color: var(--color-primario);
+  padding-inline: var(--espacio-3);
 }
+.texto:hover:not(:disabled) {
+  background: var(--color-primario-suave);
+}
+.peligro {
+  background: var(--color-peligro);
+  color: var(--color-sobre-peligro);
+}
+.peligro:hover:not(:disabled) {
+  background: var(--color-peligro-presionado);
+}
+
 .boton:disabled {
   background: var(--color-fondo-deshabilitado);
+  border-color: transparent;
   color: var(--color-texto-deshabilitado);
   cursor: not-allowed;
+}
+.boton[aria-busy='true'] {
+  cursor: progress;
+}
+
+/* Indicador de progreso: gira también con movimiento reducido (4.7). */
+.indicador {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: var(--radio-completo);
+  border: var(--grosor-borde-activo) solid currentColor;
+  border-right-color: transparent;
+  animation: girar 0.7s linear infinite;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icono {
+  display: inline-grid;
+  place-items: center;
+  width: var(--alto-control);
+  height: var(--alto-control);
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radio-completo);
+  background: transparent;
+  color: var(--color-texto-secundario);
+  cursor: pointer;
+  transition:
+    background-color var(--duracion-corta) var(--curva-estandar),
+    color var(--duracion-corta) var(--curva-estandar);
+}
+.icono:hover {
+  background: var(--color-fondo-sutil);
+  color: var(--color-texto);
 }

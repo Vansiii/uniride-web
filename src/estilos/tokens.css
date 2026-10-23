@@ -1,5 +1,14 @@
 /* Tokens de DESIGN_SYSTEM.md §4 (fuente de verdad). Solo claro hasta HU-31. */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fuentes/bricolage-grotesque-800.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+}
+
 :root {
+  color-scheme: light;
+
   --color-fondo: #ffffff;
   --color-fondo-sutil: #f6f7f9;
   --color-superficie: #ffffff;
@@ -15,33 +24,93 @@
   --color-sobre-primario: #ffffff;
   --color-primario-suave: #eef1ff;
   --color-primario-texto: #2a39a6;
+  --color-exito: #15803d;
+  --color-exito-suave: #e9f7ee;
+  --color-exito-texto: #166534;
+  --color-aviso: #b26b00;
+  --color-aviso-suave: #fff4db;
+  --color-aviso-texto: #8a5300;
   --color-peligro: #b42318;
+  --color-peligro-presionado: #912018;
+  --color-sobre-peligro: #ffffff;
   --color-peligro-suave: #fdecea;
   --color-peligro-texto: #912018;
   --color-foco: #3447cc;
+  --color-superposicion: rgba(15, 18, 24, 0.5);
+
+  /* Zonas de marca (3.5): iguales en los dos temas. */
+  --color-marca-profundo: #1d2763;
+  --degradado-marca: linear-gradient(160deg, #3447cc 0%, #1d2763 100%);
+  --color-sobre-marca: #ffffff;
+  --color-sobre-marca-secundario: #c9d1ff;
+  --color-marca-brillante: #8b9bff;
+  --color-marca-velo: rgba(255, 255, 255, 0.14);
 
   --espacio-1: 0.25rem;
   --espacio-2: 0.5rem;
   --espacio-3: 0.75rem;
   --espacio-4: 1rem;
+  --espacio-5: 1.25rem;
   --espacio-6: 1.5rem;
   --espacio-8: 2rem;
+  --espacio-10: 2.5rem;
+  --espacio-12: 3rem;
+  --espacio-16: 4rem;
 
+  --radio-s: 8px;
   --radio-m: 12px;
   --radio-l: 16px;
-  --alto-control: 40px;
-  --ancho-formulario: 560px;
+  --radio-xl: 24px;
+  --radio-completo: 999px;
   --grosor-borde: 1px;
   --grosor-borde-activo: 2px;
+
+  /* 44 px: objetivo táctil de las acciones principales (12.2); se usa en todos los controles para alinearlos. */
+  --alto-control: 2.75rem;
+  --alto-control-compacto: 2rem;
+  --alto-fila: 3.25rem;
+  --alto-encabezado: 4rem;
+  --ancho-barra-lateral: 240px;
+  --ancho-formulario: 560px;
+  --ancho-contenido: 1200px;
+
+  --sombra-flotante: 0 6px 20px rgba(29, 39, 99, 0.14);
+  --sombra-dialogo: 0 8px 24px rgba(15, 18, 24, 0.16);
+  --capa-encabezado: 10;
+  --capa-menu: 20;
+  --capa-dialogo: 30;
+  --capa-notificacion: 40;
+
+  --duracion-corta: 100ms;
+  --duracion-media: 200ms;
+  --duracion-larga: 300ms;
+  --duracion-trazo: 600ms;
+  --curva-estandar: cubic-bezier(0.2, 0, 0, 1);
+  --curva-entrada: cubic-bezier(0, 0, 0, 1);
+  --curva-salida: cubic-bezier(0.3, 0, 1, 1);
 
   --fuente:
     system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
-  --texto-pantalla: 700 1.75rem/2.25rem var(--fuente);
-  --texto-subtitulo: 600 1.125rem/1.5rem var(--fuente);
+  --fuente-display: 'Bricolage Grotesque', var(--fuente);
+  --texto-pantalla: 800 1.75rem/2.25rem var(--fuente-display);
+  --texto-marca: 800 2.125rem/2.5rem var(--fuente-display);
   --texto-titulo: 600 1.375rem/1.75rem var(--fuente);
+  --texto-subtitulo: 600 1.125rem/1.5rem var(--fuente);
   --texto-cuerpo: 400 1rem/1.5rem var(--fuente);
   --texto-cuerpo-enfasis: 600 1rem/1.5rem var(--fuente);
   --texto-secundario: 400 0.875rem/1.25rem var(--fuente);
   --texto-etiqueta: 500 0.875rem/1.25rem var(--fuente);
+  --texto-pequeno: 500 0.75rem/1rem var(--fuente);
+}
+
+/* HU-31: [data-tema='oscuro'] { color-scheme: dark; --color-fondo: #0f1218; … } */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duracion-corta: 0ms;
+    --duracion-media: 0ms;
+    --duracion-larga: 0ms;
+    --duracion-trazo: 0ms;
+  }
 }

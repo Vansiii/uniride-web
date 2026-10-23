@@ -1,0 +1,178 @@
+.cargando {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-3);
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+.indicador {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radio-completo);
+  border: 3px solid var(--color-primario-suave);
+  border-top-color: var(--color-primario);
+  animation: girar 0.8s linear infinite;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Esqueleto */
+.esqueleto {
+  display: flex;
+  flex-direction: column;
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  overflow: hidden;
+}
+.filaEsqueleto {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--espacio-6);
+  align-items: center;
+  height: var(--alto-fila);
+  padding: 0 var(--espacio-4);
+}
+.filaEsqueleto + .filaEsqueleto {
+  border-top: var(--grosor-borde) solid var(--color-borde);
+}
+.filaEsqueleto span {
+  height: 0.75rem;
+  border-radius: var(--radio-completo);
+  background: linear-gradient(
+    90deg,
+    var(--color-fondo-deshabilitado) 0%,
+    var(--color-fondo-sutil) 50%,
+    var(--color-fondo-deshabilitado) 100%
+  );
+  background-size: 200% 100%;
+  animation: brillo 1.4s linear infinite;
+}
+.filaEsqueleto span:nth-child(2) {
+  width: 70%;
+}
+.filaEsqueleto span:nth-child(3) {
+  width: 50%;
+}
+@keyframes brillo {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .filaEsqueleto span {
+    animation: none;
+  }
+}
+
+/* Ilustracion */
+.ilustracion {
+  position: relative;
+  width: 11rem;
+  height: 10rem;
+  flex: none;
+}
+.ilustracion svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fondoIlustracion {
+  fill: var(--color-primario-suave);
+}
+.trazo {
+  fill: none;
+  stroke: var(--color-primario);
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: trazar var(--duracion-trazo) var(--curva-entrada) 0.1s forwards;
+}
+.origen {
+  fill: var(--color-primario);
+}
+.destino {
+  fill: none;
+  stroke: var(--color-marca-brillante);
+  stroke-width: 7;
+}
+.sello {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: -1.75rem 0 0 -1.75rem;
+  border-radius: var(--radio-completo);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-flotante);
+  animation: entradaResultado var(--duracion-larga) var(--curva-entrada) 0.45s
+    both;
+}
+.sello svg {
+  width: 2rem;
+  height: 2rem;
+}
+.primario {
+  color: var(--color-primario);
+}
+.exito {
+  color: var(--color-exito);
+}
+.aviso {
+  color: var(--color-aviso);
+}
+.peligro {
+  color: var(--color-peligro);
+}
+@keyframes trazar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes entradaResultado {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trazo {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .sello {
+    animation: none;
+  }
+}
+
+/* EstadoVacio */
+.vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-10) var(--espacio-6);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  text-align: center;
+}
+.tituloVacio {
+  margin-top: var(--espacio-2);
+  font: var(--texto-subtitulo);
+}
+.textoVacio {
+  max-width: 44ch;
+  margin-bottom: var(--espacio-3);
+  color: var(--color-texto-secundario);
+}

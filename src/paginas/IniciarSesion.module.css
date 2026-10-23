@@ -1,105 +1,34 @@
-.pagina {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-}
-
-/* Panel de marca: banda superior en compacto, columna lateral en amplio. */
-.marca {
-  background: var(--color-primario);
-  color: var(--color-sobre-primario);
-  padding: var(--espacio-6) var(--espacio-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-4);
-}
-.logo {
-  height: 32px;
-  width: auto;
-  align-self: flex-start;
-}
-.eslogan {
-  margin: 0;
-  font: var(--texto-subtitulo);
-  max-width: 28ch;
-}
-.beneficios {
-  display: none;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  gap: var(--espacio-3);
-  flex-direction: column;
-  font: var(--texto-cuerpo);
-}
-.beneficios li::before {
-  content: '';
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin-right: var(--espacio-3);
-  border-radius: 999px;
-  background: var(--color-sobre-primario);
-}
-
-.contenido {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: var(--espacio-6) var(--espacio-4);
-  background: var(--color-fondo-sutil);
-}
+/* Formularios de acceso (inicio de sesión y aceptar invitación). */
 .formulario {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-4);
-  width: 100%;
-  max-width: 420px;
-  box-sizing: border-box;
-  padding: var(--espacio-6);
-  background: var(--color-superficie);
-  border: var(--grosor-borde) solid var(--color-borde);
-  border-radius: var(--radio-l);
+  gap: var(--espacio-5);
+}
+.encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+  margin-bottom: var(--espacio-1);
 }
 .titulo {
-  margin: 0;
   font: var(--texto-pantalla);
+  letter-spacing: -0.01em;
 }
 .ayuda {
-  margin: calc(var(--espacio-2) * -1) 0 0;
   color: var(--color-texto-secundario);
   font: var(--texto-secundario);
 }
-.falla {
-  margin: 0;
-  padding: var(--espacio-3);
-  border-radius: var(--radio-m);
-  background: var(--color-peligro-suave);
-  color: var(--color-peligro-texto);
-  font: var(--texto-secundario);
+.boton {
+  margin-top: var(--espacio-1);
 }
 
-@media (min-width: 1024px) {
-  .pagina {
-    grid-template-columns: minmax(380px, 5fr) 7fr;
-    grid-template-rows: 1fr;
-  }
-  .marca {
-    justify-content: center;
-    padding: var(--espacio-8);
-    gap: var(--espacio-8);
-  }
-  .logo {
-    height: 44px;
-  }
-  .eslogan {
-    font: var(--texto-pantalla);
-  }
-  .beneficios {
-    display: flex;
-  }
-  .contenido {
-    align-items: center;
-    padding: var(--espacio-8);
-  }
+/* Invitación no válida */
+.tituloResultado {
+  margin-top: var(--espacio-2);
+  font: var(--texto-titulo);
+}
+.textoResultado {
+  max-width: 40ch;
+  margin-bottom: var(--espacio-3);
+  color: var(--color-texto-secundario);
 }

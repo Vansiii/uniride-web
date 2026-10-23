@@ -1,0 +1,162 @@
+.dividida {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--color-fondo);
+}
+
+/* Panel de marca: banda superior en compacto, mitad izquierda en amplio. */
+.marca {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  padding: var(--espacio-8) var(--espacio-6) var(--espacio-10);
+  border-radius: 0 0 var(--radio-xl) var(--radio-xl);
+  background: var(--degradado-marca);
+  color: var(--color-sobre-marca);
+}
+.marca > :not(.decoracion) {
+  position: relative;
+}
+.decoracion {
+  position: absolute;
+  right: -48px;
+  bottom: -56px;
+  width: 220px;
+  fill: none;
+  stroke: var(--color-sobre-marca);
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.13;
+  pointer-events: none;
+}
+.decoracion circle {
+  stroke-width: 3;
+}
+.logo {
+  height: 28px;
+  width: auto;
+  align-self: flex-start;
+}
+.titular {
+  max-width: 18ch;
+  font: var(--texto-titulo);
+  font-family: var(--fuente-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.puntos {
+  display: none;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-sobre-marca-secundario);
+}
+.puntos li {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+.iconoPunto {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radio-m);
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
+}
+
+.lado {
+  display: flex;
+  justify-content: center;
+  padding: var(--espacio-8) var(--espacio-4) var(--espacio-12);
+}
+.formulario {
+  width: 100%;
+  max-width: 400px;
+  animation: entrar var(--duracion-larga) var(--curva-entrada);
+}
+
+/* Pantalla pública centrada */
+.publica {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-6);
+  padding: var(--espacio-8) var(--espacio-4);
+  background: var(--color-fondo-sutil);
+}
+.logoPublica {
+  height: 24px;
+  width: auto;
+}
+.tarjetaPublica {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-8) var(--espacio-6);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  text-align: center;
+  animation: entrar var(--duracion-larga) var(--curva-entrada);
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .dividida {
+    grid-template-columns: minmax(400px, 5fr) 7fr;
+    grid-template-rows: 1fr;
+  }
+  .marca {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    justify-content: center;
+    gap: var(--espacio-8);
+    padding: var(--espacio-12);
+    border-radius: 0;
+  }
+  .decoracion {
+    right: -60px;
+    bottom: -40px;
+    width: 340px;
+    opacity: 0.14;
+  }
+  .marca .logo {
+    position: absolute;
+    top: var(--espacio-12);
+    left: var(--espacio-12);
+    height: 32px;
+  }
+  .titular {
+    font: var(--texto-marca);
+    letter-spacing: -0.015em;
+  }
+  .puntos {
+    display: flex;
+  }
+  /* Anclado arriba (no centrado): mostrar errores no mueve el formulario. */
+  .lado {
+    padding: clamp(var(--espacio-10), 18vh, 10rem) var(--espacio-10)
+      var(--espacio-10);
+  }
+}

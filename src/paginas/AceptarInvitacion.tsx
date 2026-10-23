@@ -5,8 +5,11 @@ import * as api from '../api/cliente'
 import { ErrorApi } from '../api/cliente'
 import type { InvitacionPublica } from '../api/cliente'
 import { useSesion } from '../app/useSesion'
+import { PantallaAcceso, PantallaPublica } from '../componentes/Acceso'
 import { Boton } from '../componentes/Boton'
 import { Campo } from '../componentes/Campo'
+import { Cargando, Ilustracion } from '../componentes/Estados'
+import { Aviso } from '../componentes/Mensajes'
 import { t } from '../i18n'
 import estilos from './IniciarSesion.module.css'
 
@@ -39,8 +42,14 @@ export default function AceptarInvitacion() {
     contrasena?: string
   }>({})
   const [falla, setFalla] = useState<string | null>(null)
+  const [vencida, setVencida] = useState(false)
   const [enviando, setEnviando] = useState(false)
   const [cargando, setCargando] = useState(true)
+  const [intento, setIntento] = useState(0)
+
+  // Un error se borra en cuanto la persona corrige el campo (9.2).
+  const limpiar = (campo: keyof typeof errores) =>
+    setErrores((e) => ({ ...e, [campo]: undefined }))
 
   useEffect(() => {
     let vigente = true
@@ -51,26 +60,65 @@ export default function AceptarInvitacion() {
         setInfo(i)
         setNombre(i.nombre)
       })
-      .catch((e) => vigente && setFalla(mensajeDe(e)))
+      .catch((e) => {
+        if (!vigente) return
+        setVencida(e instanceof ErrorApi && e.codigo === 'INVITACION_VENCIDA')
+        setFalla(mensajeDe(e))
+      })
       .finally(() => vigente && setCargando(false))
     return () => {
       vigente = false
     }
-  }, [token])
+  }, [token, intento])
 
-  if (cargando) return <p role="status">{t('comun.estados.cargando')}</p>
-  // Una invitación inválida no muestra formulario, solo el motivo.
+  if (cargando) return <Cargando />
+  // Una invitación inválida no muestra formulario, solo el motivo y la salida.
   if (!info) {
     return (
-      <div className={estilos.contenido}>
-        <p role="alert" className={estilos.falla}>
+      <PantallaPublica
+        tituloDocumento={t(
+          vencida
+            ? 'organizaciones.invitacion.vencida_titulo'
+            : 'organizaciones.invitacion.error_titulo',
+        )}
+      >
+        <Ilustracion
+          icono={vencida ? 'schedule' : 'error'}
+          tono={vencida ? 'aviso' : 'peligro'}
+        />
+        <h1 className={estilos.tituloResultado}>
+          {t(
+            vencida
+              ? 'organizaciones.invitacion.vencida_titulo'
+              : 'organizaciones.invitacion.error_titulo',
+          )}
+        </h1>
+        <p role="alert" className={estilos.textoResultado}>
           {falla}
         </p>
-      </div>
+        {vencida ? (
+          <Boton
+            variante="secundario"
+            anchoCompleto
+            hacia="/iniciar-sesion"
+            etiqueta={t('organizaciones.invitacion.ir_a_sesion')}
+          />
+        ) : (
+          <Boton
+            anchoCompleto
+            icono="refresh"
+            etiqueta={t('comun.acciones.reintentar')}
+            onClick={() => {
+              setCargando(true)
+              setIntento(intento + 1)
+            }}
+          />
+        )}
+      </PantallaPublica>
     )
   }
 
-  const enviar = async (e: FormEvent) => {
+  const enviar = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const nuevos = {
       nombre:
@@ -83,7 +131,10 @@ export default function AceptarInvitacion() {
     }
     setErrores(nuevos)
     setFalla(null)
-    if (nuevos.nombre || nuevos.contrasena) return
+    if (nuevos.nombre || nuevos.contrasena) {
+      e.currentTarget.querySelector<HTMLInputElement>('[aria-invalid]')?.focus()
+      return
+    }
     setEnviando(true)
     try {
       await aceptar(
@@ -99,48 +150,62 @@ export default function AceptarInvitacion() {
   }
 
   return (
-    <div className={estilos.contenido}>
+    <PantallaAcceso
+      tituloDocumento={t('organizaciones.invitacion.titulo')}
+      titular={t('organizaciones.invitacion.titular').replace(
+        '{organizacion}',
+        info.organizacion,
+      )}
+    >
       <form className={estilos.formulario} onSubmit={enviar} noValidate>
-        <h1 className={estilos.titulo}>
-          {t('organizaciones.invitacion.titulo')}
-        </h1>
-        <p className={estilos.ayuda}>
-          {t('organizaciones.invitacion.descripcion').replace(
-            '{organizacion}',
-            info.organizacion,
-          )}
-        </p>
-        {falla && (
-          <p role="alert" className={estilos.falla}>
-            {falla}
+        <div className={estilos.encabezado}>
+          <h1 className={estilos.titulo}>
+            {t('organizaciones.invitacion.titulo')}
+          </h1>
+          <p className={estilos.ayuda}>
+            {t(
+              info.cuentaExistente
+                ? 'organizaciones.invitacion.contrasena_existente'
+                : 'organizaciones.invitacion.descripcion',
+            )}
           </p>
+        </div>
+        {falla && (
+          <Aviso rol="alert" tono="peligro">
+            {falla}
+          </Aviso>
         )}
         <Campo
           etiqueta={t('autenticacion.sesion.correo')}
+          type="email"
           value={info.correo}
           readOnly
         />
-        {info.cuentaExistente ? (
-          <p className={estilos.ayuda}>
-            {t('organizaciones.invitacion.contrasena_existente')}
-          </p>
-        ) : (
+        {!info.cuentaExistente && (
           <Campo
             etiqueta={t('organizaciones.invitacion.nombre')}
+            name="nombre"
             autoComplete="name"
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            onChange={(e) => {
+              setNombre(e.target.value)
+              limpiar('nombre')
+            }}
             error={errores.nombre}
           />
         )}
         <Campo
           etiqueta={t('organizaciones.invitacion.contrasena')}
           type="password"
+          name="contrasena"
           autoComplete={
             info.cuentaExistente ? 'current-password' : 'new-password'
           }
           value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
+          onChange={(e) => {
+            setContrasena(e.target.value)
+            limpiar('contrasena')
+          }}
           ayuda={
             info.cuentaExistente
               ? undefined
@@ -159,6 +224,6 @@ export default function AceptarInvitacion() {
           )}
         />
       </form>
-    </div>
+    </PantallaAcceso>
   )
 }
