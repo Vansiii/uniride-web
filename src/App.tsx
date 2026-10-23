@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { ProveedorSesion } from './app/sesion'
 import { useSesion } from './app/useSesion'
-import { t } from './i18n'
+import { Cargando } from './componentes/Estados'
 import AceptarInvitacion from './paginas/AceptarInvitacion'
 import Inicio from './paginas/Inicio'
 import IniciarSesion from './paginas/IniciarSesion'
@@ -18,8 +18,11 @@ function Protegida({
   superAdmin?: boolean
 }) {
   const { cargando, usuario } = useSesion()
-  if (cargando) return <p role="status">{t('comun.estados.cargando')}</p>
-  if (!usuario) return <Navigate to="/iniciar-sesion" replace />
+  const { pathname } = useLocation()
+  if (cargando) return <Cargando />
+  // Tras ingresar vuelve a la ruta pedida (N10).
+  if (!usuario)
+    return <Navigate to="/iniciar-sesion" replace state={{ desde: pathname }} />
   if (superAdmin && usuario.rolPlataforma !== 'super_admin')
     return <Navigate to="/" replace />
   return children

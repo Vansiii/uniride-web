@@ -3,125 +3,304 @@
   background: var(--color-fondo-sutil);
 }
 
+.saltar {
+  position: fixed;
+  z-index: var(--capa-notificacion);
+  top: var(--espacio-2);
+  left: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-4);
+  border-radius: var(--radio-m);
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+  font: var(--texto-cuerpo-enfasis);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.saltar:focus-visible {
+  transform: none;
+}
+
+/* Barra superior (compacto y medio) */
 .barra {
+  position: sticky;
+  top: 0;
+  z-index: var(--capa-encabezado);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 56px;
-  padding: 0 var(--espacio-4);
+  height: var(--alto-encabezado);
+  padding: 0 var(--espacio-2) 0 var(--espacio-4);
   background: var(--color-superficie);
   border-bottom: var(--grosor-borde) solid var(--color-borde);
 }
 .logoBarra {
   height: 24px;
-}
-.menu {
-  min-height: 40px;
-  padding: 0 var(--espacio-3);
-  border: var(--grosor-borde) solid var(--color-borde-campo);
-  border-radius: var(--radio-m);
-  background: transparent;
-  color: var(--color-primario);
-  font: var(--texto-cuerpo-enfasis);
-  cursor: pointer;
+  width: auto;
 }
 
+/* Barra lateral: zona de marca (3.5). En compacto es un panel que entra desde la izquierda. */
 .lateral {
-  display: none;
+  position: fixed;
+  z-index: var(--capa-menu);
+  top: var(--alto-encabezado);
+  bottom: 0;
+  left: 0;
+  width: min(300px, calc(100vw - var(--espacio-12)));
+  display: flex;
   flex-direction: column;
-  gap: var(--espacio-6);
-  padding: var(--espacio-4);
-  background: var(--color-superficie);
-  border-bottom: var(--grosor-borde) solid var(--color-borde);
+  gap: var(--espacio-1);
+  padding: var(--espacio-4) var(--espacio-3);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-marca-profundo);
+  color: var(--color-sobre-marca);
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition:
+    transform var(--duracion-larga) var(--curva-estandar),
+    visibility 0s linear var(--duracion-larga);
 }
 .abierto {
-  display: flex;
+  transform: none;
+  visibility: visible;
+  transition: transform var(--duracion-larga) var(--curva-entrada);
+}
+.velo {
+  position: fixed;
+  z-index: var(--capa-menu);
+  inset: var(--alto-encabezado) 0 0 0;
+  background: var(--color-superposicion);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duracion-larga) var(--curva-estandar);
+}
+.veloVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.decoracion {
+  position: absolute;
+  left: -40px;
+  bottom: 96px;
+  width: 200px;
+  fill: none;
+  stroke: var(--color-sobre-marca);
+  stroke-width: 6;
+  opacity: 0.08;
+  pointer-events: none;
+}
+.decoracion circle {
+  stroke-width: 3;
 }
 .logoLateral {
   display: none;
-  height: 28px;
   align-self: flex-start;
+  margin: var(--espacio-2) var(--espacio-3) var(--espacio-6);
+  border-radius: var(--radio-s);
+}
+.logoLateral img {
+  display: block;
+  height: 28px;
+  width: auto;
+}
+
+.grupo {
+  margin: var(--espacio-4) 0 var(--espacio-1);
+  padding: 0 var(--espacio-3);
+  color: var(--color-sobre-marca-secundario);
+  font: var(--texto-pequeno);
 }
 .lista {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   margin: 0;
   padding: 0;
   list-style: none;
-  flex: 1;
 }
 .enlace {
-  display: block;
-  padding: var(--espacio-3);
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-height: var(--alto-control);
+  padding: 0 var(--espacio-3);
   border-radius: var(--radio-m);
-  color: var(--color-texto);
-  font: var(--texto-cuerpo-enfasis);
+  color: var(--color-sobre-marca-secundario);
+  font: var(--texto-etiqueta);
   text-decoration: none;
+  transition:
+    background-color var(--duracion-corta) var(--curva-estandar),
+    color var(--duracion-corta) var(--curva-estandar);
+}
+.enlace:hover {
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
 }
 .enlace[aria-current='page'] {
-  background: var(--color-primario-suave);
-  color: var(--color-primario-texto);
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
+  box-shadow: inset 3px 0 0 var(--color-marca-brillante);
 }
-.persona {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-2);
-  padding-top: var(--espacio-4);
-  border-top: var(--grosor-borde) solid var(--color-borde);
+.enlace[aria-current='page'] svg {
+  color: var(--color-marca-brillante);
 }
-.nombre {
-  font: var(--texto-cuerpo-enfasis);
-}
-.correo {
-  color: var(--color-texto-secundario);
-  font: var(--texto-secundario);
-  overflow-wrap: anywhere;
+.lateral :focus-visible {
+  outline-color: var(--color-marca-brillante);
 }
 
+.persona {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--espacio-1) var(--espacio-3);
+  align-items: center;
+  margin-top: auto;
+  padding: var(--espacio-4) var(--espacio-2) 0;
+  border-top: var(--grosor-borde) solid var(--color-marca-velo);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radio-completo);
+  background: var(--color-marca-brillante);
+  color: var(--color-marca-profundo);
+  font: var(--texto-etiqueta);
+  font-weight: 700;
+}
+.datosPersona {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.nombre {
+  font: var(--texto-etiqueta);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.correo {
+  color: var(--color-sobre-marca-secundario);
+  font: var(--texto-pequeno);
+  overflow-wrap: anywhere;
+}
+.salir {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  justify-self: start;
+  min-height: var(--alto-control);
+  margin-top: var(--espacio-2);
+  padding: 0 var(--espacio-3);
+  border: 0;
+  border-radius: var(--radio-m);
+  background: transparent;
+  color: var(--color-sobre-marca-secundario);
+  font: var(--texto-etiqueta);
+  cursor: pointer;
+  transition:
+    background-color var(--duracion-corta) var(--curva-estandar),
+    color var(--duracion-corta) var(--curva-estandar);
+}
+.salir:hover {
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
+}
+
+/* Contenido */
 .contenido {
-  padding: var(--espacio-4);
+  padding: var(--espacio-6) var(--espacio-4) var(--espacio-12);
+}
+.contenido:focus {
+  outline: none;
 }
 .pagina {
   display: flex;
   flex-direction: column;
+  gap: var(--espacio-6);
+  max-width: var(--ancho-contenido);
+  margin: 0 auto;
+  animation: entrar var(--duracion-larga) var(--curva-entrada);
+}
+.miga {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  align-self: flex-start;
+  min-height: var(--alto-control-compacto);
+  margin-bottom: calc(var(--espacio-4) * -1);
+  padding-right: var(--espacio-2);
+  border-radius: var(--radio-s);
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
+  text-decoration: none;
+}
+.miga:hover {
+  color: var(--color-primario);
+}
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
   gap: var(--espacio-4);
-  max-width: 1200px;
+}
+.textosCabecera {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+  min-width: 0;
+  flex: 1 1 20rem;
 }
 .titulo {
-  margin: 0;
   font: var(--texto-pantalla);
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
 }
 .descripcion {
-  margin: 0;
   max-width: 70ch;
   color: var(--color-texto-secundario);
 }
 
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 @media (min-width: 640px) {
   .contenido {
-    padding: var(--espacio-6);
+    padding: var(--espacio-8) var(--espacio-6) var(--espacio-12);
   }
 }
 
 @media (min-width: 1024px) {
   .raiz {
     display: grid;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: var(--ancho-barra-lateral) minmax(0, 1fr);
   }
-  .barra {
+  .barra,
+  .velo {
     display: none;
   }
   .lateral {
-    display: flex;
     position: sticky;
     top: 0;
+    width: auto;
     height: 100vh;
-    box-sizing: border-box;
-    border-bottom: 0;
-    border-right: var(--grosor-borde) solid var(--color-borde);
+    padding: var(--espacio-6) var(--espacio-3);
+    transform: none;
+    visibility: visible;
+    transition: none;
   }
   .logoLateral {
     display: block;
   }
   .contenido {
-    padding: var(--espacio-8);
+    padding: var(--espacio-10) var(--espacio-8) var(--espacio-12);
   }
 }

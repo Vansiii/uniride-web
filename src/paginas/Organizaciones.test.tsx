@@ -58,7 +58,7 @@ describe('Organizaciones (super administrador)', () => {
     abrir('/organizaciones')
     expect(await screen.findByText('UAGRM')).toBeTruthy()
     expect(screen.getByText('Universidad')).toBeTruthy()
-    expect(screen.getByText('20.00')).toBeTruthy()
+    expect(screen.getByText('20,00 URC')).toBeTruthy()
     expect(screen.getByText('ana@uagrm.edu.bo')).toBeTruthy()
     expect(screen.getByText('No enviada')).toBeTruthy()
   })
@@ -72,7 +72,9 @@ describe('Organizaciones (super administrador)', () => {
     await waitFor(() =>
       expect(api.reenviarInvitacion).toHaveBeenCalledWith('o1'),
     )
-    expect(await screen.findByRole('status')).toBeTruthy()
+    expect(
+      await screen.findByText('Invitación reenviada a ana@uagrm.edu.bo.'),
+    ).toBeTruthy()
   })
 
   it('un usuario que no es super administrador vuelve al inicio', async () => {
@@ -107,7 +109,7 @@ describe('Organizaciones (super administrador)', () => {
       })
     await screen.findByLabelText('Nombre de la organización')
     poner('Nombre de la organización', ' UAGRM ')
-    poner('Precio máximo por viaje (Bs)', '20')
+    poner('Precio máximo por viaje (URC)', '20')
     poner('Nombre del administrador', 'Ana Pérez')
     poner('Correo del administrador', 'ana@uagrm.edu.bo')
     fireEvent.click(
@@ -123,6 +125,30 @@ describe('Organizaciones (super administrador)', () => {
       }),
     )
     expect(await screen.findByText('UAGRM')).toBeTruthy()
+    expect(screen.getByText(/invitación para ana@uagrm.edu.bo/)).toBeTruthy()
+  })
+
+  it('el listado vacío ofrece crear la primera organización', async () => {
+    vi.mocked(api.listarOrganizaciones).mockResolvedValue([])
+    abrir('/organizaciones')
+    expect(
+      await screen.findByRole('heading', {
+        name: 'Todavía no hay organizaciones',
+      }),
+    ).toBeTruthy()
+    expect(
+      screen.getAllByRole('link', { name: 'Nueva organización' }).length,
+    ).toBe(2)
+  })
+
+  it('si el listado falla, Reintentar vuelve a pedirlo', async () => {
+    vi.mocked(api.listarOrganizaciones)
+      .mockRejectedValueOnce(new api.ErrorApi(0, 'SIN_CONEXION'))
+      .mockResolvedValueOnce([fila])
+    abrir('/organizaciones')
+    fireEvent.click(await screen.findByRole('button', { name: 'Reintentar' }))
+    expect(await screen.findByText('UAGRM')).toBeTruthy()
+    expect(api.listarOrganizaciones).toHaveBeenCalledTimes(2)
   })
 
   it('CA-2: un nombre duplicado se muestra en el campo, sin código técnico', async () => {
@@ -136,7 +162,7 @@ describe('Organizaciones (super administrador)', () => {
         target: { value: valor },
       })
     poner('Nombre de la organización', 'uagrm')
-    poner('Precio máximo por viaje (Bs)', '20')
+    poner('Precio máximo por viaje (URC)', '20')
     poner('Nombre del administrador', 'Ana')
     poner('Correo del administrador', 'ana@uagrm.edu.bo')
     fireEvent.click(

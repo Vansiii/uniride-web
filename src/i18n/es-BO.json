@@ -15,7 +15,14 @@
     },
     "acciones": {
       "cancelar": "Cancelar",
-      "volver": "Volver"
+      "volver": "Volver",
+      "reintentar": "Reintentar",
+      "cerrar": "Cerrar",
+      "descartar": "Descartar cambios"
+    },
+    "descartar": {
+      "titulo": "¿Descartar los cambios?",
+      "texto": "Lo que escribiste en este formulario no se guardará."
     }
   },
   "autenticacion": {
@@ -33,6 +40,7 @@
       "correo_invalido": "Escribe un correo válido, por ejemplo nombre@uagrm.edu.bo.",
       "contrasena_requerida": "Escribe tu contraseña.",
       "credenciales_invalidas": "Correo o contraseña incorrectos. Revísalos e inténtalo de nuevo.",
+      "bloqueada_titulo": "Inicio de sesión en pausa",
       "bloqueada": "Demasiados intentos. Podrás intentarlo de nuevo a las {hora}.",
       "subtitulo": "Usa el correo y la contraseña de tu cuenta.",
       "beneficio_1": "Conductores y pasajeros verificados de tu organización",
@@ -42,21 +50,25 @@
   },
   "navegacion": {
     "principal": "Navegación principal",
+    "saltar": "Saltar al contenido",
     "inicio": "Inicio",
-    "abrir_menu": "Menú",
+    "abrir_menu": "Abrir menú",
     "cerrar_menu": "Cerrar menú",
+    "grupo_plataforma": "Plataforma",
     "organizaciones": "Organizaciones"
   },
   "panel": {
     "inicio": {
       "titulo": "Hola, {nombre}",
-      "descripcion": "Este es el panel de administración de UniRide. Desde aquí gestionarás organizaciones y miembros.",
+      "descripcion": "Este es el panel de administración de UniRide. Desde aquí gestionas organizaciones y miembros.",
       "cuenta": "Tu cuenta",
       "nombre": "Nombre",
       "correo": "Correo",
       "rol": "Rol",
       "rol_super_admin": "Super administrador",
-      "rol_miembro": "Administrador de organización"
+      "rol_miembro": "Administrador de organización",
+      "accesos": "Accesos directos",
+      "organizaciones_texto": "Da de alta universidades y empresas, e invita a su administrador."
     }
   },
   "organizaciones": {
@@ -64,12 +76,17 @@
       "titulo": "Organizaciones",
       "descripcion": "Universidades y empresas que usan UniRide.",
       "nueva": "Nueva organización",
-      "vacia": "Todavía no hay organizaciones. Crea la primera.",
+      "conteo_uno": "1 organización",
+      "conteo_varias": "{n} organizaciones",
+      "vacia_titulo": "Todavía no hay organizaciones",
+      "vacia": "Crea la primera e invita a su administrador para que empiece a sumar miembros.",
       "cargando_error": "No pudimos cargar las organizaciones.",
+      "creada_titulo": "Organización registrada",
+      "creada": "La invitación para {correo} está en camino. Su estado aparece en la columna Invitación.",
       "columna_nombre": "Nombre",
       "columna_tipo": "Tipo",
       "columna_estado": "Estado",
-      "columna_precio": "Precio máximo (Bs)",
+      "columna_precio": "Precio máximo",
       "columna_admin": "Administrador",
       "columna_invitacion": "Invitación",
       "columna_alta": "Alta",
@@ -77,6 +94,7 @@
       "reenviar": "Reenviar invitación",
       "reenviando": "Reenviando…",
       "reenviada": "Invitación reenviada a {correo}.",
+      "reenviar_error": "No pudimos reenviar la invitación. Inténtalo de nuevo en unos minutos.",
       "tipo_universidad": "Universidad",
       "tipo_empresa": "Empresa",
       "estado_activa": "Activa",
@@ -88,24 +106,33 @@
     },
     "alta": {
       "titulo": "Nueva organización",
-      "descripcion": "El administrador inicial recibirá un correo para activar su cuenta.",
+      "descripcion": "Registra una universidad o empresa y a la persona que la administrará.",
+      "seccion_organizacion": "Organización",
+      "seccion_admin": "Administrador inicial",
       "nombre": "Nombre de la organización",
+      "nombre_ejemplo": "Universidad Autónoma Gabriel René Moreno",
       "tipo": "Tipo",
-      "precio_maximo": "Precio máximo por viaje (Bs)",
-      "precio_ayuda": "1 URC = 1 Bs. Ningún viaje de la organización podrá cobrar más.",
+      "precio_maximo": "Precio máximo por viaje (URC)",
+      "precio_ejemplo": "15,00",
+      "precio_ayuda": "Ningún viaje de la organización podrá cobrar más. 1 URC = 1 Bs.",
       "admin_nombre": "Nombre del administrador",
       "admin_correo": "Correo del administrador",
+      "admin_correo_ejemplo": "nombre@organizacion.bo",
+      "que_pasa_titulo": "Qué pasa al guardar",
+      "que_pasa": "La organización queda activa y su administrador recibe un correo con un enlace de un solo uso para activar su cuenta.",
       "guardar": "Guardar organización",
       "guardando": "Guardando…",
       "nombre_requerido": "Escribe el nombre de la organización.",
       "nombre_duplicado": "Ya existe una organización con ese nombre.",
       "precio_maximo_invalido": "El precio máximo debe ser un número mayor que cero.",
       "admin_nombre_requerido": "Escribe el nombre del administrador.",
-      "correo_invalido": "Escribe un correo válido, por ejemplo nombre@organizacion.bo."
+      "correo_invalido": "Escribe un correo válido, por ejemplo nombre@organizacion.bo.",
+      "revisar": "Revisa los campos marcados para continuar."
     },
     "invitacion": {
       "titulo": "Activa tu cuenta de administrador",
-      "descripcion": "Te invitaron a administrar {organizacion} en UniRide.",
+      "titular": "Te invitaron a administrar {organizacion}",
+      "descripcion": "Crea tu contraseña para entrar al panel.",
       "nombre": "Tu nombre completo",
       "contrasena": "Contraseña",
       "contrasena_ayuda": "Al menos 8 caracteres, con letras y números.",
@@ -115,7 +142,10 @@
       "nombre_requerido": "Escribe tu nombre completo.",
       "contrasena_requerida": "Escribe tu contraseña.",
       "contrasena_debil": "La contraseña debe tener al menos 8 caracteres, con letras y números.",
+      "vencida_titulo": "Esta invitación ya no es válida",
       "vencida": "La invitación venció o ya fue usada. Pide a UniRide que te envíe una nueva.",
+      "error_titulo": "No pudimos abrir la invitación",
+      "ir_a_sesion": "Ir a iniciar sesión",
       "credenciales_invalidas": "La contraseña no es correcta."
     }
   }
