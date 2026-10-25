@@ -151,6 +151,25 @@ export const crearOrganizacion = (datos: NuevaOrganizacion) =>
 export const reenviarInvitacion = (id: string) =>
   solicitar<void>(`/admin/organizaciones/${id}/invitacion`, 'POST', {})
 
+// --- HU-02: reglas de afiliación ---
+
+export type ModoAprobacion = 'manual' | 'automatica'
+
+export interface Afiliacion {
+  dominios: string[]
+  modoAprobacion: ModoAprobacion
+}
+
+export const consultarAfiliacion = (organizacionId: string) =>
+  solicitar<Afiliacion>(`/organizaciones/${organizacionId}/afiliacion`, 'GET')
+
+export const guardarAfiliacion = (organizacionId: string, datos: Afiliacion) =>
+  solicitar<Afiliacion>(
+    `/organizaciones/${organizacionId}/afiliacion`,
+    'PUT',
+    datos,
+  )
+
 export const consultarInvitacion = (token: string) =>
   enviar(`/invitaciones/${encodeURIComponent(token)}`, 'GET').then((r) =>
     leer<InvitacionPublica>(r),

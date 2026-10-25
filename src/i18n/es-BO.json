@@ -45,7 +45,8 @@
     "inicio": "Inicio",
     "abrir_menu": "Menú",
     "cerrar_menu": "Cerrar menú",
-    "organizaciones": "Organizaciones"
+    "organizaciones": "Organizaciones",
+    "afiliacion": "Afiliación"
   },
   "panel": {
     "inicio": {
@@ -117,6 +118,34 @@
       "contrasena_debil": "La contraseña debe tener al menos 8 caracteres, con letras y números.",
       "vencida": "La invitación venció o ya fue usada. Pide a UniRide que te envíe una nueva.",
       "credenciales_invalidas": "La contraseña no es correcta."
+    },
+    "afiliacion": {
+      "titulo": "Afiliación",
+      "descripcion": "Define quién puede unirse a tu organización.",
+      "cargando_error": "No pudimos cargar las reglas de afiliación.",
+      "reintentar": "Reintentar",
+      "guardar": "Guardar cambios",
+      "guardando": "Guardando…",
+      "guardado": "Cambios guardados.",
+      "dominios_titulo": "Dominios de correo",
+      "dominios_ayuda": "Usa el dominio del correo institucional, por ejemplo uagrm.edu.bo. No se aceptan correos públicos como gmail.com.",
+      "dominio_campo": "Nuevo dominio",
+      "dominio_ejemplo": "uagrm.edu.bo",
+      "agregar": "Agregar",
+      "quitar": "Quitar {dominio}",
+      "lista": "Dominios de la organización",
+      "sin_dominios": "Todavía no hay dominios. Agrega al menos uno para que tu comunidad pueda registrarse.",
+      "lista_ayuda": "Quitar un dominio no afecta a los miembros ya aprobados. Debe quedar al menos uno.",
+      "dominio_requerido": "Escribe un dominio, por ejemplo uagrm.edu.bo.",
+      "dominio_invalido": "No se aceptan dominios de correo públicos ni con formato inválido.",
+      "dominio_no_disponible": "Uno de los dominios no está disponible. Prueba con otro.",
+      "minimo_un_dominio": "Debe quedar al menos un dominio.",
+      "modo_titulo": "Aprobación de nuevos miembros",
+      "modo_ayuda": "El cambio solo afecta a registros futuros.",
+      "modo_manual": "Manual",
+      "modo_manual_ayuda": "Revisas cada solicitud antes de aprobarla.",
+      "modo_automatica": "Automática",
+      "modo_automatica_ayuda": "Quien confirme un correo de estos dominios entra de inmediato."
     }
   }
 }

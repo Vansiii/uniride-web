@@ -1,0 +1,152 @@
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+.falla,
+.aviso {
+  margin: 0;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  font: var(--texto-secundario);
+}
+.falla {
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro-texto);
+}
+.aviso {
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+}
+.reintento {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primario);
+  font: var(--texto-etiqueta);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.columnas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+  gap: var(--espacio-6);
+  align-items: start;
+}
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  min-width: 0;
+  margin: 0;
+  padding: var(--espacio-6);
+  background: var(--color-superficie);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+}
+.subtitulo {
+  margin: 0;
+  padding: 0;
+  font: var(--texto-subtitulo);
+}
+.secundario {
+  margin: 0;
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+.enfasis {
+  display: block;
+  font: var(--texto-cuerpo-enfasis);
+}
+
+.agregar {
+  display: flex;
+  gap: var(--espacio-2);
+  align-items: flex-start;
+}
+.agregarCampo {
+  flex: 1;
+  min-width: 0;
+}
+/* Alinea el botón con la caja del campo, bajo su etiqueta. */
+.agregar > button {
+  margin-top: 1.75rem;
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-m);
+}
+.dominio {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-height: 48px;
+  padding: 0 var(--espacio-1) 0 var(--espacio-4);
+  border-top: var(--grosor-borde) solid var(--color-borde);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+}
+.dominio:first-child {
+  border-top: 0;
+}
+.dominio span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.dominioInvalido {
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro-texto);
+}
+.quitar {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-texto-secundario);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.quitar:hover {
+  background: var(--color-fondo-deshabilitado);
+}
+.vacio {
+  margin: 0;
+  padding: var(--espacio-4);
+  border: var(--grosor-borde) dashed var(--color-borde-campo);
+  border-radius: var(--radio-m);
+  color: var(--color-texto-secundario);
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+.opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
+  border: var(--grosor-borde) solid var(--color-borde-campo);
+  border-radius: var(--radio-m);
+  cursor: pointer;
+}
+.opcion input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--color-primario);
+}
+.seleccionada {
+  border: var(--grosor-borde-activo) solid var(--color-primario);
+  /* Compensa el borde más grueso para que la tarjeta no cambie de tamaño. */
+  padding: calc(var(--espacio-3) - 1px) calc(var(--espacio-4) - 1px);
+  background: var(--color-primario-suave);
+}

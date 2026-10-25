@@ -53,6 +53,18 @@ export function Estructura({ titulo, descripcion, children }: Props) {
               </NavLink>
             </li>
           )}
+          {/* ponytail: sin `membresias` (HU-05) no se sabe el rol; el servidor responde 403 a quien no administra y la pantalla lo devuelve al inicio. */}
+          {usuario?.rolPlataforma !== 'super_admin' &&
+            usuario?.organizacionActiva && (
+              <li>
+                <NavLink
+                  to="/organizacion/afiliacion"
+                  className={estilos.enlace}
+                >
+                  {t('navegacion.afiliacion')}
+                </NavLink>
+              </li>
+            )}
         </ul>
         <div className={estilos.persona}>
           <span className={estilos.nombre}>{usuario?.nombreCompleto}</span>
