@@ -1,3 +1,4 @@
+import { administraOrganizacion } from '../app/membresia'
 import { useSesion } from '../app/useSesion'
 import { Estructura } from '../componentes/Estructura'
 import { t } from '../i18n'
@@ -27,7 +28,9 @@ export default function Inicio() {
               {t(
                 usuario?.rolPlataforma === 'super_admin'
                   ? 'panel.inicio.rol_super_admin'
-                  : 'panel.inicio.rol_miembro',
+                  : administraOrganizacion(usuario)
+                    ? 'panel.inicio.rol_admin_organizacion'
+                    : 'panel.inicio.rol_miembro',
               )}
             </span>
           </dd>

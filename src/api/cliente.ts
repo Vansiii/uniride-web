@@ -18,13 +18,21 @@ export class ErrorApi extends Error {
   }
 }
 
+/** Una membresía propia, en cualquiera de las organizaciones de la persona (`GET /yo`). */
+export interface MembresiaPropia {
+  organizacionId: string
+  organizacion: string
+  rol: 'miembro' | 'admin_organizacion'
+  estado: 'pendiente' | 'aprobada' | 'rechazada'
+}
+
 export interface Usuario {
   id: string
   nombreCompleto: string
   correo: string
   rolPlataforma: string | null
   organizacionActiva: string | null
-  membresias: unknown[]
+  membresias: MembresiaPropia[]
 }
 
 // El token de acceso vive solo en memoria; el de refresco, en una cookie httpOnly que JS no ve.
@@ -167,6 +175,33 @@ export const guardarAfiliacion = (organizacionId: string, datos: Afiliacion) =>
   solicitar<Afiliacion>(
     `/organizaciones/${organizacionId}/afiliacion`,
     'PUT',
+    datos,
+  )
+
+// --- HU-03: aprobación de miembros ---
+
+export interface Solicitud {
+  id: string
+  nombreCompleto: string
+  correoInstitucional: string
+  creadoEn: string
+}
+
+export interface Decision {
+  decision: 'aprobar' | 'rechazar'
+  motivo?: string
+}
+
+export const listarSolicitudes = (organizacionId: string) =>
+  solicitar<Solicitud[]>(
+    `/organizaciones/${organizacionId}/membresias?estado=pendiente`,
+    'GET',
+  )
+
+export const decidirSolicitud = (id: string, datos: Decision) =>
+  solicitar<{ id: string; estado: 'aprobada' | 'rechazada' }>(
+    `/membresias/${id}/decision`,
+    'POST',
     datos,
   )
 

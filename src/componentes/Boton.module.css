@@ -25,6 +25,13 @@
   background: transparent;
   color: var(--color-primario);
 }
+.peligro {
+  background: var(--color-peligro);
+  color: var(--color-sobre-peligro);
+}
+.peligro:hover:not(:disabled) {
+  background: var(--color-peligro-presionado);
+}
 .boton:disabled {
   background: var(--color-fondo-deshabilitado);
   color: var(--color-texto-deshabilitado);

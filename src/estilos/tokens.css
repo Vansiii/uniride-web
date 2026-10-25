@@ -16,6 +16,9 @@
   --color-primario-suave: #eef1ff;
   --color-primario-texto: #2a39a6;
   --color-peligro: #b42318;
+  --color-peligro-presionado: #912018;
+  --color-sobre-peligro: #ffffff;
+  --color-superposicion: rgba(15, 18, 24, 0.5);
   --color-peligro-suave: #fdecea;
   --color-peligro-texto: #912018;
   --color-foco: #3447cc;

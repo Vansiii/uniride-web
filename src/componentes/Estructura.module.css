@@ -42,11 +42,26 @@
   height: 28px;
   align-self: flex-start;
 }
+.organizacion {
+  display: flex;
+  flex-direction: column;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  background: var(--color-fondo-sutil);
+}
+.enlaces {
+  flex: 1;
+}
+.grupo {
+  margin: var(--espacio-4) 0 var(--espacio-2);
+  padding: 0 var(--espacio-3);
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
+}
 .lista {
   margin: 0;
   padding: 0;
   list-style: none;
-  flex: 1;
 }
 .enlace {
   display: block;

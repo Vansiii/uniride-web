@@ -1,18 +1,20 @@
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProveedorSesion } from './app/sesion'
+import { administraOrganizacion } from './app/membresia'
 import { useSesion } from './app/useSesion'
 import { t } from './i18n'
 import AceptarInvitacion from './paginas/AceptarInvitacion'
 import Inicio from './paginas/Inicio'
 import IniciarSesion from './paginas/IniciarSesion'
 import Afiliacion from './paginas/admin/Afiliacion'
+import Solicitudes from './paginas/admin/Solicitudes'
 import NuevaOrganizacion from './paginas/NuevaOrganizacion'
 import Organizaciones from './paginas/Organizaciones'
 
 /**
- * Exige sesión; con `superAdmin` exige además ese rol y con `deOrganizacion` una organización activa
- * sin ser super administrador (el servidor vuelve a comprobar el rol en cada petición).
+ * Exige sesión; con `superAdmin` exige además ese rol y con `deOrganizacion` ser administrador de la
+ * organización activa (el servidor vuelve a comprobar el rol en cada petición).
  */
 function Protegida({
   children,
@@ -28,10 +30,7 @@ function Protegida({
   if (!usuario) return <Navigate to="/iniciar-sesion" replace />
   if (superAdmin && usuario.rolPlataforma !== 'super_admin')
     return <Navigate to="/" replace />
-  if (
-    deOrganizacion &&
-    (usuario.rolPlataforma === 'super_admin' || !usuario.organizacionActiva)
-  )
+  if (deOrganizacion && !administraOrganizacion(usuario))
     return <Navigate to="/" replace />
   return children
 }
@@ -71,6 +70,14 @@ export default function App() {
           element={
             <Protegida deOrganizacion>
               <Afiliacion />
+            </Protegida>
+          }
+        />
+        <Route
+          path="/organizacion/solicitudes"
+          element={
+            <Protegida deOrganizacion>
+              <Solicitudes />
             </Protegida>
           }
         />

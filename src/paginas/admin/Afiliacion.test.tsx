@@ -24,7 +24,14 @@ const admin = {
   correo: 'rosa@uagrm.edu.bo',
   rolPlataforma: null,
   organizacionActiva: 'org-a',
-  membresias: [],
+  membresias: [
+    {
+      organizacionId: 'org-a',
+      organizacion: 'UAGRM',
+      rol: 'admin_organizacion' as const,
+      estado: 'aprobada' as const,
+    },
+  ],
 }
 const reglas: api.Afiliacion = {
   dominios: ['uagrm.edu.bo'],
@@ -239,12 +246,27 @@ describe('Afiliación (administrador de organización)', () => {
     expect(api.consultarAfiliacion).not.toHaveBeenCalled()
   })
 
-  it('el menú ofrece Afiliación al administrador de organización', async () => {
+  it('el menú ofrece Afiliación y el nombre de la organización al administrador', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     )
     expect(await screen.findByRole('link', { name: 'Afiliación' })).toBeTruthy()
+    expect(screen.getByText('UAGRM')).toBeTruthy()
+    expect(screen.getByText('Administrador de organización')).toBeTruthy()
+  })
+
+  it('un miembro sin rol de administrador no ve el enlace ni la pantalla', async () => {
+    vi.mocked(api.consultarYo).mockResolvedValue({
+      ...admin,
+      membresias: [{ ...admin.membresias[0], rol: 'miembro' as const }],
+    })
+    abrir()
+    expect(await screen.findByRole('heading', { name: /Hola/ })).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Afiliación' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Solicitudes' })).toBeNull()
+    expect(screen.getByText('Miembro')).toBeTruthy()
+    expect(api.consultarAfiliacion).not.toHaveBeenCalled()
   })
 })

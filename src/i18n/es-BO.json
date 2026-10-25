@@ -46,7 +46,10 @@
     "abrir_menu": "Menú",
     "cerrar_menu": "Cerrar menú",
     "organizaciones": "Organizaciones",
-    "afiliacion": "Afiliación"
+    "afiliacion": "Afiliación",
+    "solicitudes": "Solicitudes",
+    "grupo_organizacion": "Mi organización",
+    "organizacion_activa": "Organización activa"
   },
   "panel": {
     "inicio": {
@@ -57,7 +60,8 @@
       "correo": "Correo",
       "rol": "Rol",
       "rol_super_admin": "Super administrador",
-      "rol_miembro": "Administrador de organización"
+      "rol_admin_organizacion": "Administrador de organización",
+      "rol_miembro": "Miembro"
     }
   },
   "organizaciones": {
@@ -146,6 +150,39 @@
       "modo_manual_ayuda": "Revisas cada solicitud antes de aprobarla.",
       "modo_automatica": "Automática",
       "modo_automatica_ayuda": "Quien confirme un correo de estos dominios entra de inmediato."
+    }
+  },
+  "membresias": {
+    "lista": {
+      "titulo": "Solicitudes",
+      "descripcion": "Personas que confirmaron un correo de {organizacion} y esperan tu aprobación. La más antigua primero.",
+      "vacia": "No hay solicitudes pendientes.",
+      "cargando_error": "No pudimos cargar las solicitudes.",
+      "reintentar": "Reintentar",
+      "pendientes_uno": "1 pendiente",
+      "pendientes_otras": "{n} pendientes",
+      "columna_nombre": "Nombre",
+      "columna_correo": "Correo institucional",
+      "columna_fecha": "Fecha de solicitud",
+      "columna_acciones": "Acciones"
+    },
+    "decision": {
+      "aprobar": "Aprobar",
+      "aprobando": "Aprobando…",
+      "aprobar_a": "Aprobar la solicitud de {nombre}",
+      "rechazar": "Rechazar",
+      "rechazar_a": "Rechazar la solicitud de {nombre}",
+      "aprobada": "Solicitud de {nombre} aprobada. Le avisamos por correo.",
+      "rechazada": "Solicitud de {nombre} rechazada. Le avisamos por correo.",
+      "ya_decidida": "Esta solicitud ya fue decidida por otro administrador. La lista se actualizó.",
+      "dialogo_titulo": "¿Rechazar la solicitud de {nombre}?",
+      "dialogo_texto": "No podrá volver a solicitar ingreso a {organizacion}. Le avisaremos por correo.",
+      "motivo": "Motivo (opcional)",
+      "motivo_ayuda": "Se incluye en el correo que recibe la persona.",
+      "volver": "Volver",
+      "confirmar_rechazo": "Rechazar solicitud",
+      "rechazando": "Rechazando…",
+      "cerrar_aviso": "Cerrar aviso"
     }
   }
 }
