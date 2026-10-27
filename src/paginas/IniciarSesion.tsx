@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ErrorApi } from '../api/cliente'
 import { useSesion } from '../app/useSesion'
 import { Boton } from '../componentes/Boton'
@@ -32,6 +32,7 @@ function mensajeDe(error: unknown): string {
 
 export default function IniciarSesion() {
   const { usuario, iniciar } = useSesion()
+  const cambioContrasena = useLocation().state?.contrasenaCambiada === true
   const [correo, setCorreo] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [verContrasena, setVerContrasena] = useState(false)
@@ -86,6 +87,11 @@ export default function IniciarSesion() {
         <form className={estilos.formulario} onSubmit={enviar} noValidate>
           <h1 className={estilos.titulo}>{t('autenticacion.sesion.titulo')}</h1>
           <p className={estilos.ayuda}>{t('autenticacion.sesion.subtitulo')}</p>
+          {cambioContrasena && (
+            <p role="status" className={estilos.aviso}>
+              {t('autenticacion.sesion.contrasena_cambiada')}
+            </p>
+          )}
           {falla && (
             <p role="alert" className={estilos.falla}>
               {falla}
@@ -127,6 +133,9 @@ export default function IniciarSesion() {
                 : 'autenticacion.sesion.entrar',
             )}
           />
+          <Link to="/recuperar-contrasena" className={estilos.olvido}>
+            {t('autenticacion.sesion.olvide')}
+          </Link>
         </form>
       </main>
     </div>

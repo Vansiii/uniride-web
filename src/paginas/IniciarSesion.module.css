@@ -79,6 +79,24 @@
   font: var(--texto-secundario);
 }
 
+.olvido {
+  align-self: center;
+  color: var(--color-primario);
+  font: var(--texto-cuerpo-enfasis);
+  text-decoration: none;
+}
+.olvido:hover {
+  text-decoration: underline;
+}
+.aviso {
+  margin: 0;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+  font: var(--texto-secundario);
+}
+
 @media (min-width: 1024px) {
   .pagina {
     grid-template-columns: minmax(380px, 5fr) 7fr;

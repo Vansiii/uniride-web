@@ -121,6 +121,26 @@ export async function cerrarSesion(): Promise<void> {
 
 export const consultarYo = () => solicitar<Usuario>('/yo', 'GET')
 
+// --- HU-34: recuperación de contraseña (endpoints públicos) ---
+
+/** Siempre responde 202 igual, haya o no cuenta; `reenviarEn` es cuándo se puede pedir otro código. */
+export const recuperarContrasena = (correo: string) =>
+  enviar('/autenticacion/recuperar-contrasena', 'POST', { correo }).then((r) =>
+    leer<{ reenviarEn: string }>(r),
+  )
+
+/** Cambia la contraseña con el código; el servidor cierra todas las sesiones y no inicia ninguna. */
+export const restablecerContrasena = (
+  correo: string,
+  codigo: string,
+  contrasenaNueva: string,
+) =>
+  enviar('/autenticacion/restablecer-contrasena', 'POST', {
+    correo,
+    codigo,
+    contrasenaNueva,
+  }).then((r) => leer<void>(r))
+
 // --- HU-01: organizaciones e invitaciones ---
 
 export interface Organizacion {

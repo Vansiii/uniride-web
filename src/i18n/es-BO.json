@@ -37,7 +37,36 @@
       "subtitulo": "Usa el correo y la contraseña de tu cuenta.",
       "beneficio_1": "Conductores y pasajeros verificados de tu organización",
       "beneficio_2": "Cada viaje se comprueba al subir y al bajar",
-      "beneficio_3": "Pagos en garantía: el conductor cobra solo si el viaje ocurre"
+      "beneficio_3": "Pagos en garantía: el conductor cobra solo si el viaje ocurre",
+      "olvide": "Olvidé mi contraseña",
+      "contrasena_cambiada": "Cambiaste tu contraseña y cerramos tus sesiones abiertas. Entra con la nueva."
+    },
+    "recuperacion": {
+      "titulo": "Recuperar contraseña",
+      "descripcion": "Si el correo tiene una cuenta, te enviaremos un código de 6 dígitos.",
+      "volver": "Iniciar sesión",
+      "correo": "Correo",
+      "correo_invalido": "Escribe un correo válido, por ejemplo nombre@uagrm.edu.bo.",
+      "enviar": "Enviar código",
+      "enviando": "Enviando…",
+      "ya_tengo_codigo": "Ya tengo un código",
+      "solicitud_enviada": "Si {correo} tiene una cuenta, te llegará un código.",
+      "reenviado": "Listo. Si {correo} tiene una cuenta, te llegará un código nuevo.",
+      "otro_correo": "Usar otro correo",
+      "codigo": "Código de 6 dígitos",
+      "codigo_requerido": "Escribe los 6 dígitos del código.",
+      "codigo_invalido": "El código no es correcto.",
+      "codigo_vencido": "El código venció. Pide uno nuevo.",
+      "contrasena": "Contraseña nueva",
+      "contrasena_ayuda": "Al menos 8 caracteres, con una letra y un número. Se cerrarán todas tus sesiones.",
+      "contrasena_debil": "La contraseña debe tener al menos 8 caracteres, con letras y números.",
+      "cambiar": "Cambiar contraseña",
+      "cambiando": "Cambiando…",
+      "reenviar": "Reenviar código",
+      "reenviando": "Reenviando…",
+      "reenviar_en": "Reenviar código en {segundos} s",
+      "limite_reenvio": "Ya te enviamos un código. Espera un momento antes de pedir otro.",
+      "bloqueado": "Demasiados intentos. Podrás intentarlo de nuevo a las {hora}."
     }
   },
   "navegacion": {

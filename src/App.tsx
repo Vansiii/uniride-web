@@ -11,6 +11,7 @@ import Afiliacion from './paginas/admin/Afiliacion'
 import Solicitudes from './paginas/admin/Solicitudes'
 import NuevaOrganizacion from './paginas/NuevaOrganizacion'
 import Organizaciones from './paginas/Organizaciones'
+import RecuperarContrasena from './paginas/RecuperarContrasena'
 
 /**
  * Exige sesión; con `superAdmin` exige además ese rol y con `deOrganizacion` ser administrador de la
@@ -40,6 +41,7 @@ export default function App() {
     <ProveedorSesion>
       <Routes>
         <Route path="/iniciar-sesion" element={<IniciarSesion />} />
+        <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
         <Route path="/invitaciones/:token" element={<AceptarInvitacion />} />
         <Route
           path="/"
