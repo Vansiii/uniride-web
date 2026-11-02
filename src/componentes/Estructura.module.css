@@ -304,3 +304,16 @@
     padding: var(--espacio-10) var(--espacio-8) var(--espacio-12);
   }
 }
+
+/* Organización activa del administrador (HU-02/HU-03) */
+.organizacion {
+  display: flex;
+  flex-direction: column;
+  padding: var(--espacio-3);
+  border-radius: var(--radio-m);
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
+}
+.organizacion .correo {
+  color: var(--color-sobre-marca-secundario);
+}

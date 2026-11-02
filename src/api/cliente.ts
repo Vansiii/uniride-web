@@ -18,13 +18,21 @@ export class ErrorApi extends Error {
   }
 }
 
+/** Una membresía propia, en cualquiera de las organizaciones de la persona (`GET /yo`). */
+export interface MembresiaPropia {
+  organizacionId: string
+  organizacion: string
+  rol: 'miembro' | 'admin_organizacion'
+  estado: 'pendiente' | 'aprobada' | 'rechazada'
+}
+
 export interface Usuario {
   id: string
   nombreCompleto: string
   correo: string
   rolPlataforma: string | null
   organizacionActiva: string | null
-  membresias: unknown[]
+  membresias: MembresiaPropia[]
 }
 
 // El token de acceso vive solo en memoria; el de refresco, en una cookie httpOnly que JS no ve.
@@ -113,6 +121,26 @@ export async function cerrarSesion(): Promise<void> {
 
 export const consultarYo = () => solicitar<Usuario>('/yo', 'GET')
 
+// --- HU-34: recuperación de contraseña (endpoints públicos) ---
+
+/** Siempre responde 202 igual, haya o no cuenta; `reenviarEn` es cuándo se puede pedir otro código. */
+export const recuperarContrasena = (correo: string) =>
+  enviar('/autenticacion/recuperar-contrasena', 'POST', { correo }).then((r) =>
+    leer<{ reenviarEn: string }>(r),
+  )
+
+/** Cambia la contraseña con el código; el servidor cierra todas las sesiones y no inicia ninguna. */
+export const restablecerContrasena = (
+  correo: string,
+  codigo: string,
+  contrasenaNueva: string,
+) =>
+  enviar('/autenticacion/restablecer-contrasena', 'POST', {
+    correo,
+    codigo,
+    contrasenaNueva,
+  }).then((r) => leer<void>(r))
+
 // --- HU-01: organizaciones e invitaciones ---
 
 export interface Organizacion {
@@ -150,6 +178,52 @@ export const crearOrganizacion = (datos: NuevaOrganizacion) =>
 
 export const reenviarInvitacion = (id: string) =>
   solicitar<void>(`/admin/organizaciones/${id}/invitacion`, 'POST', {})
+
+// --- HU-02: reglas de afiliación ---
+
+export type ModoAprobacion = 'manual' | 'automatica'
+
+export interface Afiliacion {
+  dominios: string[]
+  modoAprobacion: ModoAprobacion
+}
+
+export const consultarAfiliacion = (organizacionId: string) =>
+  solicitar<Afiliacion>(`/organizaciones/${organizacionId}/afiliacion`, 'GET')
+
+export const guardarAfiliacion = (organizacionId: string, datos: Afiliacion) =>
+  solicitar<Afiliacion>(
+    `/organizaciones/${organizacionId}/afiliacion`,
+    'PUT',
+    datos,
+  )
+
+// --- HU-03: aprobación de miembros ---
+
+export interface Solicitud {
+  id: string
+  nombreCompleto: string
+  correoInstitucional: string
+  creadoEn: string
+}
+
+export interface Decision {
+  decision: 'aprobar' | 'rechazar'
+  motivo?: string
+}
+
+export const listarSolicitudes = (organizacionId: string) =>
+  solicitar<Solicitud[]>(
+    `/organizaciones/${organizacionId}/membresias?estado=pendiente`,
+    'GET',
+  )
+
+export const decidirSolicitud = (id: string, datos: Decision) =>
+  solicitar<{ id: string; estado: 'aprobada' | 'rechazada' }>(
+    `/membresias/${id}/decision`,
+    'POST',
+    datos,
+  )
 
 export const consultarInvitacion = (token: string) =>
   enviar(`/invitaciones/${encodeURIComponent(token)}`, 'GET').then((r) =>

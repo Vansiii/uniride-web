@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { administraOrganizacion } from '../app/membresia'
 import { useSesion } from '../app/useSesion'
 import { Estructura } from '../componentes/Estructura'
 import { Icono } from '../componentes/Icono'
@@ -37,7 +38,9 @@ export default function Inicio() {
                 {t(
                   superAdmin
                     ? 'panel.inicio.rol_super_admin'
-                    : 'panel.inicio.rol_miembro',
+                    : administraOrganizacion(usuario)
+                      ? 'panel.inicio.rol_admin_organizacion'
+                      : 'panel.inicio.rol_miembro',
                 )}
               </span>
             </dd>

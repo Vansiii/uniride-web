@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ErrorApi } from '../api/cliente'
 import { useSesion } from '../app/useSesion'
 import { PantallaAcceso } from '../componentes/Acceso'
@@ -45,6 +45,7 @@ function fallaDe(error: unknown): Falla {
 export default function IniciarSesion() {
   const { usuario, iniciar } = useSesion()
   const { state } = useLocation()
+  const cambioContrasena = state?.contrasenaCambiada === true
   const [correo, setCorreo] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [errores, setErrores] = useState<{
@@ -103,6 +104,11 @@ export default function IniciarSesion() {
           <h1 className={estilos.titulo}>{t('autenticacion.sesion.titulo')}</h1>
           <p className={estilos.ayuda}>{t('autenticacion.sesion.subtitulo')}</p>
         </div>
+        {cambioContrasena && (
+          <Aviso rol="status" tono="exito">
+            {t('autenticacion.sesion.contrasena_cambiada')}
+          </Aviso>
+        )}
         {falla && (
           <Aviso
             rol="alert"
@@ -152,6 +158,9 @@ export default function IniciarSesion() {
               : 'autenticacion.sesion.entrar',
           )}
         />
+        <Link to="/recuperar-contrasena" className={estilos.olvido}>
+          {t('autenticacion.sesion.olvide')}
+        </Link>
       </form>
     </PantallaAcceso>
   )

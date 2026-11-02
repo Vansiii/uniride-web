@@ -21,6 +21,15 @@
 .boton {
   margin-top: var(--espacio-1);
 }
+.olvido {
+  align-self: center;
+  color: var(--color-primario);
+  font: var(--texto-cuerpo-enfasis);
+  text-decoration: none;
+}
+.olvido:hover {
+  text-decoration: underline;
+}
 
 /* Invitación no válida */
 .tituloResultado {

@@ -1,11 +1,13 @@
 import { useId, useState } from 'react'
-import type { InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes, Ref } from 'react'
 import { t } from '../i18n'
 import { BotonIcono } from './Boton'
 import { Icono } from './Icono'
 import estilos from './Campo.module.css'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  /** Para devolver el foco al campo después de una acción (React 19 pasa `ref` como prop). */
+  ref?: Ref<HTMLInputElement>
   /** La etiqueta siempre es visible; nunca se reemplaza por el placeholder. */
   etiqueta: string
   ayuda?: string

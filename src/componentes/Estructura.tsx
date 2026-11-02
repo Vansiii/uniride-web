@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { MouseEvent, ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { administraOrganizacion, membresiaActiva } from '../app/membresia'
 import { useSesion } from '../app/useSesion'
 import { useTituloDocumento } from '../app/useTituloDocumento'
 import { iniciales } from '../formato'
@@ -84,6 +85,8 @@ export function Estructura({
 
   const cerrarMenu = () => setAbierto(false)
   const nombre = usuario?.nombreCompleto ?? ''
+  const administra = administraOrganizacion(usuario)
+  const organizacion = membresiaActiva(usuario)
 
   return (
     <div className={estilos.raiz}>
@@ -135,6 +138,14 @@ export function Estructura({
             height={28}
           />
         </Link>
+        {administra && (
+          <div className={estilos.organizacion}>
+            <span className={estilos.nombre}>{organizacion?.organizacion}</span>
+            <span className={estilos.correo}>
+              {t('navegacion.organizacion_activa')}
+            </span>
+          </div>
+        )}
         <ul className={estilos.lista}>
           <Enlace
             hacia="/"
@@ -143,6 +154,27 @@ export function Estructura({
             alNavegar={cerrarMenu}
           />
         </ul>
+        {administra && (
+          <>
+            <p className={estilos.grupo} id="grupo-organizacion">
+              {t('navegacion.grupo_organizacion')}
+            </p>
+            <ul className={estilos.lista} aria-labelledby="grupo-organizacion">
+              <Enlace
+                hacia="/organizacion/solicitudes"
+                icono="verified"
+                etiqueta={t('navegacion.solicitudes')}
+                alNavegar={cerrarMenu}
+              />
+              <Enlace
+                hacia="/organizacion/afiliacion"
+                icono="school"
+                etiqueta={t('navegacion.afiliacion')}
+                alNavegar={cerrarMenu}
+              />
+            </ul>
+          </>
+        )}
         {usuario?.rolPlataforma === 'super_admin' && (
           <>
             <p className={estilos.grupo} id="grupo-plataforma">

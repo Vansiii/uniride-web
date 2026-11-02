@@ -1,0 +1,22 @@
+.dialogo {
+  width: min(480px, calc(100vw - 2 * var(--espacio-4)));
+  padding: 0;
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  box-shadow: 0 8px 24px rgba(15, 18, 24, 0.16);
+}
+.dialogo::backdrop {
+  background: var(--color-superposicion);
+}
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  padding: var(--espacio-6);
+}
+.titulo {
+  margin: 0;
+  font: var(--texto-subtitulo);
+}
