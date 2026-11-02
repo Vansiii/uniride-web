@@ -1,12 +1,33 @@
+.rejilla {
+  display: grid;
+  gap: var(--espacio-6);
+  align-items: start;
+}
 .tarjeta {
-  max-width: var(--ancho-formulario);
   padding: var(--espacio-6);
   background: var(--color-superficie);
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
 }
+.persona {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-5);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: none;
+  border-radius: var(--radio-completo);
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+  font: var(--texto-subtitulo);
+  font-weight: 700;
+}
 .subtitulo {
-  margin: 0 0 var(--espacio-4);
   font: var(--texto-subtitulo);
 }
 .datos {
@@ -21,13 +42,79 @@
 }
 .datos dd {
   margin: 0;
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 .etiqueta {
-  display: inline-block;
-  padding: 2px var(--espacio-2);
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  height: 1.5rem;
+  padding: 0 var(--espacio-2);
+  border-radius: var(--radio-completo);
   background: var(--color-primario-suave);
   color: var(--color-primario-texto);
-  font: 500 0.75rem/1rem var(--fuente);
+  font: var(--texto-pequeno);
+}
+
+.accesos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+.acceso {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-4);
+  padding: var(--espacio-4) var(--espacio-5);
+  background: var(--color-superficie);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  color: var(--color-texto);
+  text-decoration: none;
+  transition:
+    border-color var(--duracion-corta) var(--curva-estandar),
+    box-shadow var(--duracion-media) var(--curva-estandar);
+}
+.acceso:hover {
+  border-color: var(--color-primario);
+  box-shadow: var(--sombra-flotante);
+}
+.iconoAcceso {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: var(--radio-m);
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
+}
+.textoAcceso {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.nombreAcceso {
+  font: var(--texto-cuerpo-enfasis);
+}
+.descripcionAcceso {
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+.flecha {
+  color: var(--color-texto-secundario);
+  transition:
+    transform var(--duracion-media) var(--curva-estandar),
+    color var(--duracion-corta) var(--curva-estandar);
+}
+.acceso:hover .flecha {
+  color: var(--color-primario);
+  transform: translateX(3px);
+}
+
+@media (min-width: 1024px) {
+  .rejilla {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
 }

@@ -2,33 +2,80 @@
   display: flex;
   flex-direction: column;
   gap: var(--espacio-2);
+  min-width: 0;
 }
 .etiqueta {
   font: var(--texto-etiqueta);
+  color: var(--color-texto);
 }
+
+/* El borde activo se suma con una sombra interior: el foco y el error no mueven el contenido. */
 .caja {
-  height: var(--alto-control);
-  box-sizing: border-box;
-  padding: 0 var(--espacio-3);
+  display: flex;
+  align-items: center;
+  min-height: var(--alto-control);
   border-radius: var(--radio-m);
   border: var(--grosor-borde) solid var(--color-borde-campo);
   background: var(--color-superficie);
+  transition:
+    border-color var(--duracion-corta) var(--curva-estandar),
+    box-shadow var(--duracion-corta) var(--curva-estandar);
+}
+.caja:hover {
+  border-color: var(--color-texto-secundario);
+}
+.caja:focus-within {
+  border-color: var(--color-primario);
+  box-shadow: inset 0 0 0 1px var(--color-primario);
+}
+.conError,
+.conError:hover,
+.conError:focus-within {
+  border-color: var(--color-peligro);
+  box-shadow: inset 0 0 0 1px var(--color-peligro);
+}
+.caja:has(.entrada:read-only) {
+  border-color: var(--color-borde);
+  background: var(--color-fondo-deshabilitado);
+  box-shadow: none;
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  padding: 0 var(--espacio-3);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
   color: var(--color-texto);
   font: var(--texto-cuerpo);
 }
-.caja::placeholder {
+.entrada:focus-visible {
+  outline: none; /* el foco lo muestra la caja */
+}
+.entrada::placeholder {
   color: var(--color-texto-placeholder);
 }
-.caja:focus {
-  border: var(--grosor-borde-activo) solid var(--color-primario);
-  outline: none;
+.entrada:read-only {
+  color: var(--color-texto-secundario);
 }
-.conError,
-.conError:focus {
-  border: var(--grosor-borde-activo) solid var(--color-peligro);
+.sufijo {
+  padding-right: var(--espacio-3);
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
 }
+.accion {
+  width: calc(var(--alto-control) - 6px);
+  height: calc(var(--alto-control) - 6px);
+  margin-right: 2px;
+}
+
 .ayuda,
 .error {
+  display: flex;
+  gap: var(--espacio-1);
+  align-items: flex-start;
   margin: 0;
   font: var(--texto-secundario);
 }
@@ -37,4 +84,14 @@
 }
 .error {
   color: var(--color-peligro);
+  animation: aparecer var(--duracion-media) var(--curva-entrada);
+}
+.error svg {
+  margin-top: 2px;
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }

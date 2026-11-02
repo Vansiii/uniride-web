@@ -58,6 +58,20 @@ describe('Pantalla Iniciar sesión', () => {
     expect(api.iniciarSesion).not.toHaveBeenCalled()
   })
 
+  it('el error de un campo se borra al corregirlo y la contraseña se puede mostrar', async () => {
+    await abrir()
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }))
+    expect(await screen.findByText('Escribe tu contraseña.')).toBeTruthy()
+    const campo = screen.getByLabelText('Contraseña')
+    fireEvent.change(campo, { target: { value: 'x' } })
+    expect(screen.queryByText('Escribe tu contraseña.')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Mostrar contraseña' }))
+    expect(campo.getAttribute('type')).toBe('text')
+    expect(
+      screen.getByRole('button', { name: 'Ocultar contraseña' }),
+    ).toBeTruthy()
+  })
+
   it('CA-1: con credenciales correctas entra al panel', async () => {
     vi.mocked(api.iniciarSesion).mockResolvedValue()
     vi.mocked(api.consultarYo).mockResolvedValue(usuario)
