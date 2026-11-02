@@ -7,7 +7,8 @@ interface Props extends Omit<
 > {
   /** Texto ya traducido con t(). */
   etiqueta: string
-  variante?: 'primario' | 'secundario' | 'texto'
+  /** `peligro` solo para el botón que confirma una destrucción dentro de un `Dialogo`. */
+  variante?: 'primario' | 'secundario' | 'texto' | 'peligro'
   /** Bloquea toques repetidos; `etiqueta` debe venir en gerundio ("Entrando…"). */
   cargando?: boolean
   anchoCompleto?: boolean

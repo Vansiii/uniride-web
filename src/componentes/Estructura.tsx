@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
+import { administraOrganizacion, membresiaActiva } from '../app/membresia'
 import { useSesion } from '../app/useSesion'
 import { t } from '../i18n'
 import { Boton } from './Boton'
@@ -16,6 +17,8 @@ interface Props {
 export function Estructura({ titulo, descripcion, children }: Props) {
   const { usuario, cerrar } = useSesion()
   const [abierto, setAbierto] = useState(false)
+  const administra = administraOrganizacion(usuario)
+  const organizacion = membresiaActiva(usuario)
   return (
     <div className={estilos.raiz}>
       <header className={estilos.barra}>
@@ -40,20 +43,55 @@ export function Estructura({ titulo, descripcion, children }: Props) {
         className={`${estilos.lateral} ${abierto ? estilos.abierto : ''}`}
       >
         <img src="/firma.svg" alt="" className={estilos.logoLateral} />
-        <ul className={estilos.lista}>
-          <li>
-            <NavLink to="/" end className={estilos.enlace}>
-              {t('navegacion.inicio')}
-            </NavLink>
-          </li>
-          {usuario?.rolPlataforma === 'super_admin' && (
+        {administra && (
+          <div className={estilos.organizacion}>
+            <span className={estilos.nombre}>{organizacion?.organizacion}</span>
+            <span className={estilos.correo}>
+              {t('navegacion.organizacion_activa')}
+            </span>
+          </div>
+        )}
+        <div className={estilos.enlaces}>
+          <ul className={estilos.lista}>
             <li>
-              <NavLink to="/organizaciones" className={estilos.enlace}>
-                {t('navegacion.organizaciones')}
+              <NavLink to="/" end className={estilos.enlace}>
+                {t('navegacion.inicio')}
               </NavLink>
             </li>
+            {usuario?.rolPlataforma === 'super_admin' && (
+              <li>
+                <NavLink to="/organizaciones" className={estilos.enlace}>
+                  {t('navegacion.organizaciones')}
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          {administra && (
+            <>
+              <p className={estilos.grupo}>
+                {t('navegacion.grupo_organizacion')}
+              </p>
+              <ul className={estilos.lista}>
+                <li>
+                  <NavLink
+                    to="/organizacion/solicitudes"
+                    className={estilos.enlace}
+                  >
+                    {t('navegacion.solicitudes')}
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/organizacion/afiliacion"
+                    className={estilos.enlace}
+                  >
+                    {t('navegacion.afiliacion')}
+                  </NavLink>
+                </li>
+              </ul>
+            </>
           )}
-        </ul>
+        </div>
         <div className={estilos.persona}>
           <span className={estilos.nombre}>{usuario?.nombreCompleto}</span>
           <span className={estilos.correo}>{usuario?.correo}</span>
