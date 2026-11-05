@@ -1,0 +1,158 @@
+/* Tabla (8.11). Compacto (< 640 px): cada fila es una tarjeta con sus etiquetas. */
+.envoltura {
+  background: var(--color-superficie);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  overflow-x: auto;
+}
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--texto-secundario);
+}
+.leyenda {
+  padding: var(--espacio-4) var(--espacio-4) var(--espacio-3);
+  text-align: left;
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
+}
+.tabla thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.tabla tbody tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-3) var(--espacio-4);
+  padding: var(--espacio-4);
+  border-top: var(--grosor-borde) solid var(--color-borde);
+}
+.tabla tbody th,
+.tabla tbody td {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+}
+.tabla tbody td[data-etiqueta]::before {
+  content: attr(data-etiqueta);
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+}
+.nombre,
+.acciones {
+  grid-column: 1 / -1;
+}
+.nombre {
+  font: var(--texto-cuerpo-enfasis);
+  overflow-wrap: break-word;
+}
+.tabla .acciones:empty {
+  display: none;
+}
+.acciones > * {
+  align-self: flex-start;
+}
+
+.tipo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+.tipo svg {
+  color: var(--color-texto-secundario);
+}
+.admin {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.textoSecundario {
+  color: var(--color-texto-secundario);
+}
+.numero {
+  font-variant-numeric: tabular-nums;
+}
+.tabla tbody td > .tipo,
+.tabla tbody td > span {
+  align-self: flex-start;
+}
+
+/* Los correos no tienen espacios: se permite partirlos para que la tabla no desborde. */
+.admin .textoSecundario {
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 640px) {
+  .tabla thead {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+  .tabla thead th {
+    height: 2.5rem;
+    padding: 0 var(--espacio-3);
+    background: var(--color-fondo-sutil);
+    border-block: var(--grosor-borde) solid var(--color-borde);
+    color: var(--color-texto-secundario);
+    font: var(--texto-etiqueta);
+    text-align: left;
+    white-space: nowrap;
+  }
+  .tabla tbody tr {
+    display: table-row;
+    padding: 0;
+    transition: background-color var(--duracion-corta) var(--curva-estandar);
+  }
+  .tabla tbody tr:hover {
+    background: var(--color-fondo-sutil);
+  }
+  .tabla tbody tr:first-child {
+    border-top: 0;
+  }
+  .tabla tbody th,
+  .tabla tbody td {
+    display: table-cell;
+    height: var(--alto-fila);
+    padding: var(--espacio-3);
+    vertical-align: middle;
+  }
+  .tabla tbody td[data-etiqueta]::before {
+    content: none;
+  }
+  .tabla .numero {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .acciones {
+    text-align: right;
+  }
+  .tabla .acciones:empty {
+    display: table-cell;
+  }
+  .tabla .secundaria {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tabla .secundaria {
+    display: table-cell;
+  }
+  .tabla tbody th,
+  .tabla tbody td,
+  .tabla thead th {
+    padding-inline: var(--espacio-4);
+  }
+  .admin .textoSecundario {
+    overflow-wrap: break-word;
+  }
+}

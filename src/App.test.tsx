@@ -1,12 +1,24 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
+import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { t } from './i18n'
 
+vi.mock('./api/cliente', async (original) => ({
+  ...(await original<typeof import('./api/cliente')>()),
+  renovarSesion: vi.fn().mockResolvedValue(false),
+}))
+
 describe('App', () => {
-  it('muestra el nombre del panel desde los textos es-BO', () => {
-    render(<App />)
-    expect(screen.getByRole('heading').textContent).toBe('UniRide')
+  it('sin sesión lleva a la pantalla de inicio de sesión', async () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    )
+    expect(
+      await screen.findByRole('heading', { name: 'Iniciar sesión' }),
+    ).toBeTruthy()
   })
 })
 
