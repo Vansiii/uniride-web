@@ -3,56 +3,73 @@
   gap: var(--espacio-6);
   align-items: start;
 }
+/* Tarjeta de cuenta: portada de marca con resplandor y datos sobre vidrio. */
 .tarjeta {
   position: relative;
   overflow: hidden;
   animation: subir var(--duracion-larga) var(--curva-entrada) both;
-  padding: var(--espacio-6);
-  background: var(--color-superficie);
-  border: var(--grosor-borde) solid var(--color-borde);
-  border-radius: var(--radio-l);
-  box-shadow: var(--sombra-tarjeta);
-}
-.persona {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-3);
-  margin-bottom: var(--espacio-5);
+  padding: var(--espacio-8) var(--espacio-6);
+  background: var(--degradado-marca);
+  color: var(--color-sobre-marca);
+  border-radius: var(--radio-xl);
+  box-shadow: var(--sombra-flotante);
 }
 .tarjeta::before {
   content: '';
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 4.5rem;
-  background: var(--degradado-marca);
-  opacity: 0.08;
+  top: -90px;
+  right: -70px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #8b9bff 0%, transparent 70%);
+  opacity: 0.5;
   pointer-events: none;
 }
-.avatar {
+.persona {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-4);
+  margin-bottom: var(--espacio-6);
+}
+.avatar {
   display: grid;
   place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 4rem;
+  height: 4rem;
   flex: none;
   border-radius: var(--radio-completo);
-  background: var(--degradado-marca);
-  color: var(--color-sobre-marca);
-  box-shadow: 0 6px 16px -6px rgba(52, 71, 204, 0.6);
-  font: var(--texto-subtitulo);
-  font-weight: 700;
+  background: var(--color-sobre-marca);
+  color: var(--color-primario-texto);
+  font: var(--texto-titulo);
+  font-weight: 800;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
 }
 .subtitulo {
-  font: var(--texto-subtitulo);
+  font: var(--texto-titulo);
+  font-weight: 700;
+}
+.persona .subtitulo {
+  color: var(--color-sobre-marca);
+}
+.accesos .subtitulo {
+  color: var(--color-texto);
 }
 .datos {
+  position: relative;
   display: grid;
   grid-template-columns: max-content 1fr;
   gap: var(--espacio-3) var(--espacio-6);
   margin: 0;
+  padding: var(--espacio-4) var(--espacio-5);
+  border: var(--grosor-borde) solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radio-l);
+  background: var(--color-marca-velo);
+  backdrop-filter: blur(8px);
 }
 .datos dt {
-  color: var(--color-texto-secundario);
+  color: var(--color-sobre-marca-secundario);
   font: var(--texto-etiqueta);
 }
 .datos dd {
@@ -66,9 +83,10 @@
   height: 1.5rem;
   padding: 0 var(--espacio-2);
   border-radius: var(--radio-completo);
-  background: var(--color-primario-suave);
+  background: var(--color-sobre-marca);
   color: var(--color-primario-texto);
   font: var(--texto-pequeno);
+  font-weight: 700;
 }
 
 .accesos {
