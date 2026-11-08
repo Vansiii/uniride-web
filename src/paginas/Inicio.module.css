@@ -4,6 +4,9 @@
   align-items: start;
 }
 .tarjeta {
+  position: relative;
+  overflow: hidden;
+  animation: subir var(--duracion-larga) var(--curva-entrada) both;
   padding: var(--espacio-6);
   background: var(--color-superficie);
   border: var(--grosor-borde) solid var(--color-borde);
@@ -16,15 +19,26 @@
   gap: var(--espacio-3);
   margin-bottom: var(--espacio-5);
 }
+.tarjeta::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4.5rem;
+  background: var(--degradado-marca);
+  opacity: 0.08;
+  pointer-events: none;
+}
 .avatar {
+  position: relative;
   display: grid;
   place-items: center;
   width: 3.5rem;
   height: 3.5rem;
   flex: none;
   border-radius: var(--radio-completo);
-  background: var(--color-primario-suave);
-  color: var(--color-primario-texto);
+  background: var(--degradado-marca);
+  color: var(--color-sobre-marca);
+  box-shadow: 0 6px 16px -6px rgba(52, 71, 204, 0.6);
   font: var(--texto-subtitulo);
   font-weight: 700;
 }
@@ -72,13 +86,16 @@
   border-radius: var(--radio-l);
   color: var(--color-texto);
   text-decoration: none;
+  animation: subir var(--duracion-larga) var(--curva-entrada) 90ms both;
   transition:
     border-color var(--duracion-corta) var(--curva-estandar),
-    box-shadow var(--duracion-media) var(--curva-estandar);
+    box-shadow var(--duracion-media) var(--curva-estandar),
+    transform var(--duracion-media) var(--curva-estandar);
 }
 .acceso:hover {
-  border-color: var(--color-borde-campo);
+  border-color: var(--color-primario);
   box-shadow: var(--sombra-flotante);
+  transform: translateY(-2px);
 }
 .iconoAcceso {
   display: grid;
@@ -117,5 +134,12 @@
 @media (min-width: 1024px) {
   .rejilla {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
 }
