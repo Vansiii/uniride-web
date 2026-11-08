@@ -8,6 +8,7 @@
   background: var(--color-superficie);
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
+  box-shadow: var(--sombra-tarjeta);
 }
 .persona {
   display: flex;
@@ -76,7 +77,7 @@
     box-shadow var(--duracion-media) var(--curva-estandar);
 }
 .acceso:hover {
-  border-color: var(--color-primario);
+  border-color: var(--color-borde-campo);
   box-shadow: var(--sombra-flotante);
 }
 .iconoAcceso {

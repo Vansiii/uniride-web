@@ -4,6 +4,7 @@
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
   overflow-x: auto;
+  box-shadow: var(--sombra-tarjeta);
 }
 .tabla {
   width: 100%;

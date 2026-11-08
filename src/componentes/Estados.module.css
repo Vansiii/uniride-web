@@ -30,6 +30,7 @@
   border-radius: var(--radio-l);
   background: var(--color-superficie);
   overflow: hidden;
+  box-shadow: var(--sombra-tarjeta);
 }
 .filaEsqueleto {
   display: grid;
@@ -166,6 +167,7 @@
   border-radius: var(--radio-l);
   background: var(--color-superficie);
   text-align: center;
+  box-shadow: var(--sombra-tarjeta);
 }
 .tituloVacio {
   margin-top: var(--espacio-2);

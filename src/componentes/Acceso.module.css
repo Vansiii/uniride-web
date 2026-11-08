@@ -112,6 +112,7 @@
   background: var(--color-superficie);
   text-align: center;
   animation: entrar var(--duracion-larga) var(--curva-entrada);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 @keyframes entrar {

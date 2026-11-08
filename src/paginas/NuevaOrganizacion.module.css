@@ -12,6 +12,7 @@
   background: var(--color-superficie);
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
+  box-shadow: var(--sombra-tarjeta);
 }
 .grupo {
   display: flex;
