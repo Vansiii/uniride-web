@@ -78,6 +78,7 @@
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
   overflow: hidden;
+  box-shadow: var(--sombra-tarjeta);
 }
 .tabla {
   width: 100%;
@@ -98,7 +99,10 @@
 }
 .tabla thead th {
   background: var(--color-fondo-sutil);
-  font: var(--texto-etiqueta);
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .tabla tbody tr {
   min-height: 52px;

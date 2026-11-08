@@ -20,6 +20,45 @@
 .marca > :not(.decoracion) {
   position: relative;
 }
+/* Resplandores que derivan despacio: dan vida al panel sin distraer del formulario. */
+.marca::before,
+.marca::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+  animation: derivar 14s ease-in-out infinite alternate;
+}
+.marca::before {
+  top: -120px;
+  right: -80px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, #8b9bff 0%, transparent 70%);
+  opacity: 0.55;
+}
+.marca::after {
+  bottom: -140px;
+  left: -100px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #4b5ce6 0%, transparent 70%);
+  opacity: 0.6;
+  animation-duration: 18s;
+  animation-direction: alternate-reverse;
+}
+@keyframes derivar {
+  to {
+    transform: translate(40px, 30px) scale(1.15);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marca::before,
+  .marca::after {
+    animation: none;
+  }
+}
 .decoracion {
   position: absolute;
   right: -48px;
@@ -45,7 +84,7 @@
   font: var(--texto-titulo);
   font-family: var(--fuente-display);
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 .puntos {
@@ -112,6 +151,7 @@
   background: var(--color-superficie);
   text-align: center;
   animation: entrar var(--duracion-larga) var(--curva-entrada);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 @keyframes entrar {

@@ -122,17 +122,9 @@ export function Estructura({
         aria-label={t('navegacion.principal')}
         className={`${estilos.lateral} ${abierto ? estilos.abierto : ''}`}
       >
-        <svg
-          viewBox="0 0 48 48"
-          className={estilos.decoracion}
-          aria-hidden="true"
-        >
-          <path d="M14 13.5V27.5a10 10 0 0 0 20 0V18" />
-          <circle cx="34" cy="13.5" r="4.5" />
-        </svg>
         <Link to="/" className={estilos.logoLateral} onClick={cerrarMenu}>
           <img
-            src="/firma-blanco.svg"
+            src="/firma.svg"
             alt={t('aplicacion.nombre')}
             width={150}
             height={28}

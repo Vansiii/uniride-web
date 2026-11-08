@@ -12,6 +12,7 @@
   background: var(--color-superficie);
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
+  box-shadow: var(--sombra-tarjeta);
 }
 .grupo {
   display: flex;
@@ -119,5 +120,26 @@
   .lado {
     position: sticky;
     top: var(--espacio-8);
+  }
+}
+
+/* Movimiento: el formulario entra subiendo y la opción elegida se asienta con un rebote corto. */
+@media (prefers-reduced-motion: no-preference) {
+  .formulario {
+    animation: entrar 420ms var(--curva-estandar) both;
+  }
+  .opcion:has(input:checked) {
+    animation: asentar 220ms var(--curva-estandar);
+  }
+  @keyframes entrar {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  @keyframes asentar {
+    50% {
+      transform: scale(1.03);
+    }
   }
 }

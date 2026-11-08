@@ -4,6 +4,7 @@
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
   overflow-x: auto;
+  box-shadow: var(--sombra-tarjeta);
 }
 .tabla {
   width: 100%;
@@ -24,6 +25,8 @@
   clip-path: inset(50%);
 }
 .tabla tbody tr {
+  animation: fila var(--duracion-larga) var(--curva-entrada) both;
+  transition: background-color var(--duracion-corta) var(--curva-estandar);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--espacio-3) var(--espacio-4);
@@ -154,5 +157,30 @@
   }
   .admin .textoSecundario {
     overflow-wrap: break-word;
+  }
+}
+
+.tabla tbody tr:hover {
+  background: var(--color-primario-suave);
+}
+.tabla tbody tr:nth-child(2) {
+  animation-delay: 40ms;
+}
+.tabla tbody tr:nth-child(3) {
+  animation-delay: 80ms;
+}
+.tabla tbody tr:nth-child(4) {
+  animation-delay: 120ms;
+}
+.tabla tbody tr:nth-child(5) {
+  animation-delay: 160ms;
+}
+.tabla tbody tr:nth-child(n + 6) {
+  animation-delay: 200ms;
+}
+@keyframes fila {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }
