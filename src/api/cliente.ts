@@ -258,6 +258,22 @@ export const listarBloqueosVigentes = () =>
     'GET',
   )
 
+export type PeriodoResumen = '7d' | '30d' | 'todo'
+
+export interface ResumenOrganizacion {
+  periodo: PeriodoResumen
+  viajesPagados: number
+  miembrosActivos: number
+  pasajeros: number
+  co2Kg: number
+}
+
+export const consultarResumen = (periodo: PeriodoResumen) =>
+  solicitar<ResumenOrganizacion>(
+    `/organizacion/resumen?periodo=${periodo}`,
+    'GET',
+  )
+
 export const decidirSolicitud = (id: string, datos: Decision) =>
   solicitar<{ id: string; estado: 'aprobada' | 'rechazada' }>(
     `/membresias/${id}/decision`,

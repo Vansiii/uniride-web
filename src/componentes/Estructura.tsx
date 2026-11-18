@@ -153,6 +153,12 @@ export function Estructura({
             </p>
             <ul className={estilos.lista} aria-labelledby="grupo-organizacion">
               <Enlace
+                hacia="/organizacion/resumen"
+                icono="corporate_fare"
+                etiqueta={t('navegacion.resumen')}
+                alNavegar={cerrarMenu}
+              />
+              <Enlace
                 hacia="/organizacion/solicitudes"
                 icono="verified"
                 etiqueta={t('navegacion.solicitudes')}

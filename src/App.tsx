@@ -8,6 +8,7 @@ import AceptarInvitacion from './paginas/AceptarInvitacion'
 import Inicio from './paginas/Inicio'
 import IniciarSesion from './paginas/IniciarSesion'
 import AlertasFraude from './paginas/admin/AlertasFraude'
+import Resumen from './paginas/admin/Resumen'
 import Afiliacion from './paginas/admin/Afiliacion'
 import Solicitudes from './paginas/admin/Solicitudes'
 import NuevaOrganizacion from './paginas/NuevaOrganizacion'
@@ -92,6 +93,14 @@ export default function App() {
           element={
             <Protegida deOrganizacion>
               <AlertasFraude />
+            </Protegida>
+          }
+        />
+        <Route
+          path="/organizacion/resumen"
+          element={
+            <Protegida deOrganizacion>
+              <Resumen />
             </Protegida>
           }
         />
