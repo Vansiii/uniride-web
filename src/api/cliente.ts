@@ -274,6 +274,34 @@ export const consultarResumen = (periodo: PeriodoResumen) =>
     'GET',
   )
 
+export interface MetricasOrganizacion {
+  organizacionId: string
+  nombre: string
+  viajesPagados: number
+  miembrosActivos: number
+  co2Kg: number
+  sinActividad: boolean
+}
+
+export interface MetricasPlataforma {
+  periodo: PeriodoResumen
+  global: {
+    organizacionesActivas: number
+    miembrosActivos: number
+    viajesPagados: number
+    pasajeros: number
+    co2Kg: number
+    fallidasOExpiradas: number
+  }
+  porOrganizacion: MetricasOrganizacion[]
+}
+
+export const consultarMetricas = (periodo: PeriodoResumen) =>
+  solicitar<MetricasPlataforma>(
+    `/plataforma/metricas?periodo=${periodo}`,
+    'GET',
+  )
+
 export const decidirSolicitud = (id: string, datos: Decision) =>
   solicitar<{ id: string; estado: 'aprobada' | 'rechazada' }>(
     `/membresias/${id}/decision`,
