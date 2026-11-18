@@ -67,11 +67,14 @@ export default function AlertasFraude() {
   const [sinPermiso, setSinPermiso] = useState(false)
   const [cargandoMas, setCargandoMas] = useState(false)
 
-  const alFallar = useCallback((error: unknown) => {
-    if (error instanceof api.ErrorApi && error.estado === 403)
-      setSinPermiso(true)
-    else setFalla(true)
-  }, [setFalla, setSinPermiso])
+  const alFallar = useCallback(
+    (error: unknown) => {
+      if (error instanceof api.ErrorApi && error.estado === 403)
+        setSinPermiso(true)
+      else setFalla(true)
+    },
+    [setFalla, setSinPermiso],
+  )
 
   const cargar = useCallback(() => {
     if (!organizacionId) return () => undefined
