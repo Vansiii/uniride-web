@@ -87,6 +87,7 @@
     "organizaciones": "Organizaciones",
     "afiliacion": "Afiliación",
     "solicitudes": "Solicitudes",
+    "alertas_fraude": "Alertas de fraude",
     "grupo_organizacion": "Mi organización",
     "organizacion_activa": "Organización activa"
   },
@@ -209,6 +210,41 @@
       "modo_manual_ayuda": "Revisas cada solicitud antes de aprobarla.",
       "modo_automatica": "Automática",
       "modo_automatica_ayuda": "Quien confirme un correo de estos dominios entra de inmediato."
+    }
+  },
+  "fraude": {
+    "alertas": {
+      "titulo": "Alertas de fraude",
+      "descripcion": "Alertas y bloqueos preventivos de {organizacion}. Los bloqueos terminan solos en su fecha.",
+      "vacio": "Sin alertas por ahora.",
+      "bloqueos_vacio": "No hay bloqueos vigentes.",
+      "error": "No pudimos cargar las alertas.",
+      "reintentar": "Reintentar",
+      "cargar_mas": "Cargar más",
+      "persona_sin_nombre": "Persona sin nombre",
+      "bloqueos_titulo": "Bloqueos vigentes",
+      "alertas_titulo": "Alertas",
+      "filtro": "Patrón",
+      "todos": "Todos",
+      "columna_fecha": "Fecha",
+      "columna_patron": "Patrón",
+      "columna_personas": "Personas",
+      "columna_detalle": "Detalle",
+      "columna_tipo": "Bloqueo de",
+      "columna_hasta": "Hasta",
+      "tipo_par": "Par de personas",
+      "tipo_cuenta": "Cuenta",
+      "rol_conductor": "conductor",
+      "rol_pasajero": "pasajero",
+      "bloqueo_hasta": "Bloqueo hasta {fecha}",
+      "cantidad": "{n} reservas",
+      "distancia": "{n} m recorridos",
+      "minutos": "{n} min",
+      "patron": {
+        "viajes_repetidos": "Viajes repetidos",
+        "sin_desplazamiento": "Viaje sin desplazamiento",
+        "verificaciones_fallidas": "Verificaciones fallidas repetidas"
+      }
     }
   },
   "membresias": {

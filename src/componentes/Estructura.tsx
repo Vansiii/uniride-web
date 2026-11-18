@@ -159,6 +159,12 @@ export function Estructura({
                 alNavegar={cerrarMenu}
               />
               <Enlace
+                hacia="/organizacion/alertas"
+                icono="warning"
+                etiqueta={t('navegacion.alertas_fraude')}
+                alNavegar={cerrarMenu}
+              />
+              <Enlace
                 hacia="/organizacion/afiliacion"
                 icono="school"
                 etiqueta={t('navegacion.afiliacion')}

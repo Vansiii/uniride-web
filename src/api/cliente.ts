@@ -218,6 +218,46 @@ export const listarSolicitudes = (organizacionId: string) =>
     'GET',
   )
 
+export type PatronFraude =
+  'viajes_repetidos' | 'sin_desplazamiento' | 'verificaciones_fallidas'
+export interface PersonaAlerta {
+  nombre: string
+  rol: 'conductor' | 'pasajero'
+}
+export interface AlertaFraude {
+  id: string
+  creadoEn: string
+  patron: PatronFraude
+  personas: PersonaAlerta[]
+  cantidad?: number
+  distanciaM?: number
+  minutos?: number
+  bloqueoHasta?: string
+}
+export interface BloqueoVigente {
+  tipo: 'par' | 'cuenta'
+  patron: PatronFraude
+  personas: PersonaAlerta[]
+  hasta: string
+}
+
+/** HU-26: alertas de fraude de la organización activa; `antes` es el cursor `siguiente` de la página anterior. */
+export const listarAlertasFraude = (patron?: PatronFraude, antes?: string) => {
+  const consulta = new URLSearchParams({ limite: '20' })
+  if (patron) consulta.set('patron', patron)
+  if (antes) consulta.set('antes', antes)
+  return solicitar<{ alertas: AlertaFraude[]; siguiente?: string }>(
+    `/organizacion/alertas-fraude?${consulta}`,
+    'GET',
+  )
+}
+
+export const listarBloqueosVigentes = () =>
+  solicitar<{ bloqueos: BloqueoVigente[] }>(
+    '/organizacion/bloqueos-vigentes',
+    'GET',
+  )
+
 export const decidirSolicitud = (id: string, datos: Decision) =>
   solicitar<{ id: string; estado: 'aprobada' | 'rechazada' }>(
     `/membresias/${id}/decision`,
