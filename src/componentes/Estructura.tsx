@@ -122,17 +122,9 @@ export function Estructura({
         aria-label={t('navegacion.principal')}
         className={`${estilos.lateral} ${abierto ? estilos.abierto : ''}`}
       >
-        <svg
-          viewBox="0 0 48 48"
-          className={estilos.decoracion}
-          aria-hidden="true"
-        >
-          <path d="M14 13.5V27.5a10 10 0 0 0 20 0V18" />
-          <circle cx="34" cy="13.5" r="4.5" />
-        </svg>
         <Link to="/" className={estilos.logoLateral} onClick={cerrarMenu}>
           <img
-            src="/firma-blanco.svg"
+            src="/firma.svg"
             alt={t('aplicacion.nombre')}
             width={150}
             height={28}
@@ -161,9 +153,21 @@ export function Estructura({
             </p>
             <ul className={estilos.lista} aria-labelledby="grupo-organizacion">
               <Enlace
+                hacia="/organizacion/resumen"
+                icono="corporate_fare"
+                etiqueta={t('navegacion.resumen')}
+                alNavegar={cerrarMenu}
+              />
+              <Enlace
                 hacia="/organizacion/solicitudes"
                 icono="verified"
                 etiqueta={t('navegacion.solicitudes')}
+                alNavegar={cerrarMenu}
+              />
+              <Enlace
+                hacia="/organizacion/alertas"
+                icono="warning"
+                etiqueta={t('navegacion.alertas_fraude')}
                 alNavegar={cerrarMenu}
               />
               <Enlace
@@ -185,6 +189,12 @@ export function Estructura({
                 hacia="/organizaciones"
                 icono="corporate_fare"
                 etiqueta={t('navegacion.organizaciones')}
+                alNavegar={cerrarMenu}
+              />
+              <Enlace
+                hacia="/plataforma/metricas"
+                icono="apartment"
+                etiqueta={t('navegacion.metricas')}
                 alNavegar={cerrarMenu}
               />
             </ul>

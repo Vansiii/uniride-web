@@ -87,6 +87,9 @@
     "organizaciones": "Organizaciones",
     "afiliacion": "Afiliación",
     "solicitudes": "Solicitudes",
+    "alertas_fraude": "Alertas de fraude",
+    "resumen": "Resumen",
+    "metricas": "Métricas",
     "grupo_organizacion": "Mi organización",
     "organizacion_activa": "Organización activa"
   },
@@ -209,6 +212,83 @@
       "modo_manual_ayuda": "Revisas cada solicitud antes de aprobarla.",
       "modo_automatica": "Automática",
       "modo_automatica_ayuda": "Quien confirme un correo de estos dominios entra de inmediato."
+    }
+  },
+  "resumen": {
+    "titulo": "Resumen",
+    "descripcion": "Cifras de {organizacion}: viajes ya pagados, miembros y pasajeros.",
+    "periodo": "Período",
+    "periodo_7d": "7 días",
+    "periodo_30d": "30 días",
+    "periodo_todo": "Todo",
+    "viajes": "Viajes pagados",
+    "miembros": "Miembros activos",
+    "pasajeros": "Pasajeros",
+    "co2": "CO₂ evitado (kg)",
+    "estimado": "Estimado",
+    "vacio": "Aún no hay viajes pagados.",
+    "error": "No pudimos cargar el resumen.",
+    "reintentar": "Reintentar"
+  },
+  "plataforma": {
+    "metricas": {
+      "titulo": "Métricas de la plataforma",
+      "descripcion": "Uso de UniRide en todas las organizaciones. Son solo cifras agregadas.",
+      "periodo": "Período",
+      "periodo_7d": "7 días",
+      "periodo_30d": "30 días",
+      "periodo_todo": "Todo",
+      "organizaciones": "Organizaciones activas",
+      "miembros": "Miembros activos",
+      "viajes": "Viajes pagados",
+      "pasajeros": "Pasajeros",
+      "co2": "CO₂ evitado (kg)",
+      "fallidas": "Reservas fallidas o expiradas",
+      "estimado": "Estimado",
+      "tabla": "Por organización",
+      "columna_nombre": "Organización",
+      "columna_viajes": "Viajes pagados",
+      "columna_miembros": "Miembros activos",
+      "columna_co2": "CO₂ (kg)",
+      "sin_actividad": "Sin actividad",
+      "vacio": "Aún no hay actividad en la plataforma.",
+      "error": "No pudimos cargar las métricas.",
+      "reintentar": "Reintentar"
+    }
+  },
+  "fraude": {
+    "alertas": {
+      "titulo": "Alertas de fraude",
+      "descripcion": "Alertas y bloqueos preventivos de {organizacion}. Los bloqueos terminan solos en su fecha.",
+      "vacio": "Sin alertas por ahora.",
+      "bloqueos_vacio": "No hay bloqueos vigentes.",
+      "error": "No pudimos cargar las alertas.",
+      "reintentar": "Reintentar",
+      "cargar_mas": "Cargar más",
+      "persona_sin_nombre": "Persona sin nombre",
+      "bloqueos_titulo": "Bloqueos vigentes",
+      "alertas_titulo": "Alertas",
+      "filtro": "Patrón",
+      "todos": "Todos",
+      "columna_fecha": "Fecha",
+      "columna_patron": "Patrón",
+      "columna_personas": "Personas",
+      "columna_detalle": "Detalle",
+      "columna_tipo": "Bloqueo de",
+      "columna_hasta": "Hasta",
+      "tipo_par": "Par de personas",
+      "tipo_cuenta": "Cuenta",
+      "rol_conductor": "conductor",
+      "rol_pasajero": "pasajero",
+      "bloqueo_hasta": "Bloqueo hasta {fecha}",
+      "cantidad": "{n} reservas",
+      "distancia": "{n} m recorridos",
+      "minutos": "{n} min",
+      "patron": {
+        "viajes_repetidos": "Viajes repetidos",
+        "sin_desplazamiento": "Viaje sin desplazamiento",
+        "verificaciones_fallidas": "Verificaciones fallidas repetidas"
+      }
     }
   },
   "membresias": {

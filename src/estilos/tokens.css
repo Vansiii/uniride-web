@@ -10,12 +10,12 @@
   color-scheme: light;
 
   --color-fondo: #ffffff;
-  --color-fondo-sutil: #f6f7f9;
+  --color-fondo-sutil: #f7f8fa;
   --color-superficie: #ffffff;
-  --color-borde: #dde1e8;
+  --color-borde: #e4e7ec;
   --color-borde-campo: #7a8396;
-  --color-texto: #1a1f27;
-  --color-texto-secundario: #535b6c;
+  --color-texto: #0f1729;
+  --color-texto-secundario: #475467;
   --color-texto-placeholder: #6b7385;
   --color-texto-deshabilitado: #8f98a8;
   --color-fondo-deshabilitado: #eef0f4;
@@ -57,24 +57,26 @@
   --espacio-12: 3rem;
   --espacio-16: 4rem;
 
-  --radio-s: 8px;
-  --radio-m: 12px;
-  --radio-l: 16px;
-  --radio-xl: 24px;
+  --radio-s: 6px;
+  --radio-m: 8px;
+  --radio-l: 12px;
+  --radio-xl: 16px;
   --radio-completo: 999px;
   --grosor-borde: 1px;
   --grosor-borde-activo: 2px;
 
   /* 44 px: objetivo táctil de las acciones principales (12.2); se usa en todos los controles para alinearlos. */
-  --alto-control: 2.75rem;
-  --alto-control-compacto: 2rem;
-  --alto-fila: 3.25rem;
+  --alto-control: 2.5rem;
+  --alto-control-compacto: 1.875rem;
+  --alto-fila: 3.5rem;
   --alto-encabezado: 4rem;
-  --ancho-barra-lateral: 240px;
+  --ancho-barra-lateral: 256px;
   --ancho-formulario: 560px;
   --ancho-contenido: 1200px;
 
-  --sombra-flotante: 0 6px 20px rgba(29, 39, 99, 0.14);
+  --sombra-tarjeta: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --sombra-flotante:
+    0 8px 24px -6px rgba(16, 24, 40, 0.14), 0 2px 6px rgba(16, 24, 40, 0.06);
   --sombra-dialogo: 0 8px 24px rgba(15, 18, 24, 0.16);
   --capa-encabezado: 10;
   --capa-menu: 20;
@@ -93,18 +95,26 @@
     system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
   --fuente-display: 'Bricolage Grotesque', var(--fuente);
-  --texto-pantalla: 800 1.75rem/2.25rem var(--fuente-display);
+  --texto-pantalla: 650 1.625rem/2.125rem var(--fuente);
   --texto-marca: 800 2.125rem/2.5rem var(--fuente-display);
-  --texto-titulo: 600 1.375rem/1.75rem var(--fuente);
-  --texto-subtitulo: 600 1.125rem/1.5rem var(--fuente);
-  --texto-cuerpo: 400 1rem/1.5rem var(--fuente);
-  --texto-cuerpo-enfasis: 600 1rem/1.5rem var(--fuente);
+  --texto-titulo: 600 1.25rem/1.75rem var(--fuente);
+  --texto-subtitulo: 600 1rem/1.5rem var(--fuente);
+  --texto-cuerpo: 400 0.9375rem/1.5rem var(--fuente);
+  --texto-cuerpo-enfasis: 600 0.9375rem/1.5rem var(--fuente);
   --texto-secundario: 400 0.875rem/1.25rem var(--fuente);
   --texto-etiqueta: 500 0.875rem/1.25rem var(--fuente);
   --texto-pequeno: 500 0.75rem/1rem var(--fuente);
 }
 
 /* HU-31: [data-tema='oscuro'] { color-scheme: dark; --color-fondo: #0f1218; … } */
+
+/* Puntero táctil: objetivos de 44 px (12.2). */
+@media (pointer: coarse) {
+  :root {
+    --alto-control: 2.75rem;
+    --alto-control-compacto: 2.25rem;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   :root {

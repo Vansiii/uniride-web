@@ -95,3 +95,10 @@
     transform: translateY(-4px);
   }
 }
+
+/* Anillo suave alrededor del campo con foco: refuerza dónde se escribe sin mover el contenido. */
+.caja:focus-within:not(.conError) {
+  box-shadow:
+    inset 0 0 0 1px var(--color-primario),
+    0 0 0 4px var(--color-primario-suave);
+}

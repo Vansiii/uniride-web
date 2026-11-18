@@ -7,9 +7,12 @@ import { Cargando } from './componentes/Estados'
 import AceptarInvitacion from './paginas/AceptarInvitacion'
 import Inicio from './paginas/Inicio'
 import IniciarSesion from './paginas/IniciarSesion'
+import AlertasFraude from './paginas/admin/AlertasFraude'
+import Resumen from './paginas/admin/Resumen'
 import Afiliacion from './paginas/admin/Afiliacion'
 import Solicitudes from './paginas/admin/Solicitudes'
 import NuevaOrganizacion from './paginas/NuevaOrganizacion'
+import Metricas from './paginas/Metricas'
 import Organizaciones from './paginas/Organizaciones'
 import RecuperarContrasena from './paginas/RecuperarContrasena'
 
@@ -55,6 +58,14 @@ export default function App() {
           }
         />
         <Route
+          path="/plataforma/metricas"
+          element={
+            <Protegida superAdmin>
+              <Metricas />
+            </Protegida>
+          }
+        />
+        <Route
           path="/organizaciones"
           element={
             <Protegida superAdmin>
@@ -83,6 +94,22 @@ export default function App() {
           element={
             <Protegida deOrganizacion>
               <Solicitudes />
+            </Protegida>
+          }
+        />
+        <Route
+          path="/organizacion/alertas"
+          element={
+            <Protegida deOrganizacion>
+              <AlertasFraude />
+            </Protegida>
+          }
+        />
+        <Route
+          path="/organizacion/resumen"
+          element={
+            <Protegida deOrganizacion>
+              <Resumen />
             </Protegida>
           }
         />

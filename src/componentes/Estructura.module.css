@@ -52,8 +52,9 @@
   padding: var(--espacio-4) var(--espacio-3);
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--color-marca-profundo);
-  color: var(--color-sobre-marca);
+  background: var(--color-superficie);
+  border-right: var(--grosor-borde) solid var(--color-borde);
+  color: var(--color-texto);
   transform: translateX(-100%);
   visibility: hidden;
   transition:
@@ -79,20 +80,6 @@
   pointer-events: auto;
 }
 
-.decoracion {
-  position: absolute;
-  left: -40px;
-  bottom: 96px;
-  width: 200px;
-  fill: none;
-  stroke: var(--color-sobre-marca);
-  stroke-width: 6;
-  opacity: 0.08;
-  pointer-events: none;
-}
-.decoracion circle {
-  stroke-width: 3;
-}
 .logoLateral {
   display: none;
   align-self: flex-start;
@@ -106,10 +93,12 @@
 }
 
 .grupo {
-  margin: var(--espacio-4) 0 var(--espacio-1);
+  margin: var(--espacio-5) 0 var(--espacio-1);
   padding: 0 var(--espacio-3);
-  color: var(--color-sobre-marca-secundario);
+  color: var(--color-texto-placeholder);
   font: var(--texto-pequeno);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .lista {
   position: relative;
@@ -127,7 +116,7 @@
   min-height: var(--alto-control);
   padding: 0 var(--espacio-3);
   border-radius: var(--radio-m);
-  color: var(--color-sobre-marca-secundario);
+  color: var(--color-texto-secundario);
   font: var(--texto-etiqueta);
   text-decoration: none;
   transition:
@@ -135,19 +124,16 @@
     color var(--duracion-corta) var(--curva-estandar);
 }
 .enlace:hover {
-  background: var(--color-marca-velo);
-  color: var(--color-sobre-marca);
+  background: var(--color-fondo-sutil);
+  color: var(--color-texto);
 }
 .enlace[aria-current='page'] {
-  background: var(--color-marca-velo);
-  color: var(--color-sobre-marca);
-  box-shadow: inset 3px 0 0 var(--color-marca-brillante);
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+  font-weight: 600;
 }
 .enlace[aria-current='page'] svg {
-  color: var(--color-marca-brillante);
-}
-.lateral :focus-visible {
-  outline-color: var(--color-marca-brillante);
+  color: var(--color-primario);
 }
 
 .persona {
@@ -158,7 +144,7 @@
   align-items: center;
   margin-top: auto;
   padding: var(--espacio-4) var(--espacio-2) 0;
-  border-top: var(--grosor-borde) solid var(--color-marca-velo);
+  border-top: var(--grosor-borde) solid var(--color-borde);
 }
 .avatar {
   display: grid;
@@ -166,8 +152,8 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--radio-completo);
-  background: var(--color-marca-brillante);
-  color: var(--color-marca-profundo);
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
   font: var(--texto-etiqueta);
   font-weight: 700;
 }
@@ -182,7 +168,7 @@
   overflow-wrap: anywhere;
 }
 .correo {
-  color: var(--color-sobre-marca-secundario);
+  color: var(--color-texto-secundario);
   font: var(--texto-pequeno);
   overflow-wrap: anywhere;
 }
@@ -198,7 +184,7 @@
   border: 0;
   border-radius: var(--radio-m);
   background: transparent;
-  color: var(--color-sobre-marca-secundario);
+  color: var(--color-texto-secundario);
   font: var(--texto-etiqueta);
   cursor: pointer;
   transition:
@@ -206,8 +192,8 @@
     color var(--duracion-corta) var(--curva-estandar);
 }
 .salir:hover {
-  background: var(--color-marca-velo);
-  color: var(--color-sobre-marca);
+  background: var(--color-fondo-sutil);
+  color: var(--color-texto);
 }
 
 /* Contenido */
@@ -257,7 +243,7 @@
 }
 .titulo {
   font: var(--texto-pantalla);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   overflow-wrap: anywhere;
 }
 .descripcion {
@@ -310,10 +296,7 @@
   display: flex;
   flex-direction: column;
   padding: var(--espacio-3);
+  border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-m);
-  background: var(--color-marca-velo);
-  color: var(--color-sobre-marca);
-}
-.organizacion .correo {
-  color: var(--color-sobre-marca-secundario);
+  background: var(--color-fondo-sutil);
 }
