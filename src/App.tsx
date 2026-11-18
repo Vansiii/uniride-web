@@ -12,6 +12,7 @@ import Resumen from './paginas/admin/Resumen'
 import Afiliacion from './paginas/admin/Afiliacion'
 import Solicitudes from './paginas/admin/Solicitudes'
 import NuevaOrganizacion from './paginas/NuevaOrganizacion'
+import Metricas from './paginas/Metricas'
 import Organizaciones from './paginas/Organizaciones'
 import RecuperarContrasena from './paginas/RecuperarContrasena'
 
@@ -53,6 +54,14 @@ export default function App() {
           element={
             <Protegida>
               <Inicio />
+            </Protegida>
+          }
+        />
+        <Route
+          path="/plataforma/metricas"
+          element={
+            <Protegida superAdmin>
+              <Metricas />
             </Protegida>
           }
         />

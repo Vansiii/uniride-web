@@ -191,6 +191,12 @@ export function Estructura({
                 etiqueta={t('navegacion.organizaciones')}
                 alNavegar={cerrarMenu}
               />
+              <Enlace
+                hacia="/plataforma/metricas"
+                icono="apartment"
+                etiqueta={t('navegacion.metricas')}
+                alNavegar={cerrarMenu}
+              />
             </ul>
           </>
         )}
