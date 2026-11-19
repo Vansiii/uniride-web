@@ -1,0 +1,453 @@
+/* Componentes de reporte. Las cifras van en la fuente display (3.1); el color semántico solo comunica estado. */
+
+/* Tonos: cada componente lee --tono y --tono-suave. */
+.primario {
+  --tono: var(--color-primario);
+  --tono-suave: var(--color-primario-suave);
+  --tono-texto: var(--color-primario-texto);
+}
+.exito {
+  --tono: var(--color-exito);
+  --tono-suave: var(--color-exito-suave);
+  --tono-texto: var(--color-exito-texto);
+}
+.aviso {
+  --tono: var(--color-aviso);
+  --tono-suave: var(--color-aviso-suave);
+  --tono-texto: var(--color-aviso-texto);
+}
+.peligro {
+  --tono: var(--color-peligro);
+  --tono-suave: var(--color-peligro-suave);
+  --tono-texto: var(--color-peligro-texto);
+}
+.neutro {
+  --tono: var(--color-texto-placeholder);
+  --tono-suave: var(--color-fondo-deshabilitado);
+  --tono-texto: var(--color-texto-secundario);
+}
+
+/* Cifras */
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: var(--espacio-4);
+  margin: 0;
+  padding: 0;
+}
+/* Seis cifras: dos filas de tres en lugar de cinco y una suelta. */
+@media (min-width: 900px) {
+  .cifras:has(> :nth-child(6):last-child) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.cifra {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  min-width: 0;
+  padding: var(--espacio-5);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-tarjeta);
+  overflow: hidden;
+}
+/* Filo superior en el color de la cifra: identifica el tipo de dato de un vistazo. */
+.cifra::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--tono);
+}
+.etiquetaCifra {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
+}
+.iconoCifra {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radio-m);
+  background: var(--tono-suave);
+  color: var(--tono);
+}
+.valorCifra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--espacio-2);
+  margin: var(--espacio-1) 0 0;
+  color: var(--color-texto);
+  font: 800 2.25rem/2.5rem var(--fuente-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.extra {
+  padding: 0 var(--espacio-2);
+  border-radius: var(--radio-completo);
+  background: var(--color-fondo-sutil);
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+  letter-spacing: 0;
+}
+.notaCifra {
+  margin: 0;
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+.cifraEsqueleto {
+  height: 9.5rem;
+  border-radius: var(--radio-l);
+  background:
+    linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.7) 50%,
+        transparent 100%
+      )
+      0 0 / 200% 100% no-repeat,
+    var(--color-fondo-deshabilitado);
+  animation: brillo 1.4s linear infinite;
+}
+@keyframes brillo {
+  from {
+    background-position:
+      150% 0,
+      0 0;
+  }
+  to {
+    background-position:
+      -50% 0,
+      0 0;
+  }
+}
+
+/* Paneles */
+.rejilla {
+  display: grid;
+  gap: var(--espacio-4);
+}
+@media (min-width: 900px) {
+  .rejilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .panelAncho {
+    grid-column: 1 / -1;
+  }
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-5);
+  min-width: 0;
+  padding: var(--espacio-5);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-tarjeta);
+}
+.cabeceraPanel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-3);
+}
+.iconoPanel {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radio-m);
+  background: var(--color-marca-profundo);
+  color: var(--color-marca-brillante);
+}
+.textosPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.tituloPanel {
+  font: var(--texto-subtitulo);
+}
+.descripcionPanel {
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+
+/* Barras con motivo de trayecto */
+.barras {
+  --tono: var(--color-primario);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.barra {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--espacio-2) var(--espacio-3);
+  align-items: baseline;
+}
+.etiquetaBarra {
+  min-width: 0;
+  font: var(--texto-etiqueta);
+  overflow-wrap: anywhere;
+}
+.textoBarra {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--espacio-2);
+  font: var(--texto-cuerpo-enfasis);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.notaBarra {
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+}
+.pista,
+.trayecto {
+  position: relative;
+  grid-column: 1 / -1;
+  display: block;
+  height: 0.875rem;
+}
+/* La línea de fondo es el camino completo; el anillo final es el destino. */
+.pista::before,
+.trayecto::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0.4375rem;
+  right: 0.4375rem;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--color-borde);
+  border-radius: var(--radio-completo);
+}
+.trayecto::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0.875rem;
+  height: 0.875rem;
+  box-sizing: border-box;
+  border: 2px solid var(--color-borde-campo);
+  border-radius: var(--radio-completo);
+  background: var(--color-superficie);
+}
+.relleno {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: max(0.875rem, var(--avance));
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  border-radius: var(--radio-completo);
+  background: linear-gradient(90deg, var(--color-marca-profundo), var(--tono));
+  transform-origin: left center;
+  animation: crecer var(--duracion-trazo) var(--curva-entrada) both;
+}
+/* Punto de origen relleno. */
+.relleno::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-top: -0.4375rem;
+  border-radius: var(--radio-completo);
+  background: var(--color-marca-profundo);
+}
+.trayecto .relleno {
+  z-index: 1;
+}
+@keyframes crecer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Anillo */
+.anillo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-6);
+}
+.graficoAnillo {
+  position: relative;
+  width: 9.5rem;
+  height: 9.5rem;
+  flex: none;
+}
+.graficoAnillo svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.fondoAnillo,
+.segmento {
+  fill: none;
+  stroke-width: 14;
+}
+.fondoAnillo {
+  stroke: var(--color-fondo-deshabilitado);
+}
+.segmento {
+  stroke: var(--tono);
+  animation: aparecer var(--duracion-trazo) var(--curva-entrada) both;
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+.centroAnillo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.valorCentro {
+  font: 800 1.75rem/2rem var(--fuente-display);
+  letter-spacing: -0.02em;
+}
+.etiquetaCentro {
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+}
+.leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+  flex: 1 1 12rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.leyenda li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+.muestra {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radio-completo);
+  background: var(--tono);
+}
+.etiquetaLeyenda {
+  font: var(--texto-etiqueta);
+}
+.valorLeyenda {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--espacio-2);
+  font: var(--texto-cuerpo-enfasis);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Barra del reporte */
+.barraReporte {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+}
+.periodos {
+  display: inline-flex;
+  padding: 3px;
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-m);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-tarjeta);
+}
+.chip {
+  min-height: var(--alto-control-compacto);
+  padding: 0 var(--espacio-4);
+  border: 0;
+  border-radius: var(--radio-s);
+  background: transparent;
+  color: var(--color-texto-secundario);
+  font: var(--texto-etiqueta);
+  cursor: pointer;
+  transition:
+    background-color var(--duracion-corta) var(--curva-estandar),
+    color var(--duracion-corta) var(--curva-estandar);
+}
+.chip:hover {
+  color: var(--color-texto);
+}
+.chip[aria-pressed='true'] {
+  background: var(--color-marca-profundo);
+  color: var(--color-sobre-marca);
+}
+.herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+.actualizado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  width: 100%;
+  max-width: 26rem;
+  min-height: var(--alto-control);
+  padding: 0 var(--espacio-3);
+  border: var(--grosor-borde) solid var(--color-borde-campo);
+  border-radius: var(--radio-m);
+  background: var(--color-superficie);
+  color: var(--color-texto-secundario);
+}
+.buscador:focus-within {
+  outline: var(--grosor-borde-activo) solid var(--color-foco);
+  outline-offset: 1px;
+}
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-texto);
+  font: var(--texto-cuerpo);
+}
+.buscador input::placeholder {
+  color: var(--color-texto-placeholder);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cifraEsqueleto {
+    animation: none;
+  }
+}

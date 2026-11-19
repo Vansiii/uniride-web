@@ -23,6 +23,8 @@ interface Props {
     /** Permite interceptar la salida (formulario con cambios sin guardar). */
     alPresionar?: (e: MouseEvent) => void
   }
+  /** Convierte la cabecera en banda de marca (3.5); su contenido va debajo de la descripción. */
+  banda?: ReactNode
   children: ReactNode
 }
 
@@ -65,6 +67,7 @@ export function Estructura({
   descripcion,
   accion,
   miga,
+  banda,
   children,
 }: Props) {
   const { usuario, cerrar } = useSesion()
@@ -124,7 +127,7 @@ export function Estructura({
       >
         <Link to="/" className={estilos.logoLateral} onClick={cerrarMenu}>
           <img
-            src="/firma.svg"
+            src="/firma-blanco.svg"
             alt={t('aplicacion.nombre')}
             width={150}
             height={28}
@@ -132,6 +135,9 @@ export function Estructura({
         </Link>
         {administra && (
           <div className={estilos.organizacion}>
+            <span className={estilos.isotipo} aria-hidden="true">
+              <img src="/isotipo-blanco.svg" alt="" width={28} height={28} />
+            </span>
             <span className={estilos.nombre}>{organizacion?.organizacion}</span>
             <span className={estilos.correo}>
               {t('navegacion.organizacion_activa')}
@@ -154,7 +160,7 @@ export function Estructura({
             <ul className={estilos.lista} aria-labelledby="grupo-organizacion">
               <Enlace
                 hacia="/organizacion/resumen"
-                icono="corporate_fare"
+                icono="leaderboard"
                 etiqueta={t('navegacion.resumen')}
                 alNavegar={cerrarMenu}
               />
@@ -193,7 +199,7 @@ export function Estructura({
               />
               <Enlace
                 hacia="/plataforma/metricas"
-                icono="apartment"
+                icono="leaderboard"
                 etiqueta={t('navegacion.metricas')}
                 alNavegar={cerrarMenu}
               />
@@ -226,14 +232,36 @@ export function Estructura({
               {miga.etiqueta}
             </Link>
           )}
-          <div className={estilos.cabecera}>
-            <div className={estilos.textosCabecera}>
-              <h1 className={estilos.titulo}>{titulo}</h1>
-              {descripcion && (
-                <p className={estilos.descripcion}>{descripcion}</p>
-              )}
+          <div className={banda ? estilos.banda : undefined}>
+            {banda && (
+              <svg
+                viewBox="0 0 48 48"
+                className={estilos.uBanda}
+                aria-hidden="true"
+              >
+                <g fill="none" stroke="currentColor">
+                  <path
+                    d="M14 13.5V27.5a10 10 0 0 0 20 0V18"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="34" cy="13.5" r="4.5" strokeWidth="3" />
+                </g>
+                <circle cx="14" cy="13.5" r="6" fill="currentColor" />
+              </svg>
+            )}
+            <div className={estilos.cabecera}>
+              <div className={estilos.textosCabecera}>
+                <h1 className={estilos.titulo}>{titulo}</h1>
+                {descripcion && (
+                  <p className={estilos.descripcion}>{descripcion}</p>
+                )}
+              </div>
+              {accion}
             </div>
-            {accion}
+            {banda && banda !== true && (
+              <div className={estilos.extraBanda}>{banda}</div>
+            )}
           </div>
           {children}
         </div>

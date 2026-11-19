@@ -52,9 +52,14 @@
   padding: var(--espacio-4) var(--espacio-3);
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--color-superficie);
-  border-right: var(--grosor-borde) solid var(--color-borde);
-  color: var(--color-texto);
+  background:
+    radial-gradient(
+      120% 60% at 0% 100%,
+      rgba(52, 71, 204, 0.55) 0%,
+      transparent 60%
+    ),
+    var(--color-marca-profundo);
+  color: var(--color-sobre-marca);
   transform: translateX(-100%);
   visibility: hidden;
   transition:
@@ -95,7 +100,8 @@
 .grupo {
   margin: var(--espacio-5) 0 var(--espacio-1);
   padding: 0 var(--espacio-3);
-  color: var(--color-texto-placeholder);
+  color: var(--color-sobre-marca-secundario);
+  opacity: 0.8;
   font: var(--texto-pequeno);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -116,7 +122,8 @@
   min-height: var(--alto-control);
   padding: 0 var(--espacio-3);
   border-radius: var(--radio-m);
-  color: var(--color-texto-secundario);
+  position: relative;
+  color: var(--color-sobre-marca-secundario);
   font: var(--texto-etiqueta);
   text-decoration: none;
   transition:
@@ -124,16 +131,32 @@
     color var(--duracion-corta) var(--curva-estandar);
 }
 .enlace:hover {
-  background: var(--color-fondo-sutil);
-  color: var(--color-texto);
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
 }
+/* Ítem activo (8.11): velo, ícono relleno y marca lateral de 3 px en marcaBrillante. */
 .enlace[aria-current='page'] {
-  background: var(--color-primario-suave);
-  color: var(--color-primario-texto);
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
   font-weight: 600;
 }
+.enlace[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--espacio-3) * -1);
+  top: 20%;
+  bottom: 20%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--color-marca-brillante);
+}
 .enlace[aria-current='page'] svg {
-  color: var(--color-primario);
+  color: var(--color-marca-brillante);
+}
+.enlace:focus-visible,
+.salir:focus-visible,
+.logoLateral:focus-visible {
+  outline-color: var(--color-marca-brillante);
 }
 
 .persona {
@@ -144,7 +167,7 @@
   align-items: center;
   margin-top: auto;
   padding: var(--espacio-4) var(--espacio-2) 0;
-  border-top: var(--grosor-borde) solid var(--color-borde);
+  border-top: var(--grosor-borde) solid var(--color-marca-velo);
 }
 .avatar {
   display: grid;
@@ -152,8 +175,8 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--radio-completo);
-  background: var(--color-primario-suave);
-  color: var(--color-primario-texto);
+  background: var(--color-marca-brillante);
+  color: var(--color-marca-profundo);
   font: var(--texto-etiqueta);
   font-weight: 700;
 }
@@ -168,7 +191,7 @@
   overflow-wrap: anywhere;
 }
 .correo {
-  color: var(--color-texto-secundario);
+  color: var(--color-sobre-marca-secundario);
   font: var(--texto-pequeno);
   overflow-wrap: anywhere;
 }
@@ -184,7 +207,7 @@
   border: 0;
   border-radius: var(--radio-m);
   background: transparent;
-  color: var(--color-texto-secundario);
+  color: var(--color-sobre-marca-secundario);
   font: var(--texto-etiqueta);
   cursor: pointer;
   transition:
@@ -192,8 +215,8 @@
     color var(--duracion-corta) var(--curva-estandar);
 }
 .salir:hover {
-  background: var(--color-fondo-sutil);
-  color: var(--color-texto);
+  background: var(--color-marca-velo);
+  color: var(--color-sobre-marca);
 }
 
 /* Contenido */
@@ -293,10 +316,68 @@
 
 /* Organización activa del administrador (HU-02/HU-03) */
 .organizacion {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0 var(--espacio-3);
   padding: var(--espacio-3);
-  border: var(--grosor-borde) solid var(--color-borde);
+  border: var(--grosor-borde) solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radio-l);
+  background: var(--color-marca-velo);
+}
+.isotipo {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: var(--radio-m);
-  background: var(--color-fondo-sutil);
+  background: var(--color-primario);
+}
+.isotipo img {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/* Banda de marca (3.5) en la cabecera de los tableros. */
+.banda {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--espacio-8) var(--espacio-6);
+  border-radius: var(--radio-xl);
+  background: var(--degradado-marca);
+  color: var(--color-sobre-marca);
+  box-shadow: var(--sombra-flotante);
+}
+.banda .titulo {
+  font: var(--texto-marca);
+  letter-spacing: -0.02em;
+}
+.banda .descripcion {
+  color: var(--color-sobre-marca-secundario);
+}
+.extraBanda {
+  position: relative;
+  margin-top: var(--espacio-6);
+}
+/* La U de la marca, decorativa, al 12 % (8.12). */
+.uBanda {
+  position: absolute;
+  z-index: -1;
+  right: 1.5rem;
+  top: 10%;
+  height: 80%;
+  width: auto;
+  aspect-ratio: 1;
+  opacity: 0.12;
+  pointer-events: none;
+}
+@media (max-width: 639px) {
+  .banda {
+    padding: var(--espacio-6) var(--espacio-5);
+  }
+  .uBanda {
+    right: -1.5rem;
+  }
 }

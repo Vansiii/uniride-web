@@ -5,13 +5,31 @@ import type {
   MetricasPlataforma,
   PeriodoResumen,
 } from '../api/cliente'
+import {
+  Anillo,
+  BarraReporte,
+  Barras,
+  Cifra,
+  Cifras,
+  EsqueletoCifras,
+  Panel,
+  Rejilla,
+  Trayecto,
+} from '../componentes/Datos'
 import { Estructura } from '../componentes/Estructura'
+import { Icono } from '../componentes/Icono'
+import { formatoNumero, formatoPorcentaje, descargarCsv } from '../formato'
 import { t } from '../i18n'
 import resumen from './admin/Resumen.module.css'
 import tabla from './admin/Solicitudes.module.css'
+import estilos from './Metricas.module.css'
 
-const PERIODOS: PeriodoResumen[] = ['7d', '30d', 'todo']
-const numero = new Intl.NumberFormat('es-BO', { maximumFractionDigits: 1 })
+const DIAS: Record<PeriodoResumen, number | null> = {
+  '7d': 7,
+  '30d': 30,
+  todo: null,
+}
+const KG_CO2_POR_ARBOL = 21
 
 type Columna = 'nombre' | 'viajesPagados' | 'miembrosActivos' | 'co2Kg'
 const COLUMNAS: [Columna, string][] = [
@@ -27,10 +45,15 @@ const comparar = (
   c: Columna,
 ) => (c === 'nombre' ? a.nombre.localeCompare(b.nombre, 'es') : a[c] - b[c])
 
+const m = (clave: string) => t(`plataforma.metricas.${clave}`)
+const n = (clave: string, valor: number) =>
+  m(clave).replace('{n}', formatoNumero(valor))
+
 /** HU-33: métricas de toda la plataforma. Solo lectura; el orden de la tabla se resuelve en el cliente. */
 export default function Metricas() {
   const [periodo, setPeriodo] = useState<PeriodoResumen>('30d')
   const [datos, setDatos] = useState<MetricasPlataforma | null>(null)
+  const [actualizado, setActualizado] = useState<Date>()
   const [falla, setFalla] = useState(false)
   const [orden, setOrden] = useState<{ columna: Columna; asc: boolean }>({
     columna: 'nombre',
@@ -41,7 +64,11 @@ export default function Metricas() {
     let vigente = true
     api
       .consultarMetricas(periodo)
-      .then((r) => vigente && setDatos(r))
+      .then((r) => {
+        if (!vigente) return
+        setDatos(r)
+        setActualizado(new Date())
+      })
       .catch(() => vigente && setFalla(true))
     return () => {
       vigente = false
@@ -51,51 +78,60 @@ export default function Metricas() {
   useEffect(() => cargar(), [cargar])
 
   const g = datos?.global
-  const tarjetas = g && [
-    ['organizaciones', g.organizacionesActivas],
-    ['miembros', g.miembrosActivos],
-    ['viajes', g.viajesPagados],
-    ['pasajeros', g.pasajeros],
-    ['co2', g.co2Kg],
-    ['fallidas', g.fallidasOExpiradas],
-  ]
-  const filas = datos
-    ? [...datos.porOrganizacion].sort(
-        (a, b) => (orden.asc ? 1 : -1) * comparar(a, b, orden.columna),
-      )
-    : []
+  const dias = DIAS[periodo]
+  const organizaciones = datos?.porOrganizacion ?? []
+  const filas = [...organizaciones].sort(
+    (a, b) => (orden.asc ? 1 : -1) * comparar(a, b, orden.columna),
+  )
   const sinActividadGlobal =
     !!g && g.viajesPagados === 0 && g.fallidasOExpiradas === 0
+  const sinViajes = organizaciones.filter((o) => o.viajesPagados === 0).length
+  const reservas = g ? g.pasajeros + g.fallidasOExpiradas : 0
+  const ranking = [...organizaciones]
+    .filter((o) => o.viajesPagados > 0)
+    .sort((a, b) => b.viajesPagados - a.viajesPagados)
+    .slice(0, 5)
+  const porMiembros = [...organizaciones]
+    .filter((o) => o.miembrosActivos > 0)
+    .sort((a, b) => b.miembrosActivos - a.miembrosActivos)
+    .slice(0, 5)
+  const parte = (o: MetricasOrganizacion) =>
+    g?.viajesPagados ? o.viajesPagados / g.viajesPagados : 0
+
+  const descargar = () =>
+    g &&
+    descargarCsv(m('csv_nombre'), [
+      [
+        m('columna_nombre'),
+        m('columna_viajes'),
+        m('columna_miembros'),
+        m('columna_co2'),
+        m('columna_participacion'),
+      ],
+      ...filas.map((o) => [
+        o.nombre,
+        o.viajesPagados,
+        o.miembrosActivos,
+        o.co2Kg,
+        formatoPorcentaje(parte(o)),
+      ]),
+    ])
 
   return (
-    <Estructura
-      titulo={t('plataforma.metricas.titulo')}
-      descripcion={t('plataforma.metricas.descripcion')}
-    >
-      <div
-        className={resumen.periodos}
-        role="group"
-        aria-label={t('plataforma.metricas.periodo')}
-      >
-        {PERIODOS.map((p) => (
-          <button
-            key={p}
-            type="button"
-            className={resumen.chip}
-            aria-pressed={p === periodo}
-            onClick={() => {
-              setFalla(false)
-              setPeriodo(p)
-            }}
-          >
-            {t(`plataforma.metricas.periodo_${p}`)}
-          </button>
-        ))}
-      </div>
+    <Estructura titulo={m('titulo')} descripcion={m('descripcion')} banda>
+      <BarraReporte
+        periodo={periodo}
+        alCambiar={(p) => {
+          setFalla(false)
+          setPeriodo(p)
+        }}
+        actualizado={actualizado}
+        alDescargar={g ? descargar : undefined}
+      />
 
       {falla && (
         <p role="alert" className={resumen.falla}>
-          {t('plataforma.metricas.error')}{' '}
+          {m('error')}{' '}
           <button
             type="button"
             onClick={() => {
@@ -103,37 +139,157 @@ export default function Metricas() {
               cargar()
             }}
           >
-            {t('plataforma.metricas.reintentar')}
+            {m('reintentar')}
           </button>
         </p>
       )}
-      {!falla && !datos && <p role="status">{t('comun.estados.cargando')}</p>}
+      {!falla && !datos && <EsqueletoCifras cantidad={6} />}
 
-      {!falla && tarjetas && (
+      {!falla && g && (
         <>
-          <dl className={resumen.tarjetas}>
-            {tarjetas.map(([clave, valor]) => (
-              <div key={clave} className={resumen.tarjeta}>
-                <dt>{t(`plataforma.metricas.${clave}`)}</dt>
-                <dd>
-                  {numero.format(valor as number)}
-                  {clave === 'co2' && (
-                    <span className={resumen.estimado}>
-                      {t('plataforma.metricas.estimado')}
-                    </span>
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <Cifras>
+            <Cifra
+              icono="corporate_fare"
+              etiqueta={m('organizaciones')}
+              valor={formatoNumero(g.organizacionesActivas)}
+              nota={sinViajes ? n('organizaciones_nota', sinViajes) : undefined}
+            />
+            <Cifra
+              icono="group"
+              etiqueta={m('miembros')}
+              valor={formatoNumero(g.miembrosActivos)}
+              nota={
+                g.organizacionesActivas
+                  ? n(
+                      'miembros_nota',
+                      g.miembrosActivos / g.organizacionesActivas,
+                    )
+                  : undefined
+              }
+            />
+            <Cifra
+              icono="directions_car"
+              etiqueta={m('viajes')}
+              valor={formatoNumero(g.viajesPagados)}
+              nota={dias ? n('viajes_nota', g.viajesPagados / dias) : undefined}
+            />
+            <Cifra
+              icono="airline_seat_recline_normal"
+              etiqueta={m('pasajeros')}
+              valor={formatoNumero(g.pasajeros)}
+              nota={
+                g.viajesPagados
+                  ? n('pasajeros_nota', g.pasajeros / g.viajesPagados)
+                  : undefined
+              }
+            />
+            <Cifra
+              icono="eco"
+              tono="exito"
+              etiqueta={m('co2')}
+              valor={formatoNumero(g.co2Kg)}
+              extra={m('estimado')}
+              nota={
+                g.co2Kg ? n('co2_nota', g.co2Kg / KG_CO2_POR_ARBOL) : undefined
+              }
+            />
+            <Cifra
+              icono="cancel"
+              tono={g.fallidasOExpiradas ? 'peligro' : 'neutro'}
+              etiqueta={m('fallidas')}
+              valor={formatoNumero(g.fallidasOExpiradas)}
+              nota={
+                reservas
+                  ? m('fallidas_nota').replace(
+                      '{p}',
+                      formatoPorcentaje(g.fallidasOExpiradas / reservas),
+                    )
+                  : undefined
+              }
+            />
+          </Cifras>
           {sinActividadGlobal && (
-            <p className={resumen.vacio}>{t('plataforma.metricas.vacio')}</p>
+            <p className={resumen.vacio}>
+              <Icono nombre="route" tamano={20} />
+              {m('vacio')}
+            </p>
+          )}
+
+          {!sinActividadGlobal && (
+            <Rejilla>
+              <Panel
+                icono="donut_large"
+                titulo={m('exito_titulo')}
+                descripcion={m('exito_texto')}
+              >
+                <Anillo
+                  centro={formatoPorcentaje(
+                    reservas ? g.pasajeros / reservas : 0,
+                  )}
+                  etiquetaCentro={m('exito_centro')}
+                  partes={[
+                    {
+                      etiqueta: m('exito_completadas'),
+                      valor: g.pasajeros,
+                      texto: formatoNumero(g.pasajeros),
+                      tono: 'exito',
+                    },
+                    {
+                      etiqueta: m('exito_fallidas'),
+                      valor: g.fallidasOExpiradas,
+                      texto: formatoNumero(g.fallidasOExpiradas),
+                      tono: 'peligro',
+                    },
+                  ]}
+                />
+              </Panel>
+
+              <Panel
+                icono="leaderboard"
+                titulo={m('ranking_titulo')}
+                descripcion={m('ranking_texto')}
+              >
+                <Barras
+                  datos={ranking.map((o) => ({
+                    etiqueta: o.nombre,
+                    valor: o.viajesPagados,
+                    texto: n('viajes_n', o.viajesPagados),
+                    nota: formatoPorcentaje(parte(o)),
+                  }))}
+                />
+              </Panel>
+
+              {porMiembros.length > 0 && (
+                <Panel
+                  icono="groups"
+                  titulo={m('participacion_titulo')}
+                  descripcion={m('participacion_texto')}
+                  ancho
+                >
+                  <Barras
+                    datos={porMiembros.map((o) => ({
+                      etiqueta: o.nombre,
+                      valor: o.miembrosActivos,
+                      texto: n('miembros_n', o.miembrosActivos),
+                      nota: formatoPorcentaje(
+                        g.miembrosActivos
+                          ? o.miembrosActivos / g.miembrosActivos
+                          : 0,
+                      ),
+                    }))}
+                  />
+                </Panel>
+              )}
+            </Rejilla>
           )}
 
           {filas.length > 0 && (
-            <section aria-labelledby="titulo-por-organizacion">
-              <h2 id="titulo-por-organizacion">
-                {t('plataforma.metricas.tabla')}
+            <section
+              aria-labelledby="titulo-por-organizacion"
+              className={estilos.seccion}
+            >
+              <h2 id="titulo-por-organizacion" className={estilos.titulo}>
+                {m('tabla')}
               </h2>
               <div className={tabla.envoltura}>
                 <table className={tabla.tabla}>
@@ -153,6 +309,7 @@ export default function Metricas() {
                         >
                           <button
                             type="button"
+                            className={estilos.ordenar}
                             onClick={() =>
                               setOrden((o) => ({
                                 columna,
@@ -160,10 +317,18 @@ export default function Metricas() {
                               }))
                             }
                           >
-                            {t(`plataforma.metricas.${clave}`)}
+                            {m(clave)}
+                            <span aria-hidden="true" className={estilos.flecha}>
+                              {orden.columna === columna
+                                ? orden.asc
+                                  ? '▲'
+                                  : '▼'
+                                : '↕'}
+                            </span>
                           </button>
                         </th>
                       ))}
+                      <th scope="col">{m('columna_participacion')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -172,14 +337,29 @@ export default function Metricas() {
                         <th scope="row" className={tabla.nombre}>
                           {o.nombre}
                           {o.sinActividad && (
-                            <span className={resumen.estimado}>
-                              {t('plataforma.metricas.sin_actividad')}
+                            <span className={estilos.sinActividad}>
+                              {m('sin_actividad')}
                             </span>
                           )}
                         </th>
-                        <td>{numero.format(o.viajesPagados)}</td>
-                        <td>{numero.format(o.miembrosActivos)}</td>
-                        <td>{numero.format(o.co2Kg)}</td>
+                        <td data-etiqueta={m('columna_viajes')}>
+                          {formatoNumero(o.viajesPagados)}
+                        </td>
+                        <td data-etiqueta={m('columna_miembros')}>
+                          {formatoNumero(o.miembrosActivos)}
+                        </td>
+                        <td data-etiqueta={m('columna_co2')}>
+                          {formatoNumero(o.co2Kg)}
+                        </td>
+                        <td
+                          data-etiqueta={m('columna_participacion')}
+                          className={estilos.participacion}
+                        >
+                          <span className={estilos.porcentaje}>
+                            {formatoPorcentaje(parte(o))}
+                          </span>
+                          <Trayecto fraccion={parte(o)} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>

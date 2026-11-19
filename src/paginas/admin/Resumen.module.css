@@ -1,66 +1,102 @@
-.periodos {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--espacio-2);
-  margin: var(--espacio-4) 0;
-}
-.chip {
-  padding: var(--espacio-2) var(--espacio-4);
-  border: var(--grosor-borde) solid var(--color-borde-campo);
-  border-radius: var(--radio-m);
-  background: var(--color-superficie);
-  color: var(--color-texto);
-  font: var(--texto-etiqueta);
-  cursor: pointer;
-}
-.chip[aria-pressed='true'] {
-  border-color: var(--color-primario);
-  background: var(--color-primario-suave);
-  color: var(--color-primario-texto);
-}
-.tarjetas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--espacio-4);
-  margin: 0;
-  padding: 0;
-}
-.tarjeta {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: var(--espacio-1);
-  padding: var(--espacio-4);
-  border: var(--grosor-borde) solid var(--color-borde);
-  border-radius: var(--radio-m);
-  background: var(--color-superficie);
-}
-.tarjeta dt {
-  color: var(--color-texto-secundario);
-  font: var(--texto-secundario);
-}
-.tarjeta dd {
-  margin: 0;
-  color: var(--color-texto);
-  font-size: 2rem;
-  font-weight: 700;
-}
-.estimado {
-  margin-left: var(--espacio-2);
-  color: var(--color-texto-secundario);
-  font: var(--texto-secundario);
-  font-weight: 400;
-}
 .falla {
   margin: 0;
-  padding: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
   border-radius: var(--radio-m);
   background: var(--color-peligro-suave);
   color: var(--color-peligro-texto);
   font: var(--texto-secundario);
 }
+.falla button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: var(--texto-etiqueta);
+  text-decoration: underline;
+  cursor: pointer;
+}
 .vacio {
-  margin: var(--espacio-4) 0 0;
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin: 0;
+  padding: var(--espacio-6);
+  border: var(--grosor-borde) dashed var(--color-borde-campo);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  color: var(--color-texto-secundario);
+}
+.destacado {
+  display: block;
+  font: 800 1.5rem/2rem var(--fuente-display);
+  letter-spacing: -0.01em;
+}
+.nota {
+  display: block;
   color: var(--color-texto-secundario);
   font: var(--texto-secundario);
+}
+
+/* Ocupación: asientos que se llenan según el promedio de pasajeros. */
+.asientos {
+  display: flex;
+  gap: var(--espacio-2);
+}
+.asiento {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radio-m);
+  background: linear-gradient(
+    to top,
+    var(--color-primario-suave) var(--lleno),
+    var(--color-fondo-sutil) var(--lleno)
+  );
+  border: var(--grosor-borde) solid var(--color-borde);
+  color: var(--color-texto-deshabilitado);
+}
+.ocupado {
+  border-color: var(--color-primario);
+  color: var(--color-primario);
+}
+
+/* Impacto ambiental */
+.equivalencias {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.equivalencias li {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-4);
+}
+.iconoEquivalencia {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  flex: none;
+  border-radius: var(--radio-completo);
+  background: var(--color-exito-suave);
+  color: var(--color-exito);
+}
+
+.ritmo {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-radius: var(--radio-m);
+  background: var(--color-fondo-sutil);
+  font: var(--texto-cuerpo-enfasis);
+}
+.alza {
+  background: var(--color-exito-suave);
+  color: var(--color-exito-texto);
+}
+.baja {
+  background: var(--color-aviso-suave);
+  color: var(--color-aviso-texto);
 }
