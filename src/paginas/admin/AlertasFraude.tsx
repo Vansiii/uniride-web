@@ -10,6 +10,16 @@ import type {
 import { membresiaActiva } from '../../app/membresia'
 import { useSesion } from '../../app/useSesion'
 import { Boton } from '../../componentes/Boton'
+import {
+  Barras,
+  Cifra,
+  Cifras,
+  EsqueletoCifras,
+  Panel,
+} from '../../componentes/Datos'
+import { Icono } from '../../componentes/Icono'
+import { formatoNumero, formatoRelativo } from '../../formato'
+import type { NombreIcono } from '../../iconos/rutas'
 import { Estructura } from '../../componentes/Estructura'
 import { t } from '../../i18n'
 import estilos from './Solicitudes.module.css'
@@ -19,6 +29,24 @@ const PATRONES: PatronFraude[] = [
   'sin_desplazamiento',
   'verificaciones_fallidas',
 ]
+
+const ICONO_PATRON: Record<PatronFraude, NombreIcono> = {
+  viajes_repetidos: 'refresh',
+  sin_desplazamiento: 'location_off',
+  verificaciones_fallidas: 'qr_code_2',
+}
+
+function Patron({ patron }: { patron: PatronFraude }) {
+  return (
+    <span
+      className={estilos.patron}
+      title={t(`fraude.alertas.patron_ayuda.${patron}`)}
+    >
+      <Icono nombre={ICONO_PATRON[patron]} tamano={16} />
+      {t(`fraude.alertas.patron.${patron}`)}
+    </span>
+  )
+}
 
 const dosCifras = (n: number) => String(n).padStart(2, '0')
 
@@ -113,6 +141,12 @@ export default function AlertasFraude() {
     }
   }
 
+  const cuentas = (bloqueos ?? []).filter((b) => b.tipo === 'cuenta').length
+  const porPatron = PATRONES.map((p) => ({
+    etiqueta: t(`fraude.alertas.patron.${p}`),
+    valor: (alertas ?? []).filter((a) => a.patron === p).length,
+  }))
+
   return (
     <Estructura
       titulo={t('fraude.alertas.titulo')}
@@ -137,12 +171,67 @@ export default function AlertasFraude() {
         </p>
       )}
       {!falla && (alertas === null || bloqueos === null) && (
-        <p role="status">{t('comun.estados.cargando')}</p>
+        <EsqueletoCifras cantidad={3} />
+      )}
+
+      {!falla && alertas && bloqueos && (
+        <Cifras>
+          <Cifra
+            icono="warning"
+            tono={alertas.length ? 'aviso' : 'neutro'}
+            etiqueta={t('fraude.alertas.resumen_alertas')}
+            valor={formatoNumero(alertas.length) + (siguiente ? '+' : '')}
+            nota={t('fraude.alertas.resumen_alertas_nota')}
+          />
+          <Cifra
+            icono="block"
+            tono={bloqueos.length ? 'peligro' : 'exito'}
+            etiqueta={t('fraude.alertas.resumen_bloqueos')}
+            valor={formatoNumero(bloqueos.length)}
+            nota={t('fraude.alertas.resumen_bloqueos_nota')}
+          />
+          <Cifra
+            icono="person"
+            tono={cuentas ? 'peligro' : 'neutro'}
+            etiqueta={t('fraude.alertas.resumen_cuentas')}
+            valor={formatoNumero(cuentas)}
+            nota={t('fraude.alertas.resumen_cuentas_nota').replace(
+              '{n}',
+              formatoNumero(bloqueos.length - cuentas),
+            )}
+          />
+        </Cifras>
+      )}
+
+      {!falla && alertas && !patron && alertas.length > 0 && (
+        <Panel
+          icono="donut_large"
+          titulo={t('fraude.alertas.distribucion_titulo')}
+          descripcion={t('fraude.alertas.distribucion_texto')}
+        >
+          <Barras
+            datos={porPatron.map((p) => ({
+              ...p,
+              texto: t(
+                p.valor === 1
+                  ? 'fraude.alertas.n_alertas_uno'
+                  : 'fraude.alertas.n_alertas',
+              ).replace('{n}', formatoNumero(p.valor)),
+            }))}
+          />
+        </Panel>
       )}
 
       {!falla && bloqueos && (
-        <section aria-labelledby="titulo-bloqueos">
-          <h2 id="titulo-bloqueos">{t('fraude.alertas.bloqueos_titulo')}</h2>
+        <section aria-labelledby="titulo-bloqueos" className={estilos.seccion}>
+          <div>
+            <h2 id="titulo-bloqueos" className={estilos.titulo}>
+              {t('fraude.alertas.bloqueos_titulo')}
+            </h2>
+            <p className={estilos.textoSeccion}>
+              {t('fraude.alertas.bloqueos_texto')}
+            </p>
+          </div>
           {bloqueos.length === 0 ? (
             <p className={estilos.vacio}>
               {t('fraude.alertas.bloqueos_vacio')}
@@ -167,10 +256,18 @@ export default function AlertasFraude() {
                       <th scope="row" className={estilos.nombre}>
                         {t(`fraude.alertas.tipo_${b.tipo}`)}
                       </th>
-                      <td>{t(`fraude.alertas.patron.${b.patron}`)}</td>
+                      <td>
+                        <Patron patron={b.patron} />
+                      </td>
                       <td>{personas(b.personas)}</td>
                       <td className={estilos.fecha}>
-                        {formatearFecha(b.hasta)}
+                        <span>{formatearFecha(b.hasta)}</span>
+                        <span className={estilos.relativo}>
+                          {t('fraude.alertas.vence').replace(
+                            '{tiempo}',
+                            formatoRelativo(b.hasta),
+                          )}
+                        </span>
                       </td>
                     </tr>
                   ))}
@@ -182,25 +279,34 @@ export default function AlertasFraude() {
       )}
 
       {!falla && alertas && (
-        <section aria-labelledby="titulo-alertas">
-          <h2 id="titulo-alertas">{t('fraude.alertas.alertas_titulo')}</h2>
-          <label>
-            {t('fraude.alertas.filtro')}{' '}
-            <select
-              value={patron}
-              onChange={(e) => {
-                setFalla(false)
-                setPatron(e.target.value as PatronFraude | '')
-              }}
-            >
-              <option value="">{t('fraude.alertas.todos')}</option>
-              {PATRONES.map((p) => (
-                <option key={p} value={p}>
-                  {t(`fraude.alertas.patron.${p}`)}
-                </option>
-              ))}
-            </select>
-          </label>
+        <section aria-labelledby="titulo-alertas" className={estilos.seccion}>
+          <div className={estilos.cabeceraSeccion}>
+            <div>
+              <h2 id="titulo-alertas" className={estilos.titulo}>
+                {t('fraude.alertas.alertas_titulo')}
+              </h2>
+              <p className={estilos.textoSeccion}>
+                {t('fraude.alertas.alertas_texto')}
+              </p>
+            </div>
+            <label className={estilos.filtro}>
+              {t('fraude.alertas.filtro')}{' '}
+              <select
+                value={patron}
+                onChange={(e) => {
+                  setFalla(false)
+                  setPatron(e.target.value as PatronFraude | '')
+                }}
+              >
+                <option value="">{t('fraude.alertas.todos')}</option>
+                {PATRONES.map((p) => (
+                  <option key={p} value={p}>
+                    {t(`fraude.alertas.patron.${p}`)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
           {alertas.length === 0 ? (
             <p className={estilos.vacio}>{t('fraude.alertas.vacio')}</p>
           ) : (
@@ -221,9 +327,14 @@ export default function AlertasFraude() {
                   {alertas.map((a) => (
                     <tr key={a.id}>
                       <th scope="row" className={estilos.fecha}>
-                        {formatearFecha(a.creadoEn)}
+                        <span>{formatearFecha(a.creadoEn)}</span>
+                        <span className={estilos.relativo}>
+                          {formatoRelativo(a.creadoEn)}
+                        </span>
                       </th>
-                      <td>{t(`fraude.alertas.patron.${a.patron}`)}</td>
+                      <td>
+                        <Patron patron={a.patron} />
+                      </td>
                       <td>{personas(a.personas)}</td>
                       <td>{detalle(a)}</td>
                     </tr>

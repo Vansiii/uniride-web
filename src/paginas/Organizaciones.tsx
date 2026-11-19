@@ -3,11 +3,20 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import * as api from '../api/cliente'
 import type { Organizacion } from '../api/cliente'
 import { Boton } from '../componentes/Boton'
+import { Buscador, Cifra, Cifras, Trayecto } from '../componentes/Datos'
 import { EstadoVacio, Esqueleto } from '../componentes/Estados'
 import { Estructura } from '../componentes/Estructura'
 import { Icono } from '../componentes/Icono'
 import { Aviso, EtiquetaEstado, Notificacion } from '../componentes/Mensajes'
-import { formatoFecha, formatoMonto } from '../formato'
+import {
+  formatoFecha,
+  formatoMonto,
+  formatoNumero,
+  formatoPorcentaje,
+  formatoRelativo,
+  iniciales,
+  contiene,
+} from '../formato'
 import { t } from '../i18n'
 import estilos from './Organizaciones.module.css'
 
@@ -22,6 +31,7 @@ export default function Organizaciones() {
   const [fallaReenvio, setFallaReenvio] = useState(false)
   const [notificacion, setNotificacion] = useState<string | null>(null)
   const [reenviando, setReenviando] = useState<string | null>(null)
+  const [busqueda, setBusqueda] = useState('')
 
   useEffect(() => {
     if (creada) navegar(pathname, { replace: true, state: null })
@@ -61,6 +71,27 @@ export default function Organizaciones() {
       setReenviando(null)
     }
   }
+
+  const total = filas?.length ?? 0
+  const contar = (f: (o: Organizacion) => boolean) =>
+    (filas ?? []).filter(f).length
+  const universidades = contar((o) => o.tipo === 'universidad')
+  const aceptadas = contar((o) => o.estadoInvitacion === 'aceptada')
+  const atender = contar(
+    (o) =>
+      o.estadoInvitacion === 'no_enviada' || o.estadoInvitacion === 'vencida',
+  )
+  const visibles = (filas ?? []).filter(
+    (o) =>
+      contiene(o.nombre, busqueda) ||
+      contiene(o.admin?.nombre ?? '', busqueda) ||
+      contiene(o.admin?.correo ?? '', busqueda),
+  )
+  const parte = (k: number) =>
+    t('organizaciones.lista.resumen_tipo_nota').replace(
+      '{p}',
+      formatoPorcentaje(total ? k / total : 0),
+    )
 
   return (
     <Estructura
@@ -112,14 +143,74 @@ export default function Organizaciones() {
         />
       )}
       {filas && filas.length > 0 && (
+        <Cifras>
+          <Cifra
+            icono="corporate_fare"
+            etiqueta={t('organizaciones.lista.resumen_total')}
+            valor={formatoNumero(total)}
+            nota={t('organizaciones.lista.resumen_total_nota')}
+          />
+          <Cifra
+            icono="school"
+            etiqueta={t('organizaciones.lista.resumen_universidades')}
+            valor={formatoNumero(universidades)}
+            nota={parte(universidades)}
+          />
+          <Cifra
+            icono="apartment"
+            etiqueta={t('organizaciones.lista.resumen_empresas')}
+            valor={formatoNumero(total - universidades)}
+            nota={parte(total - universidades)}
+          />
+          <Cifra
+            icono="verified"
+            tono="exito"
+            etiqueta={t('organizaciones.lista.resumen_aceptadas')}
+            valor={formatoNumero(aceptadas)}
+            nota={
+              <>
+                {t('organizaciones.lista.resumen_aceptadas_nota')
+                  .replace('{a}', formatoNumero(aceptadas))
+                  .replace('{n}', formatoNumero(total))}
+                <Trayecto
+                  fraccion={total ? aceptadas / total : 0}
+                  tono="exito"
+                />
+              </>
+            }
+          />
+          <Cifra
+            icono="send"
+            tono={atender ? 'aviso' : 'neutro'}
+            etiqueta={t('organizaciones.lista.resumen_atender')}
+            valor={formatoNumero(atender)}
+            nota={t('organizaciones.lista.resumen_atender_nota')}
+          />
+        </Cifras>
+      )}
+      {filas && filas.length > 0 && (
+        <Buscador
+          etiqueta={t('organizaciones.lista.buscar')}
+          valor={busqueda}
+          alCambiar={setBusqueda}
+        />
+      )}
+      {filas && filas.length > 0 && visibles.length === 0 && (
+        <p className={estilos.sinResultados}>
+          {t('organizaciones.lista.sin_resultados').replace('{q}', () =>
+            busqueda.trim(),
+          )}
+        </p>
+      )}
+      {visibles.length > 0 && (
         <div className={estilos.envoltura}>
           <table className={estilos.tabla}>
             <caption className={estilos.leyenda}>
-              {filas.length === 1
+              {visibles.length === 1
                 ? t('organizaciones.lista.conteo_uno')
                 : t('organizaciones.lista.conteo_varias').replace(
                     '{n}',
-                    String(filas.length),
+                    String(visibles.length),
                   )}
             </caption>
             <thead>
@@ -149,10 +240,15 @@ export default function Organizaciones() {
               </tr>
             </thead>
             <tbody>
-              {filas.map((o) => (
+              {visibles.map((o) => (
                 <tr key={o.id}>
                   <th scope="row" className={estilos.nombre}>
-                    {o.nombre}
+                    <span className={estilos.conAvatar}>
+                      <span className={estilos.avatar} aria-hidden="true">
+                        {iniciales(o.nombre)}
+                      </span>
+                      <span>{o.nombre}</span>
+                    </span>
                   </th>
                   <td
                     data-etiqueta={t('organizaciones.lista.columna_tipo')}
@@ -207,7 +303,10 @@ export default function Organizaciones() {
                     data-etiqueta={t('organizaciones.lista.columna_alta')}
                     className={`${estilos.secundaria} ${estilos.textoSecundario} ${estilos.numero}`}
                   >
-                    {formatoFecha(o.creadoEn)}
+                    <span>{formatoFecha(o.creadoEn)}</span>
+                    <span className={estilos.relativo}>
+                      {formatoRelativo(o.creadoEn)}
+                    </span>
                   </td>
                   <td className={estilos.acciones}>
                     {o.estadoInvitacion !== 'aceptada' && (

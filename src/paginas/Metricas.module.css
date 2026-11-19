@@ -1,0 +1,47 @@
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+.titulo {
+  font: var(--texto-titulo);
+}
+.ordenar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.ordenar:hover {
+  color: var(--color-primario);
+}
+.flecha {
+  font-size: 0.625rem;
+  opacity: 0.7;
+}
+.sinActividad {
+  display: inline-flex;
+  margin-left: var(--espacio-2);
+  padding: 0 var(--espacio-2);
+  border-radius: var(--radio-completo);
+  background: var(--color-fondo-deshabilitado);
+  color: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+  vertical-align: middle;
+}
+.participacion {
+  min-width: 10rem;
+}
+.porcentaje {
+  display: block;
+  margin-bottom: var(--espacio-1);
+  font: var(--texto-etiqueta);
+  font-variant-numeric: tabular-nums;
+}

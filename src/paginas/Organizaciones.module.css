@@ -147,6 +147,9 @@
 }
 
 @media (min-width: 1024px) {
+  .tabla .nombre {
+    min-width: 15rem;
+  }
   .tabla .secundaria {
     display: table-cell;
   }
@@ -183,4 +186,34 @@
     opacity: 0;
     transform: translateY(6px);
   }
+}
+
+.conAvatar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radio-m);
+  background: var(--color-marca-profundo);
+  color: var(--color-marca-brillante);
+  font: 800 0.875rem/1 var(--fuente-display);
+}
+.relativo {
+  display: block;
+  color: var(--color-texto-placeholder);
+  font: var(--texto-pequeno);
+}
+.sinResultados {
+  padding: var(--espacio-6);
+  border: var(--grosor-borde) dashed var(--color-borde-campo);
+  border-radius: var(--radio-l);
+  background: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  text-align: center;
 }

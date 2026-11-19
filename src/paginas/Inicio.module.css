@@ -1,87 +1,45 @@
-.rejilla {
-  display: grid;
-  gap: var(--espacio-6);
-  align-items: start;
-}
-/* Tarjeta de cuenta: portada de marca con resplandor y datos sobre vidrio. */
-.tarjeta {
-  position: relative;
-  overflow: hidden;
-  animation: subir var(--duracion-larga) var(--curva-entrada) both;
-  padding: var(--espacio-8) var(--espacio-6);
-  background: var(--degradado-marca);
-  color: var(--color-sobre-marca);
-  border-radius: var(--radio-xl);
-  box-shadow: var(--sombra-flotante);
-}
-.tarjeta::before {
-  content: '';
-  position: absolute;
-  top: -90px;
-  right: -70px;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #8b9bff 0%, transparent 70%);
-  opacity: 0.5;
-  pointer-events: none;
-}
-.persona {
-  position: relative;
+/* Datos de la cuenta dentro de la banda de marca. */
+.cuenta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--espacio-4);
-  margin-bottom: var(--espacio-6);
 }
 .avatar {
   display: grid;
   place-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   flex: none;
   border-radius: var(--radio-completo);
   background: var(--color-sobre-marca);
   color: var(--color-primario-texto);
-  font: var(--texto-titulo);
-  font-weight: 800;
+  font: 800 1.25rem/1 var(--fuente-display);
   box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
 }
-.subtitulo {
-  font: var(--texto-titulo);
-  font-weight: 700;
-}
-.persona .subtitulo {
-  color: var(--color-sobre-marca);
-}
-.accesos .subtitulo {
-  color: var(--color-texto);
-}
 .datos {
-  position: relative;
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: var(--espacio-3) var(--espacio-6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2) var(--espacio-5);
   margin: 0;
-  padding: var(--espacio-4) var(--espacio-5);
-  border: var(--grosor-borde) solid rgba(255, 255, 255, 0.22);
-  border-radius: var(--radio-l);
-  background: var(--color-marca-velo);
-  backdrop-filter: blur(8px);
-}
-.datos dt {
-  color: var(--color-sobre-marca-secundario);
-  font: var(--texto-etiqueta);
 }
 .datos dd {
   margin: 0;
-  min-width: 0;
+}
+.dato {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  color: var(--color-sobre-marca-secundario);
+  font: var(--texto-secundario);
   overflow-wrap: anywhere;
 }
 .etiqueta {
   display: inline-flex;
   align-items: center;
-  height: 1.5rem;
-  padding: 0 var(--espacio-2);
+  height: 1.75rem;
+  padding: 0 var(--espacio-3);
   border-radius: var(--radio-completo);
   background: var(--color-sobre-marca);
   color: var(--color-primario-texto);
@@ -89,31 +47,148 @@
   font-weight: 700;
 }
 
+.subtitulo {
+  font: var(--texto-titulo);
+}
+
+/* Listas cortas de personas u organizaciones dentro de un panel. */
+.personas {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.personas li {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3) 0;
+  border-top: var(--grosor-borde) solid var(--color-borde);
+}
+.personas li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.avatarPequeno {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: var(--radio-completo);
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+  font: var(--texto-pequeno);
+  font-weight: 700;
+}
+.datosPersona {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.nombrePersona {
+  display: block;
+  font: var(--texto-cuerpo-enfasis);
+  overflow-wrap: anywhere;
+}
+.secundario {
+  display: block;
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+  overflow-wrap: anywhere;
+}
+.contador {
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 var(--espacio-2);
+  border-radius: var(--radio-completo);
+  background: var(--color-aviso-suave);
+  color: var(--color-aviso-texto);
+  font: 800 1rem/1 var(--fuente-display);
+}
+.vacio {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-4);
+  border-radius: var(--radio-m);
+  background: var(--color-exito-suave);
+  color: var(--color-exito-texto);
+  font: var(--texto-secundario);
+}
+.falla {
+  padding: var(--espacio-3) var(--espacio-4);
+  border-radius: var(--radio-m);
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro-texto);
+  font: var(--texto-secundario);
+}
+.estadoSeguridad {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-4);
+  padding: var(--espacio-4);
+  border-radius: var(--radio-m);
+  background: var(--color-exito-suave);
+  color: var(--color-exito);
+}
+.estadoSeguridad .nombrePersona,
+.estadoSeguridad .secundario {
+  color: var(--color-texto);
+}
+.conBloqueos {
+  background: var(--color-aviso-suave);
+  color: var(--color-aviso);
+}
+.enlaceSeccion {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  align-self: flex-start;
+  margin-top: auto;
+  border-radius: var(--radio-s);
+  color: var(--color-primario);
+  font: var(--texto-etiqueta);
+  font-weight: 600;
+  text-decoration: none;
+}
+.enlaceSeccion:hover {
+  text-decoration: underline;
+}
+
+/* Accesos directos */
 .accesos {
   display: flex;
   flex-direction: column;
+  gap: var(--espacio-3);
+}
+.rejillaAccesos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: var(--espacio-3);
 }
 .acceso {
   display: flex;
   align-items: center;
   gap: var(--espacio-4);
-  padding: var(--espacio-4) var(--espacio-5);
+  padding: var(--espacio-4);
   background: var(--color-superficie);
   border: var(--grosor-borde) solid var(--color-borde);
   border-radius: var(--radio-l);
   color: var(--color-texto);
   text-decoration: none;
-  animation: subir var(--duracion-larga) var(--curva-entrada) 90ms both;
+  box-shadow: var(--sombra-tarjeta);
   transition:
     border-color var(--duracion-corta) var(--curva-estandar),
-    box-shadow var(--duracion-media) var(--curva-estandar),
-    transform var(--duracion-media) var(--curva-estandar);
+    box-shadow var(--duracion-media) var(--curva-estandar);
 }
 .acceso:hover {
   border-color: var(--color-primario);
   box-shadow: var(--sombra-flotante);
-  transform: translateY(-2px);
 }
 .iconoAcceso {
   display: grid;
@@ -140,24 +215,47 @@
 }
 .flecha {
   color: var(--color-texto-secundario);
-  transition:
-    transform var(--duracion-media) var(--curva-estandar),
-    color var(--duracion-corta) var(--curva-estandar);
+  transition: transform var(--duracion-media) var(--curva-estandar);
 }
 .acceso:hover .flecha {
   color: var(--color-primario);
   transform: translateX(3px);
 }
 
-@media (min-width: 1024px) {
-  .rejilla {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
+/* Pasos del flujo del pasajero (10.2): sí son una secuencia. */
+.pasos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
 }
-
-@keyframes subir {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
+.pasos li {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-4);
+}
+.iconoPaso {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: var(--radio-completo);
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
+}
+/* La línea de trayecto une los pasos. */
+.pasos li:not(:last-child) .iconoPaso::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 2px;
+  height: var(--espacio-4);
+  margin-left: -1px;
+  background: var(--color-primario-suave);
 }

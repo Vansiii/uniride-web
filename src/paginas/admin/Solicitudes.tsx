@@ -5,6 +5,16 @@ import type { Solicitud } from '../../api/cliente'
 import { membresiaActiva } from '../../app/membresia'
 import { useSesion } from '../../app/useSesion'
 import { Boton } from '../../componentes/Boton'
+import { Buscador, Cifra, Cifras } from '../../componentes/Datos'
+import { EstadoVacio } from '../../componentes/Estados'
+import { Icono } from '../../componentes/Icono'
+import {
+  formatoFecha,
+  formatoNumero,
+  formatoRelativo,
+  iniciales,
+  contiene,
+} from '../../formato'
 import { Dialogo } from '../../componentes/Dialogo'
 import { Estructura } from '../../componentes/Estructura'
 import { t } from '../../i18n'
@@ -33,6 +43,7 @@ export default function Solicitudes() {
   const [decidiendo, setDecidiendo] = useState<string | null>(null)
   const [rechazando, setRechazando] = useState<Solicitud | null>(null)
   const [motivo, setMotivo] = useState('')
+  const [busqueda, setBusqueda] = useState('')
   const region = useRef<HTMLDivElement>(null)
   const devolverFoco = useRef(false)
 
@@ -126,6 +137,23 @@ export default function Solicitudes() {
     }
   }
 
+  const visibles = (filas ?? []).filter(
+    (s) =>
+      contiene(s.nombreCompleto, busqueda) ||
+      contiene(s.correoInstitucional, busqueda),
+  )
+  // El servidor manda la más antigua primero, pero no se depende del orden para el resumen.
+  const masAntigua = (filas ?? []).reduce<Solicitud | null>(
+    (a, s) => (!a || s.creadoEn < a.creadoEn ? s : a),
+    null,
+  )
+  const dominios = new Map<string, number>()
+  for (const s of filas ?? []) {
+    const d = s.correoInstitucional.split('@')[1] ?? ''
+    dominios.set(d, (dominios.get(d) ?? 0) + 1)
+  }
+  const dominioFrecuente = [...dominios].sort((a, b) => b[1] - a[1])[0]?.[0]
+
   const errorVisible = falla && (
     <p role="alert" className={estilos.falla}>
       {falla}
@@ -170,7 +198,7 @@ export default function Solicitudes() {
             aria-label={t('membresias.decision.cerrar_aviso')}
             onClick={() => setNotificacion(null)}
           >
-            ✕
+            <Icono nombre="close" tamano={20} />
           </button>
         </div>
       )}
@@ -179,17 +207,64 @@ export default function Solicitudes() {
       )}
       <div ref={region} tabIndex={-1} className={estilos.region}>
         {filas && filas.length === 0 && (
-          <p className={estilos.vacio}>{t('membresias.lista.vacia')}</p>
+          <EstadoVacio
+            icono="task_alt"
+            titulo={t('membresias.lista.vacia_titulo')}
+            texto={t('membresias.lista.vacia')}
+          />
         )}
-        {filas && filas.length > 0 && (
+        {filas && filas.length > 0 && masAntigua && (
+          <div className={estilos.encabezadoLista}>
+            <Cifras>
+              <Cifra
+                icono="pending_actions"
+                tono="aviso"
+                etiqueta={t('membresias.lista.resumen_pendientes')}
+                valor={formatoNumero(filas.length)}
+                nota={t('membresias.lista.resumen_pendientes_nota')}
+              />
+              <Cifra
+                icono="schedule"
+                etiqueta={t('membresias.lista.resumen_espera')}
+                valor={formatoRelativo(masAntigua.creadoEn)}
+                nota={t('membresias.lista.resumen_espera_nota').replace(
+                  '{fecha}',
+                  formatoFecha(masAntigua.creadoEn),
+                )}
+              />
+              <Cifra
+                icono="domain"
+                etiqueta={t('membresias.lista.resumen_dominios')}
+                valor={formatoNumero(dominios.size)}
+                nota={t('membresias.lista.resumen_dominios_nota').replace(
+                  '{dominio}',
+                  () => dominioFrecuente ?? '',
+                )}
+              />
+            </Cifras>
+            <Buscador
+              etiqueta={t('membresias.lista.buscar')}
+              valor={busqueda}
+              alCambiar={setBusqueda}
+            />
+          </div>
+        )}
+        {filas && filas.length > 0 && visibles.length === 0 && (
+          <p className={estilos.vacio}>
+            {t('membresias.lista.sin_resultados').replace('{q}', () =>
+              busqueda.trim(),
+            )}
+          </p>
+        )}
+        {visibles.length > 0 && (
           <div className={estilos.envoltura}>
             <table className={estilos.tabla}>
               <caption className={estilos.leyenda}>
-                {filas.length === 1
+                {visibles.length === 1
                   ? t('membresias.lista.pendientes_uno')
                   : t('membresias.lista.pendientes_otras').replace(
                       '{n}',
-                      String(filas.length),
+                      String(visibles.length),
                     )}
               </caption>
               <thead>
@@ -203,10 +278,15 @@ export default function Solicitudes() {
                 </tr>
               </thead>
               <tbody>
-                {filas.map((s) => (
+                {visibles.map((s) => (
                   <tr key={s.id}>
                     <th scope="row" className={estilos.nombre}>
-                      {s.nombreCompleto}
+                      <span className={estilos.conAvatar}>
+                        <span className={estilos.avatar} aria-hidden="true">
+                          {iniciales(s.nombreCompleto)}
+                        </span>
+                        <span>{s.nombreCompleto}</span>
+                      </span>
                     </th>
                     <td
                       data-etiqueta={t('membresias.lista.columna_correo')}
@@ -218,7 +298,10 @@ export default function Solicitudes() {
                       data-etiqueta={t('membresias.lista.columna_fecha')}
                       className={estilos.fecha}
                     >
-                      {formatearFecha(s.creadoEn)}
+                      <span>{formatearFecha(s.creadoEn)}</span>
+                      <span className={estilos.relativo}>
+                        {formatoRelativo(s.creadoEn)}
+                      </span>
                     </td>
                     <td className={estilos.acciones}>
                       <Boton
