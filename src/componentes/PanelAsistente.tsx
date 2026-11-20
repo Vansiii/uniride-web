@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { consultarAsistente, type RespuestaAsistente } from '../api/cliente'
+import { Contexto } from '../app/useSesion'
+import { administraOrganizacion } from '../app/membresia'
 import { t } from '../i18n'
 import { Icono } from './Icono'
 import estilos from './PanelAsistente.module.css'
@@ -12,8 +14,31 @@ export function PanelAsistente() {
   const [cargando, setCargando] = useState(false)
   const [respuesta, setRespuesta] = useState<RespuestaAsistente | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const sesion = useContext(Contexto)
+  const usuario = sesion?.usuario ?? null
   const navigate = useNavigate()
   const entradaRef = useRef<HTMLInputElement>(null)
+
+  const superAdmin = usuario?.rolPlataforma === 'super_admin'
+  const administra = administraOrganizacion(usuario)
+
+  const clavesSugerencias = superAdmin
+    ? [
+        'asistente.sugerencia_admin_1',
+        'asistente.sugerencia_admin_2',
+        'asistente.sugerencia_admin_3',
+      ]
+    : administra
+      ? [
+          'asistente.sugerencia_org_1',
+          'asistente.sugerencia_org_2',
+          'asistente.sugerencia_org_3',
+        ]
+      : [
+          'asistente.sugerencia_1',
+          'asistente.sugerencia_2',
+          'asistente.sugerencia_3',
+        ]
 
   useEffect(() => {
     if (abierto) {
@@ -141,36 +166,20 @@ export function PanelAsistente() {
                   <span className={estilos.etiquetaSugerencias}>
                     {t('asistente.descripcion')}
                   </span>
-                  <button
-                    type="button"
-                    className={estilos.chipSugerencia}
-                    onClick={() => {
-                      setConsulta(t('asistente.sugerencia_1'))
-                      manejarConsulta(t('asistente.sugerencia_1'))
-                    }}
-                  >
-                    {t('asistente.sugerencia_1')}
-                  </button>
-                  <button
-                    type="button"
-                    className={estilos.chipSugerencia}
-                    onClick={() => {
-                      setConsulta(t('asistente.sugerencia_2'))
-                      manejarConsulta(t('asistente.sugerencia_2'))
-                    }}
-                  >
-                    {t('asistente.sugerencia_2')}
-                  </button>
-                  <button
-                    type="button"
-                    className={estilos.chipSugerencia}
-                    onClick={() => {
-                      setConsulta(t('asistente.sugerencia_3'))
-                      manejarConsulta(t('asistente.sugerencia_3'))
-                    }}
-                  >
-                    {t('asistente.sugerencia_3')}
-                  </button>
+                  {clavesSugerencias.map((clave) => (
+                    <button
+                      key={clave}
+                      type="button"
+                      className={estilos.chipSugerencia}
+                      onClick={() => {
+                        const texto = t(clave)
+                        setConsulta(texto)
+                        manejarConsulta(texto)
+                      }}
+                    >
+                      {t(clave)}
+                    </button>
+                  ))}
                 </div>
               )
             )}
