@@ -413,7 +413,24 @@
         "sin_desplazamiento": "El viaje terminó casi en el mismo lugar donde empezó.",
         "verificaciones_fallidas": "Muchos intentos de verificación fallidos seguidos."
       },
-      "n_alertas_uno": "1 alerta"
+      "n_alertas_uno": "1 alerta",
+      "columna_riesgo": "Riesgo (IA)",
+      "orden": "Ordenar",
+      "orden_reciente": "Más recientes",
+      "orden_riesgo": "Mayor riesgo",
+      "analisis": {
+        "riesgo_alto": "Alto",
+        "riesgo_medio": "Medio",
+        "riesgo_bajo": "Bajo",
+        "pendiente": "Análisis pendiente",
+        "sin_analisis": "Sin análisis",
+        "ver": "Ver análisis",
+        "motivos": "Motivos",
+        "recomendacion": "Recomendación",
+        "proveedor_local": "Analizado por IA local",
+        "proveedor_groq": "Analizado por IA de respaldo",
+        "nota": "Sugerencia de IA: la decisión es del administrador."
+      }
     }
   },
   "membresias": {

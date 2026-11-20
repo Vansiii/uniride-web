@@ -299,3 +299,49 @@
   color: var(--color-texto);
   font: var(--texto-cuerpo);
 }
+
+/* PB-10: riesgo sugerido por la IA. El texto acompaña siempre al color. */
+.riesgoCelda {
+  display: grid;
+  gap: var(--espacio-1);
+  min-width: 12rem;
+}
+.riesgo_alto,
+.riesgo_medio,
+.riesgo_bajo,
+.riesgoPendiente {
+  justify-self: start;
+  padding: var(--espacio-1) var(--espacio-2);
+  border-radius: var(--radio-completo);
+  font: var(--texto-pequeno);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.riesgo_alto {
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro-texto);
+}
+.riesgo_medio {
+  background: var(--color-aviso-suave);
+  color: var(--color-aviso-texto);
+}
+.riesgo_bajo {
+  background: var(--color-exito-suave);
+  color: var(--color-exito-texto);
+}
+.riesgoPendiente {
+  font-weight: 400;
+  color: var(--color-texto-secundario);
+}
+.analisis summary {
+  color: var(--color-primario);
+  font: var(--texto-etiqueta);
+  cursor: pointer;
+}
+.analisis ul {
+  margin: var(--espacio-1) 0 var(--espacio-2);
+  padding-left: var(--espacio-4);
+}
+.analisis p {
+  margin: var(--espacio-1) 0;
+}

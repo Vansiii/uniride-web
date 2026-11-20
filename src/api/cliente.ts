@@ -233,6 +233,18 @@ export interface AlertaFraude {
   distanciaM?: number
   minutos?: number
   bloqueoHasta?: string
+  /** PB-10: análisis de IA (sugerencia; la decisión es del administrador). */
+  estadoAnalisis?: 'listo' | 'pendiente' | 'sin_analisis'
+  analisis?: AnalisisIa
+}
+export type RiesgoIa = 'bajo' | 'medio' | 'alto'
+export interface AnalisisIa {
+  riesgo: RiesgoIa
+  puntaje: number
+  motivos: string[]
+  recomendacion: string
+  proveedor: 'local' | 'groq'
+  analizadoEn: string
 }
 export interface BloqueoVigente {
   tipo: 'par' | 'cuenta'
