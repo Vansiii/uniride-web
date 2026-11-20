@@ -9,6 +9,7 @@ import { t } from '../i18n'
 import type { NombreIcono } from '../iconos/rutas'
 import { BotonIcono } from './Boton'
 import { Icono } from './Icono'
+import { PanelAsistente } from './PanelAsistente'
 import estilos from './Estructura.module.css'
 
 interface Props {
@@ -266,6 +267,7 @@ export function Estructura({
           {children}
         </div>
       </main>
+      <PanelAsistente />
     </div>
   )
 }
