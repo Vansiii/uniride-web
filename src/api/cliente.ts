@@ -345,4 +345,3 @@ export interface RespuestaAsistente {
 
 export const consultarAsistente = (consulta: string) =>
   solicitar<RespuestaAsistente>('/asistente/consultar', 'POST', { consulta })
-

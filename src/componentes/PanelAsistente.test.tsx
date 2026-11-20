@@ -21,7 +21,9 @@ describe('PanelAsistente', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole('button', { name: /abrir asistente/i })).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: /abrir asistente/i }),
+    ).toBeTruthy()
     expect(screen.getByText('Asistente')).toBeTruthy()
   })
 
@@ -70,14 +72,14 @@ describe('PanelAsistente', () => {
     fireEvent.click(botonEnviar)
 
     expect(
-      await screen.findByText('El pasaje queda protegido en garantía al reservar.'),
+      await screen.findByText(
+        'El pasaje queda protegido en garantía al reservar.',
+      ),
     ).toBeTruthy()
     expect(
       screen.getByText('Reservas tu asiento con saldo en garantía'),
     ).toBeTruthy()
-    expect(
-      screen.getByRole('button', { name: /ver billetera/i }),
-    ).toBeTruthy()
+    expect(screen.getByRole('button', { name: /ver billetera/i })).toBeTruthy()
   })
 
   it('se cierra al presionar el botón de cerrar', () => {
@@ -96,4 +98,3 @@ describe('PanelAsistente', () => {
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 })
-

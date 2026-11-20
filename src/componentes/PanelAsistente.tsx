@@ -154,7 +154,8 @@ export function PanelAsistente() {
                     onClick={() => ejecutarAccion(respuesta.accion!.ruta)}
                   >
                     <span>
-                      {respuesta.accion.etiquetaBoton || t('asistente.ir_ahora')}
+                      {respuesta.accion.etiquetaBoton ||
+                        t('asistente.ir_ahora')}
                     </span>
                     <Icono nombre="arrow_forward" tamano={16} />
                   </button>
@@ -208,4 +209,3 @@ export function PanelAsistente() {
     </>
   )
 }
-
