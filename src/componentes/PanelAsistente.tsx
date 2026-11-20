@@ -1,7 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { consultarAsistente, type RespuestaAsistente } from '../api/cliente'
+import {
+  consultarAsistente,
+  ErrorApi,
+  type RespuestaAsistente,
+} from '../api/cliente'
 import { Contexto } from '../app/useSesion'
 import { administraOrganizacion } from '../app/membresia'
 import { t } from '../i18n'
@@ -68,8 +72,16 @@ export function PanelAsistente() {
     try {
       const res = await consultarAsistente(limpio)
       setRespuesta(res)
-    } catch {
-      setError(t('asistente.error_consulta'))
+    } catch (e) {
+      setError(
+        t(
+          e instanceof ErrorApi && e.codigo === 'LIMITE_ALCANZADO'
+            ? 'asistente.limite_alcanzado'
+            : e instanceof ErrorApi && e.codigo === 'SIN_CONEXION'
+              ? 'comun.errores.sin_conexion'
+              : 'asistente.error_consulta',
+        ),
+      )
     } finally {
       setCargando(false)
     }
@@ -78,6 +90,13 @@ export function PanelAsistente() {
   const enviarFormulario = (e: FormEvent) => {
     e.preventDefault()
     manejarConsulta(consulta)
+  }
+
+  const nuevaConsulta = () => {
+    setRespuesta(null)
+    setError(null)
+    setConsulta('')
+    entradaRef.current?.focus()
   }
 
   const ejecutarAccion = (ruta: string) => {
@@ -160,6 +179,13 @@ export function PanelAsistente() {
                     <Icono nombre="arrow_forward" tamano={16} />
                   </button>
                 )}
+                <button
+                  type="button"
+                  className={estilos.chipSugerencia}
+                  onClick={nuevaConsulta}
+                >
+                  {t('asistente.limpiar')}
+                </button>
               </div>
             ) : (
               !cargando && (

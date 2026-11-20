@@ -97,4 +97,25 @@ describe('PanelAsistente', () => {
 
     expect(screen.queryByRole('dialog')).toBeNull()
   })
+
+  it('avisa el límite de consultas y permite volver a empezar', async () => {
+    vi.mocked(api.consultarAsistente)
+      .mockRejectedValueOnce(new api.ErrorApi(429, 'LIMITE_ALCANZADO'))
+      .mockResolvedValueOnce({ modo: 'guia', mensaje: 'Respuesta lista.' })
+
+    render(
+      <MemoryRouter>
+        <PanelAsistente />
+      </MemoryRouter>,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /abrir asistente/i }))
+    fireEvent.click(screen.getByText('¿Cómo funciona el pago?'))
+    expect(await screen.findByRole('alert')).toBeTruthy()
+    expect(screen.getByText(/muchas consultas seguidas/i)).toBeTruthy()
+
+    fireEvent.click(screen.getByText('¿Cómo vinculo mi celular?'))
+    expect(await screen.findByText('Respuesta lista.')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Nueva consulta' }))
+    expect(screen.getByText('¿Cómo funciona el pago?')).toBeTruthy()
+  })
 })

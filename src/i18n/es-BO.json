@@ -477,6 +477,7 @@
     "sugerencia_org_1": "¿Cómo reviso las solicitudes de miembros?",
     "sugerencia_org_2": "¿Cómo veo las alertas de seguridad?",
     "sugerencia_org_3": "¿Cómo configuro la afiliación institucional?",
+    "limite_alcanzado": "Hiciste muchas consultas seguidas. Espera un minuto e intenta de nuevo.",
     "error_consulta": "No pudimos conectar con el asistente. Intenta de nuevo.",
     "limpiar": "Nueva consulta",
     "ir_ahora": "Ir ahí"
