@@ -176,3 +176,81 @@ describe('Alertas de fraude (administrador de organización)', () => {
     expect(api.listarAlertasFraude).not.toHaveBeenCalled()
   })
 })
+
+describe('PB-10 · análisis de riesgo con IA en Alertas', () => {
+  const analisis = (puntaje: number, extra: Partial<api.AnalisisIa> = {}) =>
+    ({
+      riesgo: puntaje >= 70 ? 'alto' : puntaje >= 40 ? 'medio' : 'bajo',
+      puntaje,
+      motivos: ['6 reservas del par en 7 días con 420 m de distancia'],
+      recomendacion: 'Revisar ambas cuentas.',
+      proveedor: 'local',
+      analizadoEn: new Date(2026, 10, 17, 11, 0).toISOString(),
+      ...extra,
+    }) satisfies api.AnalisisIa
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(api.consultarYo).mockResolvedValue(admin)
+    vi.mocked(api.listarBloqueosVigentes).mockResolvedValue({ bloqueos: [] })
+  })
+  afterEach(cleanup)
+
+  it('CA-5: muestra la insignia de riesgo o el estado, y ordena por mayor riesgo', async () => {
+    vi.mocked(api.listarAlertasFraude).mockResolvedValue({
+      alertas: [
+        alerta(3, { estadoAnalisis: 'listo', analisis: analisis(30) }),
+        alerta(2, { estadoAnalisis: 'pendiente' }),
+        alerta(1, { estadoAnalisis: 'listo', analisis: analisis(87) }),
+        alerta(0, { estadoAnalisis: 'sin_analisis' }),
+      ],
+    })
+    abrir()
+    expect(await screen.findByText('Alto 87')).toBeTruthy()
+    expect(screen.getByText('Bajo 30')).toBeTruthy()
+    expect(screen.getByText('Análisis pendiente')).toBeTruthy()
+    expect(screen.getByText('Sin análisis')).toBeTruthy()
+
+    const insignias = () =>
+      screen
+        .getAllByText(/^(Alto|Medio|Bajo) \d+$|Análisis pendiente|Sin análisis/)
+        .map((n) => n.textContent)
+    expect(insignias()).toEqual([
+      'Bajo 30',
+      'Análisis pendiente',
+      'Alto 87',
+      'Sin análisis',
+    ])
+    fireEvent.change(screen.getByLabelText(/Ordenar/), {
+      target: { value: 'riesgo' },
+    })
+    expect(insignias()).toEqual([
+      'Alto 87',
+      'Bajo 30',
+      'Análisis pendiente',
+      'Sin análisis',
+    ])
+    expect(api.listarAlertasFraude).toHaveBeenCalledTimes(1)
+  })
+
+  it('CA-6: el detalle muestra motivos, recomendación, proveedor y que es una sugerencia', async () => {
+    vi.mocked(api.listarAlertasFraude).mockResolvedValue({
+      alertas: [
+        alerta(1, {
+          estadoAnalisis: 'listo',
+          analisis: analisis(55, { proveedor: 'groq' }),
+        }),
+      ],
+    })
+    abrir()
+    fireEvent.click(await screen.findByText('Ver análisis'))
+    expect(
+      screen.getByText('6 reservas del par en 7 días con 420 m de distancia'),
+    ).toBeTruthy()
+    expect(screen.getByText('Revisar ambas cuentas.')).toBeTruthy()
+    expect(screen.getByText(/Analizado por IA de respaldo/)).toBeTruthy()
+    expect(
+      screen.getByText('Sugerencia de IA: la decisión es del administrador.'),
+    ).toBeTruthy()
+  })
+})

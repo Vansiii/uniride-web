@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import * as api from '../../api/cliente'
 import type {
   AlertaFraude,
+  AnalisisIa,
   BloqueoVigente,
   PatronFraude,
   PersonaAlerta,
@@ -82,6 +83,49 @@ const detalle = (a: AlertaFraude) =>
     .filter(Boolean)
     .join(' · ')
 
+/** PB-10: insignia del riesgo y, desplegable, los motivos. Solo informa: no hay acciones. */
+function Riesgo({ alerta }: { alerta: AlertaFraude }) {
+  const a: AnalisisIa | undefined = alerta.analisis
+  if (!a)
+    return (
+      <span className={estilos.riesgoPendiente}>
+        {t(
+          alerta.estadoAnalisis === 'sin_analisis'
+            ? 'fraude.alertas.analisis.sin_analisis'
+            : 'fraude.alertas.analisis.pendiente',
+        )}
+      </span>
+    )
+  return (
+    <div className={estilos.riesgoCelda}>
+      <span className={estilos[`riesgo_${a.riesgo}`]}>
+        {t(`fraude.alertas.analisis.riesgo_${a.riesgo}`)} {a.puntaje}
+      </span>
+      <details className={estilos.analisis}>
+        <summary>{t('fraude.alertas.analisis.ver')}</summary>
+        <p className={estilos.relativo}>
+          {t(`fraude.alertas.analisis.proveedor_${a.proveedor}`)} ·{' '}
+          {formatearFecha(a.analizadoEn)}
+        </p>
+        <strong>{t('fraude.alertas.analisis.motivos')}</strong>
+        <ul>
+          {a.motivos.map((m) => (
+            <li key={m}>{m}</li>
+          ))}
+        </ul>
+        <strong>{t('fraude.alertas.analisis.recomendacion')}</strong>
+        <p>{a.recomendacion}</p>
+        <p className={estilos.relativo}>{t('fraude.alertas.analisis.nota')}</p>
+      </details>
+    </div>
+  )
+}
+
+/** Mayor riesgo primero; las alertas sin análisis van al final, de la más reciente a la más antigua. */
+const porRiesgo = (a: AlertaFraude, b: AlertaFraude) =>
+  (b.analisis?.puntaje ?? -1) - (a.analisis?.puntaje ?? -1) ||
+  b.creadoEn.localeCompare(a.creadoEn)
+
 /** HU-26: solo lectura. No hay ninguna acción para levantar un bloqueo; vencen solos. */
 export default function AlertasFraude() {
   const { usuario } = useSesion()
@@ -94,6 +138,7 @@ export default function AlertasFraude() {
   const [falla, setFalla] = useState(false)
   const [sinPermiso, setSinPermiso] = useState(false)
   const [cargandoMas, setCargandoMas] = useState(false)
+  const [orden, setOrden] = useState<'reciente' | 'riesgo'>('reciente')
 
   const alFallar = useCallback(
     (error: unknown) => {
@@ -306,6 +351,22 @@ export default function AlertasFraude() {
                 ))}
               </select>
             </label>
+            <label className={estilos.filtro}>
+              {t('fraude.alertas.orden')}{' '}
+              <select
+                value={orden}
+                onChange={(e) =>
+                  setOrden(e.target.value as 'reciente' | 'riesgo')
+                }
+              >
+                <option value="reciente">
+                  {t('fraude.alertas.orden_reciente')}
+                </option>
+                <option value="riesgo">
+                  {t('fraude.alertas.orden_riesgo')}
+                </option>
+              </select>
+            </label>
           </div>
           {alertas.length === 0 ? (
             <p className={estilos.vacio}>{t('fraude.alertas.vacio')}</p>
@@ -321,10 +382,14 @@ export default function AlertasFraude() {
                     <th scope="col">{t('fraude.alertas.columna_patron')}</th>
                     <th scope="col">{t('fraude.alertas.columna_personas')}</th>
                     <th scope="col">{t('fraude.alertas.columna_detalle')}</th>
+                    <th scope="col">{t('fraude.alertas.columna_riesgo')}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {alertas.map((a) => (
+                  {(orden === 'riesgo'
+                    ? [...alertas].sort(porRiesgo)
+                    : alertas
+                  ).map((a) => (
                     <tr key={a.id}>
                       <th scope="row" className={estilos.fecha}>
                         <span>{formatearFecha(a.creadoEn)}</span>
@@ -337,6 +402,9 @@ export default function AlertasFraude() {
                       </td>
                       <td>{personas(a.personas)}</td>
                       <td>{detalle(a)}</td>
+                      <td>
+                        <Riesgo alerta={a} />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
