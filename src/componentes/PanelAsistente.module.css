@@ -1,0 +1,217 @@
+.disparador {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: 0.5rem 0.875rem;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: 9999px;
+  color: var(--color-texto-secundario);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(15, 23, 41, 0.08);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.disparador:hover {
+  background: var(--color-fondo-sutil);
+  color: var(--color-texto);
+  border-color: var(--color-borde-campo);
+}
+
+.iconoDisparador {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primario);
+}
+
+.panel {
+  position: fixed;
+  bottom: 4.5rem;
+  right: 1.5rem;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 6rem);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 30px rgba(15, 23, 41, 0.14);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-borde);
+  background: var(--color-fondo-sutil);
+}
+
+.titulo {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.botonCerrar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-texto-secundario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.botonCerrar:hover {
+  background: var(--color-borde);
+  color: var(--color-texto);
+}
+
+.cuerpo {
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.sugerencias {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.etiquetaSugerencias {
+  font-size: 0.75rem;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.chipSugerencia {
+  background: var(--color-fondo-sutil);
+  border: 1px solid var(--color-borde);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--color-texto);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chipSugerencia:hover {
+  background: var(--color-primario-suave);
+  color: var(--color-primario-texto);
+  border-color: var(--color-primario);
+}
+
+.formulario {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+  background: var(--color-superficie);
+}
+
+.campoTexto {
+  flex: 1;
+  border: 1px solid var(--color-borde);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-texto);
+  background: var(--color-fondo-sutil);
+  outline: none;
+}
+
+.campoTexto:focus {
+  border-color: var(--color-foco);
+  background: var(--color-superficie);
+}
+
+.botonEnviar {
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.botonEnviar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.respuesta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.mensajeRespuesta {
+  color: var(--color-texto);
+  line-height: 1.45;
+}
+
+.listaPasos {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  color: var(--color-texto-secundario);
+}
+
+.botonAccion {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.4375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.botonAccion:hover {
+  background: var(--color-primario-presionado);
+}
+
+.cargando {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-texto-secundario);
+  font-size: 0.875rem;
+}
+
+.avisoError {
+  color: var(--color-peligro);
+  font-size: 0.8125rem;
+}

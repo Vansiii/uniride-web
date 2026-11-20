@@ -457,5 +457,28 @@
       "rechazando": "Rechazando…",
       "cerrar_aviso": "Cerrar aviso"
     }
+  },
+  "asistente": {
+    "boton": "Asistente",
+    "abrir": "Abrir asistente de UniRide",
+    "cerrar": "Cerrar asistente",
+    "cerrar_panel": "Cerrar panel",
+    "titulo": "Asistente UniRide",
+    "descripcion": "Preguntas frecuentes y atajos del servicio",
+    "placeholder": "Escribe tu duda sobre UniRide…",
+    "enviar": "Consultar",
+    "consultando": "Consultando…",
+    "sugerencia_1": "¿Cómo funciona el pago?",
+    "sugerencia_2": "¿Cómo vinculo mi celular?",
+    "sugerencia_3": "¿Cómo publico un viaje?",
+    "sugerencia_admin_1": "¿Cómo doy de alta una organización?",
+    "sugerencia_admin_2": "¿Cómo veo las métricas de la plataforma?",
+    "sugerencia_admin_3": "¿Cómo gestiono las organizaciones?",
+    "sugerencia_org_1": "¿Cómo reviso las solicitudes de miembros?",
+    "sugerencia_org_2": "¿Cómo veo las alertas de seguridad?",
+    "sugerencia_org_3": "¿Cómo configuro la afiliación institucional?",
+    "error_consulta": "No pudimos conectar con el asistente. Intenta de nuevo.",
+    "limpiar": "Nueva consulta",
+    "ir_ahora": "Ir ahí"
   }
 }

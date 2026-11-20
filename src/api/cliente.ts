@@ -329,3 +329,19 @@ export async function aceptarInvitacion(
   )
   tokenAcceso = r.tokenAcceso
 }
+
+export interface AccionAsistente {
+  ruta: string
+  params?: Record<string, string>
+  etiquetaBoton: string
+}
+
+export interface RespuestaAsistente {
+  modo: 'accion' | 'guia'
+  mensaje: string
+  accion?: AccionAsistente
+  pasos?: string[]
+}
+
+export const consultarAsistente = (consulta: string) =>
+  solicitar<RespuestaAsistente>('/asistente/consultar', 'POST', { consulta })
