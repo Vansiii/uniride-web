@@ -219,10 +219,46 @@ export const listarSolicitudes = (organizacionId: string) =>
   )
 
 export type PatronFraude =
-  'viajes_repetidos' | 'sin_desplazamiento' | 'verificaciones_fallidas'
+  | 'viajes_repetidos'
+  | 'sin_desplazamiento'
+  | 'verificaciones_fallidas'
+  /** PB-11: modelo propio y anillos; solo alertan, nunca bloquean. */
+  | 'comportamiento_atipico'
+  | 'anillo_colusion'
 export interface PersonaAlerta {
   nombre: string
-  rol: 'conductor' | 'pasajero'
+  rol: 'conductor' | 'pasajero' | 'miembro'
+}
+export type OrigenAlerta = 'reglas' | 'modelo' | 'anillo'
+export type CifraPar =
+  | 'viajes7d'
+  | 'viajes30d'
+  | 'distanciaPromedioM'
+  | 'duracionPromedioMin'
+  | 'fraccionConductor'
+  | 'fraccionPasajero'
+  | 'fraccionCalificacionesDelPar'
+  | 'antiguedadMinimaDias'
+  | 'cobrosSinRecarga'
+  | 'fallidas7d'
+/** PB-11: cifra que más aparta al par de lo normal, con su percentil en la organización. */
+export interface FactorRiesgo {
+  cifra: CifraPar
+  valor: number
+  percentil: number
+}
+export interface GrafoAnillo {
+  nodos: string[]
+  aristas: { a: number; b: number; viajes: number }[]
+  viajesInternos: number
+  proporcion: number
+}
+export type DecisionFraude = 'confirmado' | 'falso_positivo'
+export interface DecisionAlerta {
+  valor: DecisionFraude
+  nota?: string
+  autor: string
+  en: string
 }
 export interface AlertaFraude {
   id: string
@@ -236,6 +272,12 @@ export interface AlertaFraude {
   /** PB-10: análisis de IA (sugerencia; la decisión es del administrador). */
   estadoAnalisis?: 'listo' | 'pendiente' | 'sin_analisis'
   analisis?: AnalisisIa
+  /** PB-11. */
+  origen?: OrigenAlerta
+  factores?: FactorRiesgo[]
+  puntajeModelo?: number
+  grafo?: GrafoAnillo
+  decision?: DecisionAlerta
 }
 export type RiesgoIa = 'bajo' | 'medio' | 'alto'
 export interface AnalisisIa {
@@ -244,6 +286,8 @@ export interface AnalisisIa {
   motivos: string[]
   recomendacion: string
   proveedor: 'local' | 'groq'
+  /** PB-11: puntaje del modelo propio o estimado por la IA de lenguaje. */
+  origenPuntaje?: 'modelo' | 'estimado'
   analizadoEn: string
 }
 export interface BloqueoVigente {
@@ -263,6 +307,49 @@ export const listarAlertasFraude = (patron?: PatronFraude, antes?: string) => {
     'GET',
   )
 }
+
+/** PB-11 RN-8: «Fraude confirmado» o «Falso positivo»; rige la última y no toca bloqueos. */
+export const decidirAlerta = (
+  alertaId: string,
+  decision: DecisionFraude,
+  nota?: string,
+) =>
+  solicitar<void>(`/organizacion/alertas-fraude/${alertaId}/decision`, 'POST', {
+    decision,
+    ...(nota?.trim() && { nota: nota.trim() }),
+  })
+
+export interface DesempenoOrigen {
+  origen: OrigenAlerta
+  alertas: number
+  confirmadas: number
+  falsosPositivos: number
+  precision: number | null
+}
+export interface DesempenoFraude {
+  modelo: {
+    version: number
+    entrenadoEn: string
+    pares: number
+    histograma: number[]
+    umbral: number
+  } | null
+  sinDatos: { pares: number; minimo: number } | null
+  porOrigen: DesempenoOrigen[]
+  /** CA-11: con escenarios simulados, no con datos reales. */
+  validacion: {
+    auc: number
+    deteccion: number
+    falsasAlarmas: number
+    deteccionUmbral: number
+    falsasAlarmasUmbral: number
+    roc: { x: number; y: number }[]
+    escenarios: number
+  }
+}
+
+export const obtenerDesempenoFraude = () =>
+  solicitar<DesempenoFraude>('/organizacion/fraude/desempeno', 'GET')
 
 export const listarBloqueosVigentes = () =>
   solicitar<{ bloqueos: BloqueoVigente[] }>(

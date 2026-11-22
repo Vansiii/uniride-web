@@ -1,0 +1,476 @@
+/* PB-11: visualizaciones del modelo de riesgo. Tokens de DESIGN_SYSTEM.md §4; el riesgo es un color de estado. */
+
+.bajo {
+  --tono: var(--color-exito);
+  --tono-suave: var(--color-exito-suave);
+  --tono-texto: var(--color-exito-texto);
+}
+.medio {
+  --tono: var(--color-aviso);
+  --tono-suave: var(--color-aviso-suave);
+  --tono-texto: var(--color-aviso-texto);
+}
+.alto {
+  --tono: var(--color-peligro);
+  --tono-suave: var(--color-peligro-suave);
+  --tono-texto: var(--color-peligro-texto);
+}
+
+/* Medidor */
+.medidor {
+  position: relative;
+  display: inline-grid;
+  justify-items: center;
+}
+.medidor svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+.grande {
+  width: 13rem;
+}
+.mini {
+  width: 4.5rem;
+}
+.medidor path {
+  fill: none;
+  stroke-linecap: round;
+}
+.bandaBajo,
+.bandaMedio,
+.bandaAlto {
+  stroke-width: 14;
+  opacity: 0.22;
+}
+.bandaBajo {
+  stroke: var(--color-exito);
+}
+.bandaMedio {
+  stroke: var(--color-aviso);
+}
+.bandaAlto {
+  stroke: var(--color-peligro);
+}
+.relleno {
+  stroke: var(--tono);
+  stroke-width: 14;
+  stroke-dashoffset: var(--fin);
+  animation: llenar var(--duracion-trazo) var(--curva-entrada) both;
+}
+.mini .relleno,
+.mini .bandaBajo,
+.mini .bandaMedio,
+.mini .bandaAlto {
+  stroke-width: 20;
+}
+@keyframes llenar {
+  from {
+    stroke-dashoffset: var(--largo);
+  }
+}
+.aguja {
+  stroke: var(--color-texto);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform-origin: 100px 100px;
+  animation: girar var(--duracion-trazo) var(--curva-entrada) both;
+}
+@keyframes girar {
+  from {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+}
+.eje {
+  fill: var(--color-texto);
+}
+.valorMedidor {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+.grande .valorMedidor {
+  bottom: -1.75rem;
+}
+.numero {
+  color: var(--color-texto);
+  font: 800 2.5rem/1 var(--fuente-display);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.mini .numero {
+  font-size: 1.125rem;
+}
+.mini .valorMedidor {
+  bottom: -0.125rem;
+}
+.nivel {
+  margin-top: var(--espacio-1);
+  padding: 2px var(--espacio-2);
+  border-radius: var(--radio-completo);
+  background: var(--tono-suave);
+  color: var(--tono-texto);
+  font: var(--texto-pequeno);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Factores con percentil */
+.factor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+.cabeceraFactor {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  align-items: baseline;
+}
+.nombreFactor {
+  font: var(--texto-cuerpo-enfasis);
+}
+.percentil {
+  flex: none;
+  color: var(--color-texto);
+  font: 800 1rem/1.25rem var(--fuente-display);
+  font-variant-numeric: tabular-nums;
+}
+.pistaPercentil {
+  position: relative;
+  height: 0.625rem;
+  border-radius: var(--radio-completo);
+  background: linear-gradient(
+    90deg,
+    var(--color-fondo-deshabilitado) 0%,
+    var(--color-primario-suave) 50%,
+    var(--color-peligro-suave) 100%
+  );
+}
+.pistaPercentil::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--p);
+  border-radius: inherit;
+  background: var(--color-primario);
+  opacity: 0.85;
+  animation: crecer var(--duracion-trazo) var(--curva-entrada) both;
+}
+@keyframes crecer {
+  from {
+    width: 0;
+  }
+}
+.mediana {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: 50%;
+  width: 2px;
+  background: var(--color-texto-secundario);
+}
+.marcaPercentil {
+  position: absolute;
+  top: 50%;
+  left: var(--p);
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 3px solid var(--color-superficie);
+  border-radius: 50%;
+  background: var(--color-primario);
+  box-shadow: 0 0 0 1px var(--color-primario);
+  transform: translate(-50%, -50%);
+}
+.comparacion {
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+
+/* Gráficos */
+.grafico {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+.grafico svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.rejilla {
+  stroke: var(--color-borde);
+  stroke-width: 1;
+}
+.ejeY,
+.ejeX,
+.ejeXFin {
+  fill: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+  font-size: 10px;
+}
+.ejeY {
+  text-anchor: end;
+}
+.ejeXFin {
+  text-anchor: end;
+}
+.tituloEje {
+  fill: var(--color-texto-secundario);
+  font: var(--texto-pequeno);
+  font-size: 10px;
+  text-anchor: middle;
+}
+.barraHisto {
+  fill: var(--color-primario);
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: subir var(--duracion-larga) var(--curva-entrada) both;
+  transition: opacity var(--duracion-corta);
+}
+.sobreUmbral {
+  fill: var(--color-peligro);
+}
+.grafico svg:hover .barraHisto:not(.barraActiva) {
+  opacity: 0.45;
+}
+@keyframes subir {
+  from {
+    transform: scaleY(0);
+  }
+}
+.objetivo {
+  fill: transparent;
+  cursor: crosshair;
+}
+.lineaUmbral {
+  stroke: var(--color-peligro);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+.textoUmbral {
+  fill: var(--color-peligro-texto);
+  font: var(--texto-pequeno);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: end;
+}
+.tooltip,
+.tooltipFijo {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--espacio-2) var(--espacio-3);
+  border: var(--grosor-borde) solid var(--color-borde);
+  border-radius: var(--radio-m);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra-flotante);
+  color: var(--color-texto);
+  font: var(--texto-secundario);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.tooltip {
+  transform: translate(-50%, -10%);
+}
+.tooltipFijo {
+  right: 0;
+}
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2) var(--espacio-4);
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+.leyenda > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+.muestraNormal,
+.muestraAlerta {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 3px;
+  background: var(--color-primario);
+}
+.muestraAlerta {
+  background: var(--color-peligro);
+}
+.muestraLinea,
+.muestraAzar {
+  width: 1.25rem;
+  height: 0;
+  border-top: 2px solid var(--color-primario);
+}
+.muestraAzar {
+  border-top: 2px dashed var(--color-texto-placeholder);
+}
+.muestraPunto {
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 2px solid var(--color-superficie);
+  border-radius: 50%;
+  background: var(--color-peligro);
+  box-shadow: 0 0 0 1px var(--color-peligro);
+}
+
+/* Curva ROC */
+.roc {
+  max-width: 22rem;
+  align-self: center;
+}
+.azar {
+  stroke: var(--color-texto-placeholder);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+.areaRoc {
+  fill: var(--color-primario);
+  opacity: 0.12;
+}
+.lineaRoc {
+  fill: none;
+  stroke: var(--color-primario);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  animation: trazar calc(var(--duracion-trazo) * 2) var(--curva-entrada) both;
+}
+@keyframes trazar {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.puntoOperacion {
+  fill: var(--color-peligro);
+  stroke: var(--color-superficie);
+  stroke-width: 2;
+}
+.puntoActivo {
+  fill: var(--color-primario);
+  stroke: var(--color-superficie);
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+/* Grafo del anillo */
+.grafo {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: var(--espacio-5);
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .grafo {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+.grafo svg {
+  display: block;
+  width: 100%;
+  max-width: 16rem;
+  height: auto;
+}
+.orbita {
+  fill: none;
+  stroke: var(--color-borde);
+  stroke-dasharray: 2 6;
+}
+.arista {
+  stroke: var(--color-peligro);
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+.viajesArista {
+  fill: var(--color-peligro-texto);
+  font: var(--texto-pequeno);
+  font-weight: 700;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--color-superficie);
+  stroke-width: 4px;
+}
+.nodo .halo {
+  fill: var(--color-peligro);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulso 2.4s var(--curva-estandar) infinite;
+  animation-delay: inherit;
+}
+@keyframes pulso {
+  0% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nodo .halo {
+    animation: none;
+  }
+}
+.circuloNodo {
+  fill: var(--color-marca-profundo);
+  stroke: var(--color-superficie);
+  stroke-width: 3;
+}
+.inicialesNodo {
+  fill: var(--color-sobre-marca);
+  font: 700 12px/1 var(--fuente);
+  text-anchor: middle;
+}
+.leyendaGrafo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+  color: var(--color-texto-secundario);
+  font: var(--texto-secundario);
+}
+.leyendaGrafo ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.leyendaGrafo li {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  color: var(--color-texto);
+  font: var(--texto-etiqueta);
+}
+.leyendaGrafo p {
+  margin: 0;
+}
+.chipNodo {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-marca-profundo);
+  color: var(--color-sobre-marca);
+  font: 700 0.6875rem/1 var(--fuente);
+}

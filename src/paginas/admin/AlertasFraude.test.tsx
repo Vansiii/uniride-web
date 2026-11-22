@@ -16,6 +16,8 @@ vi.mock('../../api/cliente', async (original) => ({
   consultarYo: vi.fn(),
   listarAlertasFraude: vi.fn(),
   listarBloqueosVigentes: vi.fn(),
+  obtenerDesempenoFraude: vi.fn().mockRejectedValue(new Error('sin datos')),
+  decidirAlerta: vi.fn(),
 }))
 
 const admin = {
@@ -252,5 +254,212 @@ describe('PB-10 · análisis de riesgo con IA en Alertas', () => {
     expect(
       screen.getByText('Sugerencia de IA: la decisión es del administrador.'),
     ).toBeTruthy()
+  })
+})
+
+describe('PB-11 · modelo propio, anillos, decisiones y desempeño', () => {
+  const desempeno = (
+    extra: Partial<api.DesempenoFraude> = {},
+  ): api.DesempenoFraude => ({
+    modelo: {
+      version: 3,
+      entrenadoEn: new Date(Date.now() - 2 * 3_600_000).toISOString(),
+      pares: 42,
+      histograma: [20, 9, 5, 3, 1, 1, 1, 0, 1, 1],
+      umbral: 80,
+    },
+    sinDatos: null,
+    porOrigen: [
+      {
+        origen: 'reglas',
+        alertas: 4,
+        confirmadas: 3,
+        falsosPositivos: 1,
+        precision: 0.75,
+      },
+      {
+        origen: 'modelo',
+        alertas: 2,
+        confirmadas: 0,
+        falsosPositivos: 0,
+        precision: null,
+      },
+      {
+        origen: 'anillo',
+        alertas: 1,
+        confirmadas: 1,
+        falsosPositivos: 0,
+        precision: 1,
+      },
+    ],
+    validacion: {
+      auc: 0.996,
+      deteccion: 1,
+      falsasAlarmas: 0.056,
+      deteccionUmbral: 0.67,
+      falsasAlarmasUmbral: 0,
+      roc: [
+        { x: 0, y: 0 },
+        { x: 0, y: 0.67 },
+        { x: 0.05, y: 1 },
+        { x: 1, y: 1 },
+      ],
+      escenarios: 850,
+    },
+    ...extra,
+  })
+  const atipica = alerta(5, {
+    patron: 'comportamiento_atipico',
+    origen: 'modelo',
+    personas: [
+      { nombre: 'Carlos Justiniano', rol: 'miembro' },
+      { nombre: 'Ana Rojas', rol: 'miembro' },
+    ],
+    bloqueoHasta: undefined,
+    puntajeModelo: 92,
+    factores: [
+      { cifra: 'viajes7d', valor: 8, percentil: 99 },
+      { cifra: 'distanciaPromedioM', valor: 300, percentil: 2 },
+    ],
+  })
+  const anillo = alerta(6, {
+    patron: 'anillo_colusion',
+    origen: 'anillo',
+    personas: ['Ana Rojas', 'Beto Paz', 'Ceci Vaca'].map((nombre) => ({
+      nombre,
+      rol: 'miembro' as const,
+    })),
+    bloqueoHasta: undefined,
+    grafo: {
+      nodos: ['Ana Rojas', 'Beto Paz', 'Ceci Vaca'],
+      aristas: [
+        { a: 0, b: 1, viajes: 3 },
+        { a: 1, b: 2, viajes: 3 },
+        { a: 2, b: 0, viajes: 3 },
+      ],
+      viajesInternos: 9,
+      proporcion: 1,
+    },
+  })
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(api.consultarYo).mockResolvedValue(admin)
+    vi.mocked(api.listarBloqueosVigentes).mockResolvedValue({ bloqueos: [] })
+    vi.mocked(api.listarAlertasFraude).mockResolvedValue({
+      alertas: [atipica, anillo],
+    })
+    vi.mocked(api.obtenerDesempenoFraude).mockResolvedValue(desempeno())
+    vi.mocked(api.decidirAlerta).mockResolvedValue(undefined)
+  })
+  afterEach(cleanup)
+
+  it('RN-2: la banda muestra el modelo propio activo, su versión y los pares', async () => {
+    abrir()
+    expect(await screen.findByText('Modelo propio activo')).toBeTruthy()
+    expect(screen.getByText('Versión 3')).toBeTruthy()
+    expect(screen.getByText('42 pares analizados')).toBeTruthy()
+    expect(
+      screen.getByRole('img', {
+        name: '42 pares analizados; 2 sobre el umbral de alerta',
+      }),
+    ).toBeTruthy()
+    expect(screen.getAllByText('Umbral 80').length).toBeGreaterThan(0)
+  })
+
+  it('CA-2: sin pares suficientes explica que rigen las reglas', async () => {
+    vi.mocked(api.obtenerDesempenoFraude).mockResolvedValue(
+      desempeno({ modelo: null, sinDatos: { pares: 12, minimo: 20 } }),
+    )
+    abrir()
+    expect(await screen.findByText('Modelo en preparación')).toBeTruthy()
+    expect(
+      screen.getAllByText(/Datos insuficientes: 12 de 20 pares/).length,
+    ).toBeGreaterThan(0)
+  })
+
+  it('CA-7: el detalle muestra medidor, origen, factores con percentil y el grafo del anillo', async () => {
+    abrir()
+    expect(await screen.findByText('Alto 92')).toBeTruthy()
+    fireEvent.click(screen.getAllByRole('button', { name: /Ver detalle/ })[0])
+    expect(
+      screen.getAllByRole('img', { name: 'Puntaje de riesgo 92 de 100: Alto' }),
+    ).toHaveLength(2)
+    expect(screen.getByText('Puntaje del modelo propio')).toBeTruthy()
+    expect(screen.getByText('8 viajes en 7 días')).toBeTruthy()
+    expect(screen.getByText('Percentil 99')).toBeTruthy()
+    expect(
+      screen.getByText('Más bajo que el 98 % de los pares de tu organización'),
+    ).toBeTruthy()
+
+    fireEvent.click(screen.getAllByRole('button', { name: /Ver detalle/ })[0])
+    expect(screen.getByText('Grupo detectado')).toBeTruthy()
+    expect(
+      screen.getByRole('img', {
+        name: 'Anillo de 3 personas con 9 viajes entre ellas',
+      }),
+    ).toBeTruthy()
+  })
+
+  it('CA-8: «Fraude confirmado» guarda la decisión con la nota y la muestra', async () => {
+    abrir()
+    fireEvent.click(
+      (await screen.findAllByRole('button', { name: /Ver detalle/ }))[0],
+    )
+    fireEvent.change(screen.getByLabelText('Nota (opcional)'), {
+      target: { value: 'Mismo par todos los días' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Fraude confirmado' }))
+    await waitFor(() =>
+      expect(api.decidirAlerta).toHaveBeenCalledWith(
+        'a-5',
+        'confirmado',
+        'Mismo par todos los días',
+      ),
+    )
+    expect(
+      await screen.findByText(/Fraude confirmado por Rosa Méndez/),
+    ).toBeTruthy()
+    expect(api.obtenerDesempenoFraude).toHaveBeenCalledTimes(2)
+  })
+
+  it('si la decisión falla lo dice y no la marca', async () => {
+    vi.mocked(api.decidirAlerta).mockRejectedValueOnce(new Error('x'))
+    abrir()
+    fireEvent.click(
+      (await screen.findAllByRole('button', { name: /Ver detalle/ }))[0],
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Falso positivo' }))
+    expect(
+      await screen.findByText(
+        'No pudimos guardar la decisión. Intenta de nuevo.',
+      ),
+    ).toBeTruthy()
+    expect(screen.queryByText(/Falso positivo por/)).toBeNull()
+  })
+
+  it('CA-10: el desempeño muestra la precisión por origen, «Sin datos» y la validación ROC', async () => {
+    abrir()
+    expect(await screen.findByText('Reglas fijas')).toBeTruthy()
+    expect(screen.getAllByText('75 %').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Sin datos').length).toBeGreaterThan(0)
+    expect(screen.getByText('Validación del modelo')).toBeTruthy()
+    expect(screen.getByText('0,996')).toBeTruthy()
+    expect(
+      screen.getByRole('img', { name: /Curva ROC del modelo/ }),
+    ).toBeTruthy()
+  })
+
+  it('filtra por los patrones nuevos', async () => {
+    abrir()
+    await screen.findByText('Alto 92')
+    fireEvent.change(screen.getByDisplayValue('Todos'), {
+      target: { value: 'anillo_colusion' },
+    })
+    await waitFor(() =>
+      expect(api.listarAlertasFraude).toHaveBeenLastCalledWith(
+        'anillo_colusion',
+      ),
+    )
   })
 })
