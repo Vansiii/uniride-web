@@ -394,7 +394,9 @@
       "patron": {
         "viajes_repetidos": "Viajes repetidos",
         "sin_desplazamiento": "Viaje sin desplazamiento",
-        "verificaciones_fallidas": "Verificaciones fallidas repetidas"
+        "verificaciones_fallidas": "Verificaciones fallidas repetidas",
+        "comportamiento_atipico": "Comportamiento atípico",
+        "anillo_colusion": "Anillo de colusión"
       },
       "resumen_alertas": "Alertas cargadas",
       "resumen_alertas_nota": "Las más recientes primero",
@@ -411,10 +413,12 @@
       "patron_ayuda": {
         "viajes_repetidos": "El mismo par viaja junto muchas veces en poco tiempo.",
         "sin_desplazamiento": "El viaje terminó casi en el mismo lugar donde empezó.",
-        "verificaciones_fallidas": "Muchos intentos de verificación fallidos seguidos."
+        "verificaciones_fallidas": "Muchos intentos de verificación fallidos seguidos.",
+        "comportamiento_atipico": "El modelo propio ve a este par muy lejos de lo normal en tu organización.",
+        "anillo_colusion": "Un grupo de personas que casi solo viaja entre sí y se turna los roles."
       },
       "n_alertas_uno": "1 alerta",
-      "columna_riesgo": "Riesgo (IA)",
+      "columna_riesgo": "Riesgo",
       "orden": "Ordenar",
       "orden_reciente": "Más recientes",
       "orden_riesgo": "Mayor riesgo",
@@ -429,8 +433,113 @@
         "recomendacion": "Recomendación",
         "proveedor_local": "Analizado por IA local",
         "proveedor_groq": "Analizado por IA de respaldo",
-        "nota": "Sugerencia de IA: la decisión es del administrador."
+        "nota": "Sugerencia de IA: la decisión es del administrador.",
+        "origen_modelo": "Puntaje del modelo propio",
+        "origen_estimado": "Puntaje estimado por IA de lenguaje",
+        "explicacion": "Explicación de la IA"
+      },
+      "rol_miembro": "miembro del grupo",
+      "ver_detalle": "Ver detalle",
+      "ocultar_detalle": "Ocultar detalle",
+      "origen": {
+        "reglas": "Reglas",
+        "modelo": "Modelo propio",
+        "anillo": "Anillo"
       }
+    },
+    "riesgo": {
+      "medidor_aria": "Puntaje de riesgo {puntaje} de 100: {nivel}",
+      "nivel_bajo": "Riesgo bajo",
+      "nivel_medio": "Riesgo medio",
+      "nivel_alto": "Riesgo alto",
+      "percentil": "Percentil {n}",
+      "mas_alto": "Más alto que el {n} % de los pares de tu organización",
+      "mas_bajo": "Más bajo que el {n} % de los pares de tu organización",
+      "factores_titulo": "Por qué se aparta de lo normal",
+      "factores_vacio": "Sin factores: el puntaje viene de las reglas o de la IA de lenguaje."
+    },
+    "factores": {
+      "viajes7d": "{n} viajes en 7 días",
+      "viajes30d": "{n} viajes en 30 días",
+      "distanciaPromedioM": "{n} m de distancia promedio",
+      "duracionPromedioMin": "{n} min de duración promedio",
+      "fraccionConductor": "{n} de los viajes del conductor son con este pasajero",
+      "fraccionPasajero": "{n} de los viajes del pasajero son con este conductor",
+      "fraccionCalificacionesDelPar": "{n} de las calificaciones vienen del otro",
+      "antiguedadMinimaDias": "Cuenta más nueva: {n} días",
+      "cobrosSinRecarga": "{n} cobros y pagos sin recargar",
+      "fallidas7d": "{n} verificaciones fallidas en 7 días"
+    },
+    "modelo": {
+      "titulo": "Inteligencia de riesgo",
+      "descripcion": "Un modelo propio (Isolation Forest) aprende cada día cómo viaja tu organización y puntúa de 0 a 100 qué tan raro es cada par.",
+      "activo": "Modelo propio activo",
+      "version": "Versión {n}",
+      "entrenado": "Entrenado {tiempo}",
+      "pares": "{n} pares analizados",
+      "sin_modelo": "Modelo en preparación",
+      "sin_datos": "Datos insuficientes: {pares} de {minimo} pares con viajes en 30 días. Mientras tanto rigen las reglas y la IA de lenguaje estima el puntaje.",
+      "esperando": "El primer entrenamiento corre en segundo plano; vuelve en unos minutos.",
+      "desactualizado": "Modelo con más de 3 días",
+      "local": "Corre en el servidor de UniRide, sin servicios externos",
+      "histograma_titulo": "Distribución de puntajes",
+      "histograma_texto": "Cuántos pares de tu organización hay en cada tramo de puntaje. Los que pasan el umbral generan una alerta.",
+      "histograma_aria": "{n} pares analizados; {sobre} sobre el umbral de alerta",
+      "umbral": "Umbral {n}",
+      "tramo": "Puntaje {desde}–{hasta}",
+      "n_pares": "{n} pares",
+      "n_pares_uno": "1 par",
+      "leyenda_normal": "Pares bajo el umbral",
+      "leyenda_alerta": "Pares con puntaje ≥ {n} (alerta)",
+      "cifra_sobre": "Pares sobre el umbral",
+      "cifra_anillos": "Anillos detectados",
+      "cifra_modelo": "Alertas del modelo",
+      "cifra_auc": "AUC de validación",
+      "cifra_auc_nota": "Con {n} escenarios simulados"
+    },
+    "desempeno": {
+      "titulo": "Desempeño",
+      "descripcion": "Qué tan seguido acierta cada fuente de alertas, según tus decisiones.",
+      "origen_reglas": "Reglas fijas",
+      "origen_modelo": "Modelo propio",
+      "origen_anillo": "Detector de anillos",
+      "precision": "Precisión",
+      "sin_datos": "Sin datos",
+      "sin_datos_nota": "Marca alertas como «Fraude confirmado» o «Falso positivo» para medirla.",
+      "confirmadas": "Confirmadas",
+      "falsos": "Falsos positivos",
+      "sin_decidir": "Sin decidir",
+      "n_alertas": "{n} alertas",
+      "validacion_titulo": "Validación del modelo",
+      "validacion_texto": "Curva ROC con {n} pares simulados (normales, compañeros habituales y cuatro tipos de colusión). No son datos reales.",
+      "auc": "Área bajo la curva",
+      "deteccion": "Detecta {deteccion} de la colusión con {falsas} de falsas alarmas",
+      "umbral": "Con el umbral 80: {deteccion} detectado y {falsas} de falsas alarmas",
+      "eje_falsas": "Falsas alarmas",
+      "eje_deteccion": "Detección",
+      "roc_aria": "Curva ROC del modelo; con el umbral del producto detecta {deteccion} con {falsas} de falsas alarmas",
+      "punto_roc": "Detección {deteccion} · falsas alarmas {falsas}",
+      "leyenda_modelo": "Modelo propio",
+      "leyenda_azar": "Azar",
+      "leyenda_umbral": "Umbral 80"
+    },
+    "anillo": {
+      "titulo": "Grupo detectado",
+      "aria": "Anillo de {n} personas con {viajes} viajes entre ellas",
+      "resumen": "{viajes} viajes entre ellas; el {proporcion} de todos sus viajes fue dentro del grupo. El número de cada unión es la cantidad de viajes."
+    },
+    "decision": {
+      "titulo": "Tu decisión",
+      "texto": "Queda registrada con tu nombre y mejora el modelo: lo confirmado no se aprende como normal. No levanta ni crea bloqueos.",
+      "confirmar": "Fraude confirmado",
+      "descartar": "Falso positivo",
+      "nota": "Nota (opcional)",
+      "guardando": "Guardando…",
+      "error": "No pudimos guardar la decisión. Intenta de nuevo.",
+      "ultima": "{decision} por {autor}, {tiempo}",
+      "confirmado": "Fraude confirmado",
+      "falso_positivo": "Falso positivo",
+      "sin_decision": "Sin decidir"
     }
   },
   "membresias": {
